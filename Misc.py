@@ -9,7 +9,7 @@ class Misc():
     @commands.group(pass_context=True)
     async def todo(self, ctx):
         if ctx.invoked_subcommand is None:
-            await bot.say('Invalid todo command.')
+            await bot.say('Invalid todo command.', delete_after=3)
 
     @todo.command(pass_context=True)
     async def add(self, ctx, *inputVar: str):
@@ -22,7 +22,7 @@ class Misc():
         todo.write("{0}".format(outputString))
         todo.write("\n")
         todo.close()
-        await self.bot.say("Your To-Do entry has been safely logged.")
+        await self.bot.say("Your To-Do entry has been safely logged.", delete_after=3)
         await self.bot.delete_message(ctx.message)
     
     @todo.command(pass_context =True)
@@ -32,7 +32,7 @@ class Misc():
             with open("{0}.txt".format(author.id),"r") as todo:
                 content = todo.readlines()
         except:
-            await self.bot.say("File not found. Have you added any todo's?")
+            await self.bot.say("File not found. Have you added any todo's?", delete_after=3)
             return await self.bot.delete_message(ctx.message)
         
         content = [x.strip('\n') for x in content]
@@ -44,7 +44,7 @@ class Misc():
         em = discord.Embed( title="{0}'s To-Do List".format(author.name), description=output)
         em.set_footer(text="requested by {user}".format(user=author.name), icon_url=author.avatar_url)
         await self.bot.say(embed=em)
-        return await self.bot.delete_message(ctx.message)
+        await self.bot.delete_message(ctx.message)
 
     @todo.command(pass_context=True)
     async def delete(self, ctx, index: int):
@@ -53,12 +53,12 @@ class Misc():
             with open("{0}.txt".format(author.id),"r") as todo:
                 content = todo.readlines()
         except:
-            await self.bot.say("File not found. Have you added and todo's?")
+            await self.bot.say("File not found. Have you added and todo's?", delete_after=3)
             return await self.bot.delete_message(ctx.message)
 
         if(index < 1 or index > (len(content)+1)):
             print("hit")
-            await self.bot.say("Entry not found.")
+            await self.bot.say("Entry not found.", delete_after=3)
             return await self.bot.delete_message(ctx.message)
 
         else:
@@ -68,7 +68,7 @@ class Misc():
         for lines in content:
             todo.write(lines)
         todo.close()
-        await self.bot.say("Your To-Do list has been updated.")
+        await self.bot.say("Your To-Do list has been updated.", delete_after=3)
         await self.bot.delete_message(ctx.message)
 def setup(bot):
     bot.add_cog(Misc(bot))
