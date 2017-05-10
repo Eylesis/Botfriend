@@ -6,8 +6,8 @@ import random
 from discord.ext import commands
 import os
 
-botToken = os.environ.get('botToken', None)
-
+botToken = os.environ.get('botToken')
+print(botToken)
 startup_extensions = ["AlchemyLookup", "BeastiaryLookup"]
 
 bot = commands.Bot(command_prefix=commands.when_mentioned_or("*"))
