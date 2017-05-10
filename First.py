@@ -4,6 +4,9 @@ import json
 import re
 import random
 from discord.ext import commands
+import os
+
+botToken = os.environ.get('botToken', None)
 
 startup_extensions = ["AlchemyLookup", "BeastiaryLookup"]
 
@@ -56,4 +59,4 @@ if __name__ == "__main__":
             exc = '{}: {}'.format(type(e).__name__, e)
             print('Failed to load extension {}\n{}'.format(extension, exc))
 
-    bot.run("MjQzNDk0NzkwMzU5MDIzNjE2.C_P1Yg.9XJGWpqRC8y5woWc65Xr_hhpjs0")
+    bot.run(bottoken)
