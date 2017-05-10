@@ -8,9 +8,11 @@ import os
 
 botToken = os.environ.get('botToken')
 print(botToken)
-startup_extensions = ["AlchemyLookup", "BeastiaryLookup"]
+startup_extensions = ["AlchemyLookup", "BeastiaryLookup", "Misc"]
 
 bot = commands.Bot(command_prefix=commands.when_mentioned_or("*"))
+bot.change_status(discord.Game(name="mes"))
+
 
 @bot.event
 async def on_command_error(error, ctx):
@@ -60,3 +62,4 @@ if __name__ == "__main__":
             print('Failed to load extension {}\n{}'.format(extension, exc))
 
     bot.run(botToken)
+    
