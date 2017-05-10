@@ -44,7 +44,7 @@ class Misc():
         em = discord.Embed( title="{0}'s To-Do List".format(author.name), description=output)
         em.set_footer(text="requested by {user}".format(user=author.name), icon_url=author.avatar_url)
         await self.bot.say(embed=em)
-        await self.bot.delete_message(ctx.message)
+        return await self.bot.delete_message(ctx.message)
 
     @todo.command(pass_context=True)
     async def delete(self, ctx, index: int):
@@ -55,10 +55,12 @@ class Misc():
         except:
             await self.bot.say("File not found. Have you added and todo's?")
             return await self.bot.delete_message(ctx.message)
+
         if(index < 1 or index > (len(content)+1)):
             print("hit")
             await self.bot.say("Entry not found.")
             return await self.bot.delete_message(ctx.message)
+
         else:
             del content[index-1]
             
