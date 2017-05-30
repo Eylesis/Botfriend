@@ -11,8 +11,8 @@
     },
     {
         "name": "Desert",
-        "ingredients": ["Cosmos Glond","Arrow Root","Dried Ephedra","Cactus Juice","Roll on Common Ingredient table","Roll on Common Ingredient table","Roll on Common Ingredient table","Drakus Flower","Scillia Beans","Spineflower Berries","Voidroot"],
-        "subgroup" : ["","","","Find 2x the rolled amount","Roll on Common Ingredient table","Roll on Common Ingredient table","Roll on Common Ingredient table","","","","Come with 1 Elemental Water"]
+        "ingredients": ["Cosmos Glond","Arrow Root","Dried Ephedra","Cactus Juice","Common Ingredient","Common Ingredient","Common Ingredient","Drakus Flower","Scillia Beans","Spineflower Berries","Voidroot"],
+        "subgroup" : ["","","","Find 2x the rolled amount","Roll on Common Ingredient table","Roll on Common Ingredient table","Roll on Common Ingredient table","","","","Comes with 1 Elemental Water"]
     },
     {
         "name": "Forest",

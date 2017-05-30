@@ -3,12 +3,14 @@ import asyncio
 import json
 import re
 import random
+import dice
+import traceback
 from discord.ext import commands
 import os
 
 botToken = os.environ.get('botToken')
 print(botToken)
-startup_extensions = ["AlchemyLookup", "BeastiaryLookup", "Misc"]
+startup_extensions = ["AlchemyLookup", "BeastiaryLookup", "Misc", "DowntimeForaging"]
 
 bot = commands.Bot(command_prefix=commands.when_mentioned_or("*"))
 bot.change_status(discord.Game(name="mes"))
@@ -17,6 +19,7 @@ bot.change_status(discord.Game(name="mes"))
 @bot.event
 async def on_command_error(error, ctx):
     if isinstance(error, discord.ext.commands.CommandNotFound):
+        traceback.print_exception(type(error), error, error.__traceback__, file=sys.stderr)
         return
 
 @bot.event
@@ -35,8 +38,11 @@ async def prefix(newPref: str):
 async def hi():
     return await bot.say("Greetings! I am Botfriend!")
 
+@bot.command(pass_context=True)
+async def roll(ctx, args):
+    print (args)
+    return await bot.say(dice.roll(args))    
 
-    
 @bot.command()
 async def load(extension_name : str):
     """Loads an extension."""

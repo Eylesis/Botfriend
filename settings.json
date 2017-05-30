@@ -1,8 +1,7 @@
 [
     {
-        "prefix": "!",
+        "prefix": "*",
         "alchemyList":"Alchemy.json",
-        "monsterList":"beastiary.json"
-         
+        "monsterList":"Beastiary.json"
     }
 ]
