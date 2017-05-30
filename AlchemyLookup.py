@@ -16,11 +16,15 @@ class AlchemyLookup():
             self.AlchemyMaterialsMaster = json.load(json_data)
     
     @commands.command(pass_context=True)
-    async def material(self, ctx, name: str, *, args):
+    async def material(self, ctx, name: str, *, args=None):
         author = ctx.message.author
-        splitArgs = shlex.split(args)
-        argArray = parse_args_3(splitArgs)
-
+        if args != None:
+            splitArgs = shlex.split(args)
+            argArray = parse_args_3(splitArgs)
+            raw = True
+        else:
+            raw = False
+        
         print(author.name)
         i = 0
         for o in (range(len(self.AlchemyMaterialsMaster))):
@@ -33,12 +37,12 @@ class AlchemyLookup():
         output = "**{name}**\n*{type}, ({location}) ({dc})*\n{details}\n\n{description}".format(**self.AlchemyMaterialsMaster[i])
         em = discord.Embed( title="{name}".format(**self.AlchemyMaterialsMaster[i]), description="*{type}, ({location}) ({dc})*\n{details}\n\n{description}".format(**self.AlchemyMaterialsMaster[i]))
         em.set_footer(text="requested by {user}".format(user=author.name), icon_url=author.avatar_url)
-        if argArray.get("raw"):
+        if (raw and ('raw' in argArray)):
             await self.bot.say(output)
         else: 
             await self.bot.say(embed=em)
         await self.bot.delete_message(ctx.message)
-
+    
 
     @commands.command(pass_context=True)
     async def table(self, ctx, tableName: str):

@@ -62,7 +62,7 @@ class DowntimeForaging():
         print(tableRolls['common'])
         return tableRolls
 
-    def roll_materials(self, args, biome):
+    '''def roll_materials(self, args, biome):
         i = 0
         tableRolls = self.getTable(biome)
         elementaled = False
@@ -74,7 +74,7 @@ class DowntimeForaging():
                     results.setdefault('elemental', 0)
                     results['elemental'] += 1
                     elementaled = True
-            if elementaled != True:
+            if elementaled != True:'''
 
 
 
