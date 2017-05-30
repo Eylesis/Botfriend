@@ -34,7 +34,7 @@ class AlchemyLookup():
                 i = o
                 break
 
-        output = "**{name}**\n*{type}, ({location}) ({dc})*\n{details}\n\n{description}".format(**self.AlchemyMaterialsMaster[i])
+        output = "```**{name}**\n*{type}, ({location}) ({dc})*\n{details}\n\n{description}```".format(**self.AlchemyMaterialsMaster[i])
         em = discord.Embed( title="{name}".format(**self.AlchemyMaterialsMaster[i]), description="*{type}, ({location}) ({dc})*\n{details}\n\n{description}".format(**self.AlchemyMaterialsMaster[i]))
         em.set_footer(text="requested by {user}".format(user=author.name), icon_url=author.avatar_url)
         if (raw and ('raw' in argArray)):
