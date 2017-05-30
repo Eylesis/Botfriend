@@ -10,7 +10,7 @@ import os
 
 botToken = os.environ.get('botToken')
 print(botToken)
-startup_extensions = ["BeastiaryLookup", "Misc"]
+startup_extensions = ["AlchemyLookup", "BeastiaryLookup", "Misc"]
 
 bot = commands.Bot(command_prefix=commands.when_mentioned_or("*"))
 bot.change_status(discord.Game(name="mes"))
