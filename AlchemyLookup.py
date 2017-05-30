@@ -3,6 +3,8 @@ import asyncio
 import json
 import re
 import random
+import shlex
+from functions import parse_args_3
 from discord.ext import commands
 
 class AlchemyLookup():
@@ -14,8 +16,11 @@ class AlchemyLookup():
             self.AlchemyMaterialsMaster = json.load(json_data)
     
     @commands.command(pass_context=True)
-    async def material(self, ctx, name: str):
+    async def material(self, ctx, name: str, *, args):
         author = ctx.message.author
+        splitArgs = shlex.split(args)
+        argArray = parse_args_3(splitArgs)
+
         print(author.name)
         i = 0
         for o in (range(len(self.AlchemyMaterialsMaster))):
@@ -28,7 +33,10 @@ class AlchemyLookup():
         output = "**{name}**\n*{type}, ({location}) ({dc})*\n{details}\n\n{description}".format(**self.AlchemyMaterialsMaster[i])
         em = discord.Embed( title="{name}".format(**self.AlchemyMaterialsMaster[i]), description="*{type}, ({location}) ({dc})*\n{details}\n\n{description}".format(**self.AlchemyMaterialsMaster[i]))
         em.set_footer(text="requested by {user}".format(user=author.name), icon_url=author.avatar_url)
-        await self.bot.say(embed=em)
+        if argArray.get("raw"):
+            await self.bot.say(output)
+        else: 
+            await self.bot.say(embed=em)
         await self.bot.delete_message(ctx.message)
 
 
