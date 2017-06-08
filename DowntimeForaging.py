@@ -55,6 +55,10 @@ class DowntimeForaging():
             if (dice.roll('1d100').total >= 75):
                 args['quantities'].append(entryQuantity)
                 args['materials'].append('Elemental Water')
+                if 'Elemental Water' in outCol:
+                    outCol['Elemental Water'] += entryQuantity
+                else:
+                    outCol['Elemental Water'] = entryQuantity
                 return
         foundCommon = False
         for commons in args['commonList']:
@@ -96,7 +100,7 @@ class DowntimeForaging():
             logOutput += " +{0} {1},".format(value, key)
         logOutput = logOutput[:-1]
         logOutput += ' (Foraging)```'
-
+        args['logOutput'] = logOutput[3:-3]
         embed=discord.Embed(title="Log Output", description=logOutput)
         return embed
     def Construct_Output(self, args, author):
@@ -150,17 +154,27 @@ class DowntimeForaging():
         argArray["rollstring"] = rollstring
         print(argArray.get('days')[0])
         collectionOutput = {}
-        for val in range(0, int(argArray.get('days', [1])[0])):
+        rollToDo = 0
+        if argArray.get('commune'):
+            for val in range(0, int(argArray.get('days', [1])[0])):
+                rollToDo += dice.roll('1d4').total
+        else:
+            rollToDo = int(argArray.get('days', [1])[0])
+        for val in range(0, rollToDo):
             self.Roll_Herbalism(argArray, collectionOutput)
         if not argArray['quantities']:
             await self.bot.say(embed=self.Construct_Failure(argArray, author))
         else:
             print (collectionOutput)
             await self.bot.say(embed=self.Construct_Output(argArray, author))
-            await self.bot.say(embed=self.Construct_Log(argArray, collectionOutput, author))
-           
+            msg = await self.bot.send_message(ctx.message.channel, embed=self.Construct_Log(argArray, collectionOutput, author))
+            await self.bot.add_reaction(msg, '\U0001f4cb')
+            res = await self.bot.wait_for_reaction('\U0001f4cb', message=msg, user=author)
+            logChannel = self.bot.get_channel('243574826290118666')
+            await self.bot.send_message(logChannel, argArray['logOutput'])
+            await self.bot.clear_reactions(msg)
 
-        #await self.bot.say(self.Construct_Output(argArray))
+        
 
    
 
