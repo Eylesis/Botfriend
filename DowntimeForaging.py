@@ -14,118 +14,153 @@ class DowntimeForaging():
         self.bot = bot
         with open('AlchemyTables.json', encoding="utf8") as json_data:
             self.AlchemyTableMaster = json.load(json_data)
-        with open('Alchemy.json', encoding="utf8") as json_data:
-            self.AlchemyMaterialsMaster = json.load(json_data)
     
-    def getCommonRollProcs(self, table):
-        commonRollProc = []
-        i = 2
-        for entry in table:
-            if entry == "Common Ingredient":
-                commonRollProc.append(i)
-            i += 1
-        return commonRollProc
-
-    def getTable(self, name):
-        print("entered function")
+    def Get_Table(self, name):
         i = 0
+        usingTable = []
         for o in (range(len(self.AlchemyTableMaster))):
             match = re.search(name, self.AlchemyTableMaster[o]['name'], re.IGNORECASE)
 
             if match:
                 i = o
-                print("matched")
                 break
-        print("set")
-        return self.AlchemyTableMaster[i]
+        for materials in self.AlchemyTableMaster[i]['ingredients']: 
+            usingTable.append(materials)
+        return usingTable        
     
-    def table_rolls(self, args):
-        found = False
-        table = self.getTable(args.get('biome'))
-        print(table)
-        commonRollProcc = self.getCommonRollProcs(table.get('ingredients'))
-        tableRolls = {}
-        tableRolls['table'] = []
-        tableRolls['common'] = []
-        for a in range(int(args.get('successes'))):
-            roll = random.randint(1, 6) + random.randint(1, 6)
-            for common in commonRollProcc:
-                if roll == common:
-                    roll = random.randint(1, 6) + random.randint(1, 6)
-                    tableRolls['common'].append(roll)
-                    found = True
-                    break
-            if found == False:
-                tableRolls['table'].append(roll)
-            found = False
-        print(tableRolls['table'])
-        print(tableRolls['common'])
-        return tableRolls
-
-    '''def roll_materials(self, args, biome):
+    def Get_Common_List(self, table):
+        commonList = []
         i = 0
-        tableRolls = self.getTable(biome)
-        elementaled = False
-        results = {}
-        for rollTable in range(int(args.get('table'))):
-            if (rollTable >=2 and rollTable <=4) or (rollTable >=10 and rollTable <=12):
-                elementalProc = random.randint(1,100)
-                if elementalProc >= 75:
-                    results.setdefault('elemental', 0)
-                    results['elemental'] += 1
-                    elementaled = True
-            if elementaled != True:'''
+        for material in table:
+            if material == "Common Ingredient":
+                commonList.append(i)
+            i += 1
+        return commonList
 
-
-
-
-    def roll_herbalism(self, args):
-        herbalismSuccesses = 0
-        for a in range(int(args.get('rolls'))):
-            result = dice.roll(args.get('rollstring'))
-            if  result.total >= 15:
-                herbalismSuccesses += 1
-        return herbalismSuccesses
-
-    def construct_embed(self, args):
-        em = discord.Embed(title="FORAGING IN THE {biome} BIOME".format(biome=args.get('biome')), description="desc.")
-        em.add_field(name="**Days: **", value="some of these properties have certain limits...")
-        return em
-
-    def total_forage_rolls(self, args):
-        days = 0
-        rolls = 0
-
-        if args.get('days'):
-            days = args.get('days')[0]
-            print(days)
+    def Roll_Herbalism(self, args, outCol):
+        herbalism = dice.roll(args.get('rollstring'))
+        args['herbalismRolls'].append(re.sub(r"\s+", " ", "{0}: {1}".format(herbalism.rolled, herbalism.total)))
+        if herbalism.total >= 15:
+            self.Roll_Entry(args, outCol)
         else:
-            days = 1
+            return
 
-        if args.get('natural')[0]:
-            for a in range(int(days)):
-                rolls += random.randint(1, 4)
-            return rolls
+    def Roll_Entry(self, args, outCol):
+        entryQuantity = dice.roll('1d4').total
+        if args.get('natural'):
+            entryQuantity *= 2
+        tableRoll = dice.roll('2d6').total
+        table = args['usingTable']
+        if ((tableRoll >= 2 and tableRoll <= 4) or (tableRoll >= 10 and tableRoll <= 12)):
+            if (dice.roll('1d100').total >= 75):
+                args['quantities'].append(entryQuantity)
+                args['materials'].append('Elemental Water')
+                return
+        foundCommon = False
+        for commons in args['commonList']:
+            if (tableRoll-2 == commons):
+                foundCommon = True
+                break
+        if (foundCommon):
+            tableRoll = dice.roll('2d6rr7').total
+            selectedMat = self.Get_Table('common')[tableRoll-2]
+            args['quantities'].append(entryQuantity)
+            args['materials'].append(selectedMat)
+            if selectedMat in outCol:
+                outCol[selectedMat] += entryQuantity
+            else:
+                outCol[selectedMat] = entryQuantity
+            return
         else:
-            return days    
+            selectedMat = args['usingTable'][tableRoll-2]
+            args['quantities'].append(entryQuantity)
+            args['materials'].append(selectedMat)
+            if selectedMat in outCol:
+                outCol[selectedMat] += entryQuantity
+            else:
+                outCol[selectedMat] = entryQuantity
+            return
 
+    def Construct_Failure(self, args, author):
+        outRoll = ''
+        for entries in args['herbalismRolls']:
+            outRoll += "{0}\n".format(entries)
+        embed=discord.Embed(title="Foraging Results", description="{character} has foraged in the {biome}! Unfortunately, they didn't find anything...".format(**args))
+        embed.add_field(name="Roll", value=outRoll, inline=True)
+        embed.set_footer(text="requested by {user}".format(user=author.name), icon_url=author.avatar_url) 
+        return embed
+
+    def Construct_Log(self, args, outCol, author):
+        logOutput = "```{0} ({1}):".format(author.mention, author.display_name)
+        for key, value in outCol.items():
+            logOutput += " +{0} {1},".format(value, key)
+        logOutput = logOutput[:-1]
+        logOutput += ' (Foraging)```'
+
+        embed=discord.Embed(title="Log Output", description=logOutput)
+        return embed
+    def Construct_Output(self, args, author):
+        outQuantity = ''
+        outMaterial = ''
+        outRoll = ''
+        for entries in args['quantities']:
+            outQuantity += "{0}\n".format(entries)
+        for entries in args['materials']:
+            outMaterial += "{0}\n".format(entries)
+        for entries in args['herbalismRolls']:
+            outRoll += "{0}\n".format(entries)
+
+
+
+        embed=discord.Embed(title="Foraging Results", description="{character} has foraged in the {biome}! They managed to find the following:".format(**args))
+        embed.add_field(name="Quantity", value=outQuantity, inline=True)
+        embed.add_field(name="Material", value=outMaterial, inline=True)
+        embed.add_field(name="Roll", value=outRoll, inline=True)
+        
+        embed.set_footer(text="requested by {user}".format(user=author.name), icon_url=author.avatar_url)
+        return embed
+
+    
     @commands.command(pass_context=True)
-    async def forage(self, ctx, biome: str, rollstring: str, *, args):
+    async def forage(self, ctx, biome: str, rollstring: str, *, args=None):
         author = ctx.message.author
-        print(args)
-        splitArgs = shlex.split(args)
-        argArray = parse_args_3(splitArgs)
+        argArray = {}
+        if args != None:
+            splitArgs = shlex.split(args)
+            argArray = parse_args_3(splitArgs)
         print (argArray)
+        argArray['quantities'] = []
+        argArray['materials'] = []
+        argArray['herbalismRolls'] = []
+
         argArray['biome'] = biome
-        argArray["rolls"] = self.total_forage_rolls(argArray)
+        argArray['character'] = author.display_name
+        argArray['usingTable'] = []
+        templist = self.Get_Table(biome)
+        for entry in (templist):
+            argArray['usingTable'].append(entry)
+        templist.clear()
+
+        argArray['commonList'] = []
+        templist = self.Get_Common_List(argArray['usingTable'])
+        for entry in (templist):
+            argArray['commonList'].append(entry)
+        templist.clear()
+
         argArray["rollstring"] = rollstring
-        print(argArray.get('rollstring'))
-        argArray['successes'] = self.roll_herbalism(argArray)
-        tableRollsResults = self.table_rolls(argArray)
-        roll_materials(tableRollsResults, argArray['biome'])
-        em = self.construct_embed(argArray)
-        em.set_footer(text="requested by {user}".format(user=author.name), icon_url=author.avatar_url)
-        await self.bot.say(embed=em)
+        print(argArray.get('days')[0])
+        collectionOutput = {}
+        for val in range(0, int(argArray.get('days', [1])[0])):
+            self.Roll_Herbalism(argArray, collectionOutput)
+        if not argArray['quantities']:
+            await self.bot.say(embed=self.Construct_Failure(argArray, author))
+        else:
+            print (collectionOutput)
+            await self.bot.say(embed=self.Construct_Output(argArray, author))
+            await self.bot.say(embed=self.Construct_Log(argArray, collectionOutput, author))
+           
+
+        #await self.bot.say(self.Construct_Output(argArray))
 
    
 

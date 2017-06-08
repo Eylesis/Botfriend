@@ -10,7 +10,7 @@ import os
 
 botToken = os.environ.get('botToken')
 print(botToken)
-startup_extensions = ["AlchemyLookup", "BeastiaryLookup", "Misc"]
+startup_extensions = ["AlchemyLookup", "BeastiaryLookup", "Misc", "DowntimeForaging"]
 
 bot = commands.Bot(command_prefix=commands.when_mentioned_or("*"))
 bot.change_status(discord.Game(name="mes"))
@@ -19,7 +19,7 @@ bot.change_status(discord.Game(name="mes"))
 @bot.event
 async def on_command_error(error, ctx):
     if isinstance(error, discord.ext.commands.CommandNotFound):
-        traceback.print_exception(type(error), error, error.__traceback__, file=sys.stderr)
+        #traceback.print_exception(type(error), error, error.__traceback__, file=sys.stderr)
         return
 
 @bot.event
