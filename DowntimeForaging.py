@@ -122,7 +122,7 @@ class DowntimeForaging():
         for entries in args['herbalismRolls'][startRange:endRange]:
             outRoll += "{0}\n".format(entries)
 
-        embed=discord.Embed(title="Foraging Results", description="{character} has foraged in the {biome}! They managed to find the following:".format(**args))
+        embed=discord.Embed(title="Foraging Results", description="{character} has foraged in the {biome} for {days} days! They managed to find the following:".format(**args))
         embed.add_field(name="Quantity", value=outQuantity, inline=True)
         embed.add_field(name="Material", value=outMaterial, inline=True)
         embed.add_field(name="Roll", value=outRoll, inline=True)
@@ -139,13 +139,18 @@ class DowntimeForaging():
         await self.bot.add_reaction(message, '\U000025c0')
         await self.bot.add_reaction(message, '\U000025b6')
         await self.bot.add_reaction(message, '\U0001f4cb')
+        await self.bot.add_reaction(message, '\U0001f6ab')
         while toggle==False:
             res = await self.bot.wait_for_reaction(message=message, user=author)
             print('start: {0}'.format(page))
             if res.reaction.emoji == '\U0001f4cb':
                 print ('clipboard')
-                logChannel = self.bot.get_channel('243574826290118666')
+                logChannel = self.bot.get_channel('123208456650883072')
                 await self.bot.send_message(logChannel, args['logOutput'])
+                await self.bot.clear_reactions(message)
+                toggle = True
+            elif res.reaction.emoji == '\U0001f6ab':
+                print ('cancel')
                 await self.bot.clear_reactions(message)
                 toggle = True
             elif res.reaction.emoji == '\U000025c0' and page > 0:
@@ -196,8 +201,9 @@ class DowntimeForaging():
         print(argArray.get('days')[0])
         collectionOutput = {}
         rollToDo = 0
+        argArray['days'] = int(argArray.get('days', [1])[0])
         if argArray.get('commune'):
-            for val in range(0, int(argArray.get('days', [1])[0])):
+            for val in range(0, argArray['days']):
                 rollToDo += dice.roll('1d4').total
         else:
             rollToDo = int(argArray.get('days', [1])[0])
