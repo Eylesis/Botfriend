@@ -205,7 +205,7 @@ class DowntimeForaging():
             for val in range(0, argArray['days']):
                 rollToDo += dice.roll('1d4').total
         else:
-            rollToDo = int(argArray.get('days', [1])[0])
+            rollToDo =  argArray['days']
         for val in range(0, rollToDo):
             self.Roll_Herbalism(argArray, collectionOutput)
         if not argArray['quantities']:
