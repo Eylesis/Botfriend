@@ -47,6 +47,8 @@ class DowntimeForaging():
         if herbalism.total >= 15:
             self.Roll_Entry(args, outCol)
         else:
+            args['quantities'].append(0)
+            args['materials'].append('---')
             return
 
     def Roll_Entry(self, args, outCol):
