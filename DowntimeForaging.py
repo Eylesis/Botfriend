@@ -198,7 +198,6 @@ class DowntimeForaging():
         templist.clear()
 
         argArray["rollstring"] = rollstring
-        print(argArray.get('days')[0])
         collectionOutput = {}
         rollToDo = 0
         argArray['days'] = int(argArray.get('days', [1])[0])
