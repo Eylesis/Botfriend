@@ -134,12 +134,16 @@ class DowntimeForaging():
         toggle = False
         page = 0
         pgEnd = 0
-        maxPage = self.roundup(len(args['quantities'])) / 10
+        maxPage = int(self.roundup(len(args['quantities'])) / 10)
         print(maxPage)
-        await self.bot.add_reaction(message, '\U000025c0')
-        await self.bot.add_reaction(message, '\U000025b6')
+        
+        if maxPage > 1:
+            await self.bot.add_reaction(message, '\U000025c0')
+            await self.bot.add_reaction(message, '\U000025b6')
+        
         await self.bot.add_reaction(message, '\U0001f4cb')
         await self.bot.add_reaction(message, '\U0001f6ab')
+        
         while toggle==False:
             res = await self.bot.wait_for_reaction(message=message, user=author)
             print('start: {0}'.format(page))
@@ -166,6 +170,7 @@ class DowntimeForaging():
                 logMessage = await self.bot.edit_message(logMessage, embed=self.Construct_Output(args, author, (page*10), pgEnd))
                 await self.bot.remove_reaction(message, '\U000025b6', author)
             else:
+                await self.bot.remove_reaction(message, res.reaction.emoji, author)
                 print ('nope')
             print('end: {0}'.format(page))
         print ('exited')
