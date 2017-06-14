@@ -215,12 +215,18 @@ class DowntimeForaging():
             rollToDo =  argArray['days']
         for val in range(0, rollToDo):
             self.Roll_Herbalism(argArray, collectionOutput)
-        if not argArray['quantities']:
-            await self.bot.say(embed=self.Construct_Failure(argArray, author))
-        else:
+        forageSuccess = False
+        for val in argArray['quantities']:
+            if val != 0:
+                forageSuccess = True
+
+        if forageSuccess:
             logMsg = await self.bot.say(embed=self.Construct_Output(argArray, author, 0, 10))
             msg = await self.bot.send_message(ctx.message.channel, embed=self.Construct_Log(argArray, collectionOutput, author))
             await self.reaction_menu(argArray, author, msg, logMsg)
+        else:
+            await self.bot.say(embed=self.Construct_Failure(argArray, author))
+            
 
 def setup(bot):
     bot.add_cog(DowntimeForaging(bot))
