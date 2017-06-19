@@ -103,7 +103,7 @@ class DowntimeForaging():
         return embed
 
     def Construct_Log(self, args, outCol, author):
-        logOutput = "```{0} {1}:".format(author.mention, author.display_name)
+        logOutput = "```{0} {1}:".format(author.mention, args['character'])
         for key, value in outCol.items():
             logOutput += " +{0} {1},".format(value, key)
         logOutput = logOutput[:-1]
