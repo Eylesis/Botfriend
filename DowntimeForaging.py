@@ -191,7 +191,10 @@ class DowntimeForaging():
         argArray['herbalismRolls'] = []
 
         argArray['biome'] = biome
-        argArray['character'] = author.display_name
+        if argArray.get('character') == None:
+            argArray['character'] = author.display_name
+        else:
+            argArray['character'] = argArray['character'][0]
         argArray['usingTable'] = []
         templist = self.Get_Table(biome)
         for entry in (templist):
