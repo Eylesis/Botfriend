@@ -35,7 +35,9 @@ async def prefix(newPref: str):
         return await bot.say("New Prefix cannot be `{0}`.".format(newPref))
 
 @bot.command()
-async def hi():
+async def hi(*, args=None):
+    if args != None:
+        return
     return await bot.say("Greetings! I am Botfriend!")
 
 @bot.command(pass_context=True)
