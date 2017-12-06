@@ -8,17 +8,19 @@ class Weather():
         self.bot = bot
 
     @commands.command(pass_context=True)
-    async def weather(self):
+    async def weather(self, ctx, location=""):
         """Prints the town's weather."""
         
-        await self.bot.say(embed=get_weather())
+        await self.bot.say(embed=get_weather(location))
 
-def get_weather():
+def get_weather(location=""):
 
     with open('weather_settings.json', encoding="utf8") as weather_settings_data:
         weather_settings = json.load(weather_settings_data)   
-
-    url = "http://forecast.weather.gov/MapClick.php?" + weather_settings['location'] + "&FcstType=json"
+    if location == "":
+        url = "http://forecast.weather.gov/MapClick.php?" + weather_settings['location'] + "&FcstType=json"
+    else:
+        url = "http://forecast.weather.gov/MapClick.php?" + location + "&FcstType=json"
 
     with urllib.request.urlopen(url) as response:
         raw_weather_data = json.load(response)
@@ -111,10 +113,16 @@ def get_weather():
         wind_val = int((int(wind_val)/22.5)+.5)
     wind_direction = weather_settings['friendly_wind_direction'][wind_val%16]
 
+    weather_string = "The weather in {} is currently {}, with {}, and a temperature of around {} degrees.".format(weather_settings['town'], qual_temperature, weather, temp)
+    if wind_speed=="calm winds":
+         weather_string+=" The wind is currently calm"
+    else:
+        weather_string += " There is a " + wind_speed + " out of the " + wind_direction
+
     embed = discord.Embed(title="Weather", 
-                      description="The weather in {} is currently {}, with {}, and a temperature of around {} degrees".format(weather_settings['town'], qual_temperature, weather, temp),)
+                      description=weather_string,)
     embed.set_thumbnail(url="http://forecast.weather.gov/newimages/medium/{}".format(raw_weather_data['Weatherimage']))
-    embed.set_footer(text="Weather Stages: {} Wind | {} Temperature | {} Precipitation".format(wind_stage, temperature_stage, precipitation_stage))
+    embed.set_footer(text="Weather Stages: {} Wind, {} Temperature, {} Precipitation".format(wind_stage, temperature_stage, precipitation_stage))
     if wind_stage >= 3:
            embed.add_field(name="Strong Wind", value=weather_settings['strong_wind'])
     if temperature_stage==6:
