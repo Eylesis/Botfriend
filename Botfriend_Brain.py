@@ -1,7 +1,9 @@
 import json
 import util_functions
 from discord.ext import commands
+import os
 
+botToken = os.environ.get('botToken')
 description = '''Botfriend Configuration: Serious >:|'''
 
 startup_extensions = ["weather"]
