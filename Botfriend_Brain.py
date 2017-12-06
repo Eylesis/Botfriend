@@ -1,7 +1,9 @@
 import json
 import util_functions
 from discord.ext import commands
+import os
 
+botToken = os.environ.get('botToken')
 description = '''Botfriend Configuration: Serious >:|'''
 
 startup_extensions = ["weather"]
@@ -51,5 +53,5 @@ if __name__ == "__main__":
         except Exception as e:
             exc = '{} : {}'. format(type(e).__name__, e)
             print('Failed to load extension {}\n{}'.format(extension, exc))
-    bot.run('MzA5MDE0MDY5MTMyNjU2NjQx.DQoKJQ.qjICHtQ0_ZSp2QuohMYXRm90oDI')
+    bot.run(botToken)
     
