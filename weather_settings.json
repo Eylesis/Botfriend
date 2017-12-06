@@ -1,0 +1,41 @@
+{
+    "town": "Neverwinter",
+    "location": "lon=-122.3147&lat=47.54548",
+    "friendly_weather": 
+    {
+        "fair":"clear skies",
+        " light snow":"light snow",
+        "lt snow":"light snow",
+        "partly cloudy":"partly cloudy skies",
+        "overcast":"overcast skies",
+        "mostly cloudy":"mostly cloudy skies",
+        "lt snow, fog":"light snow, fog",
+        "na":"clear skies",
+        "lt rain":"light rain",
+        "lt rain, fog":"light rain, fog",
+        "mod rain, fog":"moderate rain, fog"
+    },
+    "friendly_wind_direction":
+    [
+        "north",
+        "north-northeast",
+        "northeast",
+        "east-northeast",
+        "east",
+        "east-southeast",
+        "southeast",
+        "south-southeast",
+        "south",
+        "south-southwest",
+        "southwest",
+        "west-southwest",
+        "west",
+        "west-northwest",
+        "northwest",
+        "north-northwest"
+    ],
+    "extreme_cold":"```A creature exposed to the cold must succeed on a DC 10 Constitution saving throw at the end of each hour or gain one level of exhaustion. Creatures with resistance or immunity to cold damage automatically succeed on the saving throw, as do creatures wearing cold weather gear (thick coats, gloves, and the like), and creatures naturally adapted to cold climates.```",
+    "extreme_heat":"```A creature exposed to the heat and without access to drinkable water must succeed on a Constitution saving throw at the end of each hour or gain one level of exhaustion. The DC is 5 for the first hour and increases by 1 for each additional hour. Creatures wearing medium or heavy armor, or who are clad in heavy clothing, have disadvantage on the saving throw. Creatures with resistance or immunity to fire damage automatically succeed on the saving throw, as do creatures naturally adapted to hot climates.```",
+    "strong_wind":"```A strong wind imposes disadvantage on ranged weapon attack rolls and Wisdom (Perception) checks that rely on hearing. A strong wind also extinguishes open flames, disperses fog, and makes flying by nonmagical means nearly impossible. A flying creature in strong wind must land at the end of its turn or fall.```",
+    "heavy_precipitation":"```Everything within an area of heavy rain or heavy snowfall is lightly obscured, and creatures in the area have disadvantage on Wisdom (Perception) checks that rely on sight. Heavy rain also extinguishes open flames and imposes disadvantage on Wisdom (Perception) checks that rely on hearing.```"
+}
