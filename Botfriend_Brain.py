@@ -1,9 +1,7 @@
 import json
 import util_functions
 from discord.ext import commands
-import os
 
-botToken = os.environ.get('botToken')
 description = '''Botfriend Configuration: Serious >:|'''
 
 startup_extensions = ["weather"]
@@ -19,6 +17,7 @@ async def on_ready():
     print('----------')
     if "prefix" in Settings:
         bot.command_prefix = commands.when_mentioned_or(Settings["prefix"])
+    
 
 @bot.command()
 async def prefix(new_prefix : str):
@@ -27,6 +26,7 @@ async def prefix(new_prefix : str):
         Settings["prefix"] = new_prefix
         bot.command_prefix = commands.when_mentioned_or(Settings["prefix"])
         util_functions.saveSettings(Settings)
+    await bot.say('Prefix has been set to `{}`'.format(Settings["prefix"]))
 
 @bot.command()
 async def load(extension_name : str):
@@ -51,5 +51,5 @@ if __name__ == "__main__":
         except Exception as e:
             exc = '{} : {}'. format(type(e).__name__, e)
             print('Failed to load extension {}\n{}'.format(extension, exc))
-    bot.run(botToken)
+    bot.run('MzA5MDE0MDY5MTMyNjU2NjQx.DQoKJQ.qjICHtQ0_ZSp2QuohMYXRm90oDI')
     
