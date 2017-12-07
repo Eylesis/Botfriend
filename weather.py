@@ -118,7 +118,7 @@ def get_weather(location=""):
         wind_val = int((int(wind_val)/22.5)+.5)
     wind_direction = weather_settings['friendly_wind_direction'][wind_val%16]
 
-    weather_string = "The weather in {} is currently {}, with {}, and a temperature of around {} degrees.".format(weather_settings['town'], qual_temperature, weather, temp)
+    weather_string = "The weather in {} is currently {}, with {}, and a temperature of around {} degrees.\n\nOutside the city walls, the temperature is around {} degrees.".format(weather_settings['town'], qual_temperature, weather, temp, temp-10)
     if wind_speed=="calm winds":
          weather_string+=" The wind is currently calm."
     else:
@@ -133,6 +133,8 @@ def get_weather(location=""):
            embed.add_field(name="Strong Wind", value=weather_settings['strong_wind'])
     if temperature_stage==6:
             embed.add_field(name="Extreme Cold", value=weather_settings['extreme_cold'])
+    if temperature_stage==5:
+            embed.add_field(name="Extreme Cold: Outside Neverwinter", value=weather_settings['extreme_cold'])
     if temperature_stage==1:
             embed.add_field(name="Extreme Heat", value=weather_settings['extreme_heat'])
     if precipitation_stage >= 5:
@@ -140,6 +142,8 @@ def get_weather(location=""):
     
     return embed   
 
+def metric(d):
+    return int((int(d)-32)*(5/9))
 
 def setup(bot):
     bot.add_cog(Weather(bot))
