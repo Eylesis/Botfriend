@@ -12,6 +12,7 @@ class Weather():
         """Prints the town's weather."""
         
         await self.bot.say(embed=get_weather(location))
+        await self.bot.delete_message(ctx.message)
 
 def get_weather(location=""):
 
