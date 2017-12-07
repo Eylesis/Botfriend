@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 import urllib.request
 import json
+from GameTime import get_gametime
 
 class Weather():
     def __init__(self, bot):
@@ -10,7 +11,6 @@ class Weather():
     @commands.command(pass_context=True)
     async def weather(self, ctx, location=""):
         """Prints the town's weather."""
-        
         await self.bot.say(embed=get_weather(location))
         await self.bot.delete_message(ctx.message)
 
@@ -127,7 +127,8 @@ def get_weather(location=""):
     embed = discord.Embed(title="Weather", 
                       description=weather_string,)
     embed.set_thumbnail(url="http://forecast.weather.gov/newimages/medium/{}".format(raw_weather_data['Weatherimage']))
-    embed.set_footer(text="Weather Stages: {} Wind, {} Temperature, {} Precipitation".format(wind_stage, temperature_stage, precipitation_stage))
+    embed.add_field(name="Weather Stages", value="{} Wind, {} Temperature, {} Precipitation".format(wind_stage, temperature_stage, precipitation_stage))
+    embed.set_footer(text=get_gametime())
     if wind_stage >= 3:
            embed.add_field(name="Strong Wind", value=weather_settings['strong_wind'])
     if temperature_stage==6:

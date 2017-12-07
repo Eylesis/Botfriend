@@ -11,7 +11,8 @@ class GameTime():
     @commands.command(pass_context=True)
     async def time(self, ctx):
         """Displays current game time."""
-        await self.bot.say(embed=get_gametime())
+        embed = discord.Embed(title="Current time in Neverwinter",description=get_gametime())
+        await self.bot.say(embed=embed)
         await self.bot.delete_message(ctx.message)   
     
 def suffix(d):
@@ -37,8 +38,8 @@ def get_gametime():
         timestring = "{}:{} PM on the {}{} of {}, {} DR".format(gametime.hour-12, gametime.minute, gametime.day, suffix(gametime.day),months[gametime.month-1], gametime.year - 527)
     else:
         timestring = "{}:{} AM on the {}{} of {}, {} DR".format(gametime.hour, gametime.minute, gametime.day, suffix(gametime.day),months[gametime.month-1], gametime.year - 527)
-    embed = discord.Embed(title="Current time in Neverwinter",description=timestring)
-    return embed
+    
+    return timestring
 
 
 def setup(bot):
