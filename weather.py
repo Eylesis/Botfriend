@@ -122,7 +122,8 @@ def get_weather(location=""):
          weather_string+=" The wind is currently calm."
     else:
         weather_string += " There is a {} out of the {}.".format(wind_speed, wind_direction)
-    weather_string+= "\n\nOutside the city walls, the temperature is around {} degrees.".format(str(temp-10))
+    if temp < 70:    
+        weather_string+= "\n\nOutside the city walls, the temperature is around {} degrees.".format(str(temp-10))
 
     embed = discord.Embed(title="Weather", 
                       description=weather_string)
