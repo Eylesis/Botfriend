@@ -33,13 +33,12 @@ def get_gametime():
         "Uktar",
         "Nightal"]
     gametime = datetime.datetime.now(pytz.timezone('US/Pacific'))
-        
-    if gametime.hour > 12:
-        timestring = "{}:{} PM on the {}{} of {}, {} DR".format(gametime.hour-12, gametime.minute, gametime.day, suffix(gametime.day),months[gametime.month-1], gametime.year - 527)
-    else:
-        timestring = "{}:{} AM on the {}{} of {}, {} DR".format(gametime.hour, gametime.minute, gametime.day, suffix(gametime.day),months[gametime.month-1], gametime.year - 527)
     
-    return timestring
+    gametime_hour = gametime.hour-12 if gametime.hour > 12 else gametime.hour
+    gametime_minute = "0{}".format(gametime.minute) if gametime.minute < 10 else gametime.minute
+    time_decor = "PM" if gametime.hour > 12 else "AM"
+
+    return "{}:{} {} on the {}{} of {}, {} DR".format(gametime_hour, gametime_minute, time_decor, gametime.day, suffix(gametime.day),months[gametime.month-1], gametime.year - 527)
 
 
 def setup(bot):
