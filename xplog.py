@@ -9,8 +9,8 @@ class xplog():
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command()
-    async def logxp(self, id, character, event, experience : int):
+    @commands.command(pass_context=True)
+    async def logxp(self, ctx, id, character, event, experience : int):
         if "dungeon master" in [y.name.lower() for y in ctx.message.author.roles]:
             if self.bot.db.get_val('xp_log') == '':
                 to_db = {}
@@ -32,8 +32,8 @@ class xplog():
                 await self.bot.say("{} has been logged for {} XP to {}.".format(event, experience, character))      
         else:
             await self.bot.say("You do not have Dungeon Master permissions!")
-    @commands.command()
-    async def delxp(self, id, character, event):
+    @commands.command(pass_context=True)
+    async def delxp(self, ctx, id, character, event):
         if "dungeon master" in [y.name.lower() for y in ctx.message.author.roles]:
             if self.bot.db.get_val('xp_log') == '':
                 to_db = {}
@@ -95,6 +95,6 @@ class xplog():
             await self.bot.say("That character does not exist!")
         else:
             await self.bot.say("You do not have Dungeon Master permissions!")
-            
+
 def setup(bot):
     bot.add_cog(xplog(bot))
