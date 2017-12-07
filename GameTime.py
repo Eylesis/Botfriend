@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 import time
 import datetime
+import pytz
 
 class GameTime():
     def __init__(self, bot):
@@ -30,7 +31,7 @@ def get_gametime():
         "Marpenoth",
         "Uktar",
         "Nightal"]
-    gametime = datetime.datetime.today()
+    gametime = datetime.datetime.now(pytz.timezone('US/Pacific'))
         
     if gametime.hour > 12:
         timestring = "{}:{} PM on the {}{} of {}, {} DR".format(gametime.hour-12, gametime.minute, gametime.day, suffix(gametime.day),months[gametime.month-1], gametime.year - 527)
