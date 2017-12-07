@@ -21,11 +21,15 @@ def get_weather(location=""):
         url = "http://forecast.weather.gov/MapClick.php?" + weather_settings['location'] + "&FcstType=json"
     else:
         url = "http://forecast.weather.gov/MapClick.php?" + location + "&FcstType=json"
+        
 
     with urllib.request.urlopen(url) as response:
         raw_weather_data = json.load(response)
     raw_weather_data = raw_weather_data['currentobservation']
     
+    if location != "":
+        weather_settings['town'] = raw_weather_data['name']
+
     weather = raw_weather_data['Weather'].lower()
     precipitation_stage = 1
        
