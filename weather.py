@@ -73,7 +73,6 @@ def get_weather(location=""):
         qual_temperature = "unbearably hot"
         temperature_stage = 1
        
-    temp = str(temp)
 
     wind_speed = raw_weather_data['Winds']
 
@@ -118,14 +117,15 @@ def get_weather(location=""):
         wind_val = int((int(wind_val)/22.5)+.5)
     wind_direction = weather_settings['friendly_wind_direction'][wind_val%16]
 
-    weather_string = "The weather in {} is currently {}, with {}, and a temperature of around {} degrees.\n\nOutside the city walls, the temperature is around {} degrees.".format(weather_settings['town'], qual_temperature, weather, temp, temp-10)
+    weather_string = "The weather in {} is currently {}, with {}, and a temperature of around {} degrees.".format(weather_settings['town'], qual_temperature, weather, temp)
     if wind_speed=="calm winds":
          weather_string+=" The wind is currently calm."
     else:
         weather_string += " There is a {} out of the {}.".format(wind_speed, wind_direction)
+    weather_string+= "\n\nOutside the city walls, the temperature is around {} degrees.".format(str(temp-10))
 
     embed = discord.Embed(title="Weather", 
-                      description=weather_string,)
+                      description=weather_string)
     embed.set_thumbnail(url="http://forecast.weather.gov/newimages/medium/{}".format(raw_weather_data['Weatherimage']))
     embed.add_field(name="Weather Stages", value="{} Wind, {} Temperature, {} Precipitation".format(wind_stage, temperature_stage, precipitation_stage))
     embed.set_footer(text=get_gametime())
