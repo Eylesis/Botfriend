@@ -6,7 +6,7 @@ import os
 botToken = os.environ.get('botToken')
 description = '''Botfriend Configuration: Serious >:|'''
 
-startup_extensions = ["weather"]
+startup_extensions = ["weather", "GameTime"]
 
 bot = commands.Bot(command_prefix='*', description=description)
 
