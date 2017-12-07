@@ -133,7 +133,7 @@ def get_weather(location=""):
            embed.add_field(name="Strong Wind", value=weather_settings['strong_wind'])
     if temperature_stage==6:
             embed.add_field(name="Extreme Cold", value=weather_settings['extreme_cold'])
-    if temperature_stage==5:
+    if temp < 10:
             embed.add_field(name="Extreme Cold: Outside Neverwinter", value=weather_settings['extreme_cold'])
     if temperature_stage==1:
             embed.add_field(name="Extreme Heat", value=weather_settings['extreme_heat'])
