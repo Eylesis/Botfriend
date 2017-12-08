@@ -32,8 +32,8 @@ def get_gametime():
         "Marpenoth",
         "Uktar",
         "Nightal"]
-    #gametime = datetime.datetime.now(pytz.timezone('US/Pacific'))
-    gametime = datetime.datetime(2017, 12, 8, 0,0,0,0)
+    gametime = datetime.datetime.now(pytz.timezone('US/Pacific'))
+
     if gametime.hour == 0:
         gametime_hour = 12
         time_decor = "AM"
