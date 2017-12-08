@@ -1,4 +1,5 @@
 import discord
+import asyncio
 from discord.ext import commands
 import urllib.request
 import json
@@ -7,12 +8,18 @@ from GameTime import get_gametime
 class Weather():
     def __init__(self, bot):
         self.bot = bot
+        self.bot.loop.create_task(self.autoUpdate())
 
-    async def on_message(self, message):
+    '''async def on_message(self, message):
         if "what's the weather" in message.content:
             await self.bot.send_message(message.channel, "YOU WANT WEATHER? HAVE WEATHER.")
             await self.bot.send_message(message.channel, embed=get_weather())
-            await self.bot.process_commands(message)
+            await self.bot.process_commands(message)'''
+    async def autoUpdate(self):
+        while True:
+            await self.bot.send_message(self.get_channel('387011119715319809'), embed=get_weather())
+            await asyncio.sleep(14400)
+            
 
     @commands.command(pass_context=True)
     async def weather(self, ctx, location=""):
@@ -156,3 +163,4 @@ def metric(d):
 
 def setup(bot):
     bot.add_cog(Weather(bot))
+    

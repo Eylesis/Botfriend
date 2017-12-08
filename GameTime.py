@@ -7,7 +7,7 @@ import pytz
 class GameTime():
     def __init__(self, bot):
         self.bot = bot
-
+    
     @commands.command(pass_context=True)
     async def time(self, ctx):
         """Displays current game time."""
