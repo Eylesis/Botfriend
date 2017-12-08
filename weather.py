@@ -8,6 +8,12 @@ class Weather():
     def __init__(self, bot):
         self.bot = bot
 
+    async def on_message(self, message):
+        if "what's the weather" in message.content:
+            await self.bot.send_message(message.channel, "YOU WANT WEATHER? HAVE WEATHER.")
+            await self.bot.send_message(message.channel, embed=get_weather())
+        await self.bot.process_commands(message)
+
     @commands.command(pass_context=True)
     async def weather(self, ctx, location=""):
         """Prints the town's weather."""
@@ -43,7 +49,7 @@ def get_weather(location=""):
         precipitation_stage = 1
     if weather == "partly cloudy skies":
         precipitation_stage = 2
-    if weather=="foggy" or weather=="overcast skies" or weather == "mostly cloudy skies":
+    if weather=="foggy" or weather=="fog" or weather=="overcast skies" or weather == "mostly cloudy skies":
         precipitation_stage = 3
     if weather == "light snow" or weather == "light rain" or weather == "light snow, fog" or weather == "light rain" or weather == "light rain, fog" or weather == "moderate rain, fog":
         precipitation_stage = 4
@@ -141,7 +147,9 @@ def get_weather(location=""):
     if precipitation_stage >= 5:
             embed.add_field(name="Heavy Precipition", value=weather_settings['heavy_precipitation'])
     
-    return embed   
+    return embed
+
+    
 
 def metric(d):
     return int((int(d)-32)*(5/9))

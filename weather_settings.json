@@ -4,7 +4,7 @@
     "friendly_weather": 
     {
         "fair":"clear skies",
-        " light snow":"light snow",
+        "light snow":"light snow",
         "lt snow":"light snow",
         "partly cloudy":"partly cloudy skies",
         "overcast":"overcast skies",

@@ -32,11 +32,15 @@ def get_gametime():
         "Marpenoth",
         "Uktar",
         "Nightal"]
-    gametime = datetime.datetime.now(pytz.timezone('US/Pacific'))
-    
-    gametime_hour = gametime.hour-12 if gametime.hour > 12 else gametime.hour
+    #gametime = datetime.datetime.now(pytz.timezone('US/Pacific'))
+    gametime = datetime.datetime(2017, 12, 8, 0,0,0,0)
+    if gametime.hour == 0:
+        gametime_hour = 12
+        time_decor = "AM"
+    else:
+        gametime_hour = gametime.hour-12 if gametime.hour > 12 else gametime.hour
+        time_decor = "PM" if gametime.hour > 12 else "AM"
     gametime_minute = "0{}".format(gametime.minute) if gametime.minute < 10 else gametime.minute
-    time_decor = "PM" if gametime.hour > 12 else "AM"
 
     return "{}:{} {} on the {}{} of {}, {} DR".format(gametime_hour, gametime_minute, time_decor, gametime.day, suffix(gametime.day),months[gametime.month-1], gametime.year - 527)
 
