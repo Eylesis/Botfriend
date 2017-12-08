@@ -12,7 +12,7 @@ class Weather():
         if "what's the weather" in message.content:
             await self.bot.send_message(message.channel, "YOU WANT WEATHER? HAVE WEATHER.")
             await self.bot.send_message(message.channel, embed=get_weather())
-        await self.bot.process_commands(message)
+            await self.bot.process_commands(message)
 
     @commands.command(pass_context=True)
     async def weather(self, ctx, location=""):
