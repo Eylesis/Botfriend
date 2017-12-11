@@ -149,7 +149,7 @@ def get_weather(location=""):
     if wind_speed=="calm winds":
          weather_string+=" The wind is currently calm."
     else:
-        weather_string += " There is a {} out of the {}.".format(wind_speed, wind_direction)
+        weather_string += " There is a {} out of the {}.".format(wind_data['wind_speed'], wind_direction)
     if temp < 70:    
         weather_string += "\n\nOutside the city walls, the temperature is around {} degrees.".format(str(temp-10))
 
