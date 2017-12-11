@@ -3,18 +3,25 @@ import asyncio
 from discord.ext import commands
 import urllib.request
 import json
-from GameTime import get_gametime
+from Cogs.GameTime import get_gametime
+from Cogs.GameTime import get_rawtime
 
 class Weather():
+    justPosted = False
+    previousWeather = {"wind" : 1, "temp" : 1, "precipitation" : 1}
     def __init__(self, bot):
         self.bot = bot
         self.bot.loop.create_task(self.autoUpdate())
 
     async def autoUpdate(self):
         while True:
-            await self.bot.send_message(self.get_channel('387011119715319809'), embed=get_weather())
-            await asyncio.sleep(14400)
-            
+            await asyncio.sleep(60)
+            curTime = get_rawtime()
+            if (curTime.hour % 4 == 0 and not self.justPosted):
+                await self.bot.send_message(self.bot.get_channel('311585583979823106'), embed=get_weather())
+                self.justPosted = True
+            if (curTime.hour % 4 != 0):
+                self.justPoted = False
 
     @commands.command(pass_context=True)
     async def weather(self, ctx, location=""):
@@ -22,8 +29,7 @@ class Weather():
         await self.bot.say(embed=get_weather(location))
         await self.bot.delete_message(ctx.message)
 
-def get_weather(location=""):
-
+def get_raw_weather_data(location=""):
     with open('Settings/weather_settings.json', encoding="utf8") as weather_settings_data:
         weather_settings = json.load(weather_settings_data)   
     if location == "":
@@ -34,88 +40,98 @@ def get_weather(location=""):
 
     with urllib.request.urlopen(url) as response:
         raw_weather_data = json.load(response)
-    raw_weather_data = raw_weather_data['currentobservation']
+    return raw_weather_data['currentobservation']
+
+def get_precipitation_stage(weather: str):
+    precipitation_stage = 1
+    if weather == "clear skies":
+        precipitation_stage = 1
+    if weather == "partly cloudy skies":
+        precipitation_stage = 2
+    if weather=="foggy" or weather=="fog" or weather=="haze" or weather=="overcast skies" or weather == "mostly cloudy skies":
+        precipitation_stage = 3
+    if weather == "light snow" or weather == "light rain" or weather == "light snow, fog" or weather == "light rain" or weather == "light rain, fog" or weather == "moderate rain, fog":
+        precipitation_stage = 4
+    return precipitation_stage
+
+def get_temperature_stage(temp : int):
+    temp_data = {}
+    if temp <= 0:
+        temp_data['qual_temperature'] = "dangerously cold"
+        temp_data['temperature_stage'] = 6
+    elif temp < 40:
+        temp_data['qual_temperature'] = "cold"
+        temp_data['temperature_stage'] = 5
+    elif temp < 50:
+        temp_data['qual_temperature'] = "cool"
+        temp_data['temperature_stage'] = 4
+    elif temp < 80:
+        temp_data['qual_temperature'] = "warm"
+        temp_data['temperature_stage'] = 3
+    elif temp < 100:
+        temp_data['qual_temperature'] = "hot"
+        temp_data['temperature_stage'] = 2
+    else:
+        temp_data['qual_temperature'] = "unbearably hot"
+        temp_data['temperature_stage'] = 1
+    return temp_data
+
+def get_wind_stage(wind_speed : str):
+    wind_data = {}
+    if wind_speed == "NA":
+        wind_speed = 0
+    else:
+        wind_speed = int(wind_speed)
+    wind_stage = 0
+       
+    if wind_speed < 1:
+        wind_data['wind_speed'] = "calm winds"
+        wind_data['wind_stage'] = 1
+    elif wind_speed < 7:
+        wind_data['wind_speed'] = "light breeze"
+        wind_data['wind_stage'] = 1
+    elif wind_speed < 24:
+        wind_data['wind_speed'] = "moderate breeze"
+        wind_data['wind_stage'] = 2
+    elif wind_speed < 31:
+        wind_data['wind_speed'] = "strong breeze"
+        wind_data['wind_stage'] = 2
+    elif wind_speed < 38:
+        wind_data['wind_speed'] = "strong wind"
+        wind_data['wind_stage'] = 3
+    elif wind_speed < 46:
+        wind_data['wind_speed'] = "gale"
+        wind_data['wind_stage'] = 4
+    elif wind_speed < 54:
+        wind_data['wind_speed'] = "severe gale"
+        wind_data['wind_stage'] = 5
+    else:
+        wind_data['wind_speed'] = "hurricane force winds"
+        wind_data['wind_stage'] = 5
+    return wind_data
+
+def get_weather(location=""):
+    with open('Settings/weather_settings.json', encoding="utf8") as weather_settings_data:
+        weather_settings = json.load(weather_settings_data)
+
+    raw_weather_data = get_raw_weather_data(location)
     
     if location != "":
         weather_settings['town'] = raw_weather_data['name']
 
     weather = raw_weather_data['Weather'].lower()
-    precipitation_stage = 1
-       
     try:
         weather = weather_settings['friendly_weather'][weather]
     except Exception as e:
-        print("No matching friendly weather found for "+weather+". Using given value.")    
-
-    if weather == "clear skies":
-        precipitation_stage = 1
-    if weather == "partly cloudy skies":
-        precipitation_stage = 2
-    if weather=="foggy" or weather=="fog" or weather=="overcast skies" or weather == "mostly cloudy skies":
-        precipitation_stage = 3
-    if weather == "light snow" or weather == "light rain" or weather == "light snow, fog" or weather == "light rain" or weather == "light rain, fog" or weather == "moderate rain, fog":
-        precipitation_stage = 4
-
-    real_temp = raw_weather_data['Temp']
-    temp = (round(int(real_temp)/5)*5)
-    temp_c = str(int((int(real_temp)-32)*(5/9)))
-    temperature_stage=1
-    qual_temperature=""
-       
-    if temp <= 0:
-        qual_temperature = "dangerously cold"
-        temperature_stage = 6
-    elif temp < 40:
-        qual_temperature = "cold"
-        temperature_stage = 5
-    elif temp < 50:
-        qual_temperature = "cool"
-        temperature_stage = 4
-    elif temp < 80:
-        qual_temperature = "warm"
-        temperature_stage = 3
-    elif temp < 100:
-        qual_temperature = "hot"
-        temperature_stage = 2
-    else:
-        qual_temperature = "unbearably hot"
-        temperature_stage = 1
-       
+        print("No matching friendly weather found for "+weather+". Using given value.") 
+    precipitation_stage = get_precipitation_stage(weather)
+    
+    temp = (round(int(raw_weather_data['Temp'])/5)*5)
+    temp_data = get_temperature_stage(temp)
 
     wind_speed = raw_weather_data['Winds']
-
-    if wind_speed == "NA":
-        wind_speed = 0
-    else:
-        wind_speed = int(wind_speed)
-       
-    wind_stage = 0
-    real_wind_speed = str(wind_speed)
-       
-    if wind_speed < 1:
-        wind_speed = "calm winds"
-        wind_stage = 1
-    elif wind_speed < 7:
-        wind_speed = "light breeze"
-        wind_stage = 1
-    elif wind_speed < 24:
-        wind_speed = "moderate breeze"
-        wind_stage = 2
-    elif wind_speed < 31:
-        wind_speed = "strong breeze"
-        wind_stage = 2
-    elif wind_speed < 38:
-        wind_speed = "strong wind"
-        wind_stage = 3
-    elif wind_speed < 46:
-        wind_speed = "gale"
-        wind_stage = 4
-    elif wind_speed < 54:
-        wind_speed = "severe gale"
-        wind_stage = 5
-    else:
-        wind_speed = "hurricane force winds"
-        wind_stage = 5
+    wind_data = get_wind_stage(wind_speed)   
+   
        
     wind_gusts = raw_weather_data['Gust']
     wind_val = raw_weather_data['Windd']
@@ -125,26 +141,31 @@ def get_weather(location=""):
         wind_val = int((int(wind_val)/22.5)+.5)
     wind_direction = weather_settings['friendly_wind_direction'][wind_val%16]
 
-    weather_string = "The weather in {} is currently {}, with {}, and a temperature of around {} degrees.".format(weather_settings['town'], qual_temperature, weather, temp)
+    weather_string = "The weather in {} is currently {}, with {}, and a temperature of around {} degrees.".format(
+                                                                                                                weather_settings['town'], 
+                                                                                                                temp_data['qual_temperature'], 
+                                                                                                                weather, 
+                                                                                                                temp)
     if wind_speed=="calm winds":
          weather_string+=" The wind is currently calm."
     else:
         weather_string += " There is a {} out of the {}.".format(wind_speed, wind_direction)
     if temp < 70:    
-        weather_string+= "\n\nOutside the city walls, the temperature is around {} degrees.".format(str(temp-10))
+        weather_string += "\n\nOutside the city walls, the temperature is around {} degrees.".format(str(temp-10))
 
     embed = discord.Embed(title="Weather", 
                       description=weather_string)
     embed.set_thumbnail(url="http://forecast.weather.gov/newimages/medium/{}".format(raw_weather_data['Weatherimage']))
-    embed.add_field(name="Weather Stages", value="{} Wind, {} Temperature, {} Precipitation".format(wind_stage, temperature_stage, precipitation_stage))
+    embed.add_field(name="Weather Stages", value="{} Wind, {} Temperature, {} Precipitation".format(wind_data['wind_stage'], temp_data['temperature_stage'], precipitation_stage))
     embed.set_footer(text=get_gametime())
-    if wind_stage >= 3:
+    
+    if wind_data['wind_stage'] >= 3:
            embed.add_field(name="Strong Wind", value=weather_settings['strong_wind'])
-    if temperature_stage==6:
+    if temp_data['temperature_stage'] == 6:
             embed.add_field(name="Extreme Cold", value=weather_settings['extreme_cold'])
     if temp < 10:
             embed.add_field(name="Extreme Cold: Outside Neverwinter", value=weather_settings['extreme_cold'])
-    if temperature_stage==1:
+    if temp_data['temperature_stage'] == 1:
             embed.add_field(name="Extreme Heat", value=weather_settings['extreme_heat'])
     if precipitation_stage >= 5:
             embed.add_field(name="Heavy Precipition", value=weather_settings['heavy_precipitation'])

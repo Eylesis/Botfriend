@@ -2,7 +2,6 @@ import discord
 from discord.ext import commands
 import urllib.request
 import json
-from GameTime import get_gametime
 import redisInterface
 
 class xplog():

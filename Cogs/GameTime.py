@@ -18,6 +18,9 @@ class GameTime():
 def suffix(d):
         return 'th' if 11<=d<=13 else {1:'st',2:'nd',3:'rd'}.get(d%10, 'th')
 
+def get_rawtime():
+        return datetime.datetime.now(pytz.timezone('US/Pacific'))
+
 def get_gametime():
     months = [
         "Hammer",
