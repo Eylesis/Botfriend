@@ -8,12 +8,12 @@ import os
 botToken = os.environ.get('botToken')
 description = '''Botfriend Configuration: Serious >:|'''
 
-startup_extensions = ["weather", "GameTime", "xplog"]
+startup_extensions = ["Cogs.Weather", "Cogs.GameTime", "Cogs.XPlog", "Cogs.CustomItems"]
 
 bot = commands.Bot(command_prefix='*', description=description)
 bot.db = redisInterface.Database()
 
-with open('settings.json', encoding="utf8") as settings_data:
+with open('Settings/settings.json', encoding="utf8") as settings_data:
     Settings = json.load(settings_data)
 
 @bot.event
