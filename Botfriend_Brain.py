@@ -8,8 +8,8 @@ import os
 botToken = os.environ.get('botToken')
 description = '''Botfriend Configuration: Serious >:|'''
 
-startup_extensions = ["Cogs.GameTime", "Cogs.XPlog", "Cogs.Markov"]
-# "Cogs.Weather", "Cogs.CustomItems"
+startup_extensions = ["Cogs.GameTime", "Cogs.XPlog", "Cogs.Markov", "Cogs.Weather"]
+# , "Cogs.CustomItems"
 bot = commands.Bot(command_prefix='*', description=description)
 bot.db = redisInterface.Database()
 

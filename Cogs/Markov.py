@@ -40,11 +40,11 @@ class Markov:
         self.item_name = []
         for s in items:
             self.item_name += s['name'].split(' ')
-        print("I MADE IT HERE :D!")
+       
         for i, s in enumerate(items):
             if isinstance(s['text'], list):
                 items[i]['text'] = '\n'.join(str(t) for t in s['text'] if t and 'Source:' not in t)
-        print("I ALSO MADE IT HERE :D!")
+        
         self.item_text = SpellText('\n\n\n\n'.join(s['text'] for s in items))
         
         
