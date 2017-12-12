@@ -1,3 +1,4 @@
+import traceback
 import json
 import util_functions
 from discord.ext import commands
