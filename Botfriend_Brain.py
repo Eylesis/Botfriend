@@ -8,8 +8,8 @@ import os
 botToken = os.environ.get('botToken')
 description = '''Botfriend Configuration: Serious >:|'''
 
-startup_extensions = ["Cogs.Weather", "Cogs.GameTime", "Cogs.XPlog", "Cogs.CustomItems"]
-
+startup_extensions = ["Cogs.GameTime", "Cogs.XPlog", "Cogs.Markov"]
+# "Cogs.Weather", "Cogs.CustomItems"
 bot = commands.Bot(command_prefix='*', description=description)
 bot.db = redisInterface.Database()
 
@@ -76,6 +76,10 @@ async def unload(extension_name : str):
     bot.unload_extension(extension_name)
     await bot.say("{} unloaded.".format(extension_name))
 
+@bot.event
+async def on_command_error(error, ctx):
+    traceback.print_exception(type(error), error, error.__traceback__, file=sys.stderr)
+    
 if __name__ == "__main__":
     for extension in startup_extensions:
         try:

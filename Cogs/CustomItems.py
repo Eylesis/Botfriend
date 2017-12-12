@@ -26,7 +26,7 @@ class CustomItems():
         else:
             await bot.say("That item exists already.")
 
-        
+        with open('Settings\item_type_desc.json'encoding="utf8") as item_tag_desc:
 
 
 def setup(bot):
