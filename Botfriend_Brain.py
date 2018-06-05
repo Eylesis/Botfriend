@@ -3,15 +3,18 @@ import json
 import util_functions
 from discord.ext import commands
 import redisInterface
+import sys
 import re
 import os
 
 botToken = os.environ.get('botToken')
+
 description = '''Botfriend Configuration: Serious >:|'''
 
-startup_extensions = ["Cogs.GameTime", "Cogs.Weather"]
-# , "Cogs.CustomItems"
+startup_extensions = ["Cogs.GameAlerts", "Cogs.help"]
+
 bot = commands.Bot(command_prefix='*', description=description)
+bot.remove_command('help')
 bot.db = redisInterface.Database()
 
 with open('Settings/settings.json', encoding="utf8") as settings_data:
@@ -24,58 +27,46 @@ async def on_ready():
     if "prefix" in Settings:
         bot.command_prefix = commands.when_mentioned_or(Settings["prefix"])
     
-@bot.event
-async def on_message(message):
-    if message.channel.id == "379420083107397643":
-        players = re.findall("<@!.*?>.*?\(.*?\)", message.content)
-        event = re.match(r"\).*?\(", message.content[::-1]).group(0)[::-1]
-        experience = int((re.search("\d+", re.search(r"\+.*?\d+", message.content).group(0)).group(0)))
-        
-        if bot.db.get_val('xp_log') == '':
-            to_db = {}
-        else:
-            to_db = bot.db.from_json(bot.db.get_val('xp_log'))
-        for player in players:
-            name = player[player.find('!')+1:player.find('>')]
-            character = player[player.find('(')+1: player.find(')')]
-            
-            if name not in to_db.keys():
-                to_db[name] = {}
-            if character not in to_db[name].keys():
-                to_db[name][character] = {}
-            if 'events' not in to_db[name][character].keys():
-                to_db[name][character]['events'] = {}
-            if 'total' not in to_db[name][character].keys():
-                to_db[name][character]['total'] = 0    
-            to_db[name][character]['events'][event] = experience
-            to_db[name][character]['total'] += experience    
-        bot.db.set_val('xp_log', bot.db.to_json(to_db))
-    await bot.process_commands(message)
-
-@bot.command()
-async def prefix(new_prefix : str):
+@bot.command(pass_context=True, no_pm=True, hidden=True)
+async def prefix(ctx, new_prefix : str):
     """Changes the prefix."""
-    if new_prefix != " ":
-        Settings["prefix"] = new_prefix
-        bot.command_prefix = commands.when_mentioned_or(Settings["prefix"])
-        util_functions.saveSettings(Settings)
-    await bot.say('Prefix has been set to `{}`'.format(Settings["prefix"]))
+    allowed = False
+    for role in ctx.message.author.roles:
+        if role.name == "Moderator":
+            allowed = True
+    if allowed or ctx.message.author.id == '227168575469780992':
+            if new_prefix != " ":
+                Settings["prefix"] = new_prefix
+                bot.command_prefix = commands.when_mentioned_or(Settings["prefix"])
+                util_functions.saveFile(Settings, 'Settings/settings.json')
+            return await bot.say('Why certainly, {0.author.mention}. I have changed the prefix to `{1}`.'.format(ctx.message, Settings["prefix"]))
+    return await bot.say('Terribly sorry, but I do not recognize you as a person of authority here!')
 
-@bot.command()
-async def load(extension_name : str):
+@bot.command(pass_context = True, no_pm=True, hidden=True)
+async def load(ctx, extension_name : str):
     """Loads an extension."""
-    try:
-        bot.load_extension(extension_name)
-    except (AttributeError, ImportError) as e:
-        await bot.say("```py\n{}:```".format(type(e).__name__, str(e)))
-        return
-    await bot.say("{} loaded.".format(extension_name))
+    for role in ctx.message.author.roles:
+        if role.name == "Moderator":
+            allowed = True
+    if allowed or ctx.message.author.id == '227168575469780992':
+        try:
+            bot.load_extension(extension_name)
+        except (AttributeError, ImportError) as e:
+            await bot.say("Oh dear. It would appear engineering has sent up the following correspondance.```py\n{}:```".format(type(e).__name__, str(e)))
+            return
+        return await bot.say("Excellent choice, {0.author.mention}! `{1}` has been loaded and is ready to be ultilized.".format(ctx.message, extension_name))
+    return await bot.say('Terribly sorry {0.author.mention}, but I do not recognize you as a person of authority here!'.format(ctx.message))
 
-@bot.command()
-async def unload(extension_name : str):
+@bot.command(pass_context = True, no_pm=True, hidden=True)
+async def unload(ctx, extension_name : str):
     """Unloads an extension."""
-    bot.unload_extension(extension_name)
-    await bot.say("{} unloaded.".format(extension_name))
+    for role in ctx.message.author.roles:
+        if role.name == "Moderator":
+            allowed = True
+    if allowed or ctx.message.author.id == '227168575469780992':
+        bot.unload_extension(extension_name)
+        return await bot.say("Excellent choice, {0.author.mention}! `{1}` has been unloaded and stored for future use.".format(ctx.message, extension_name))
+    return await bot.say('Terribly sorry {0.author.mention}, but I do not recognize you as a person of authority here!'.format(ctx.message))
 
 @bot.event
 async def on_command_error(error, ctx):

@@ -1,7 +1,7 @@
 import json
 
-def saveSettings(Settings : dict):
-    settings_file = open('Settings/settings.json', "w")
+def saveFile(Settings : dict, filename : str):
+    settings_file = open(filename, "w")
     settings_file.write(json.dumps(Settings, ensure_ascii=False))
     settings_file.close()
 
