@@ -68,16 +68,17 @@ class GameAlerts():
         """Saves your currently active character level alerted for DM quests."""
         #with open('DB/UserData.json', encoding="utf8") as loadfile:
         #    UserData = json.load(loadfile)
-        UserData = self.bot.db.get_val('UserData')
+        UserData = self.bot.db.from_json(self.bot.db.get_val('UserData'))
         USERID = ctx.message.author.id
         
         async with aiohttp.ClientSession() as session:
             async with session.get('https://avrae.io/api/activecharacter', params={"user": USERID}, headers={"Authorization": self.API_KEY}) as resp:
-                datain = await resp.json()
-                self.bot.db.set_val(USERID, datain)
+                UserData[USERID] = await resp.json()
+
+                self.bot.db.set_val('UserData', self.bot.db.to_json(UserData))
 
         #util_functions.saveFile(UserData, 'DB/UserData.json')
-        self.bot.db.set_val('UserData', UserData)
+        #self.bot.db.set_val('UserData', UserData)
         return await self.bot.say("Certainly, {}. I have updated my records with your currently active character's identity!".format(ctx.message.author.mention))
 
 
