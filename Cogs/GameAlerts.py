@@ -8,8 +8,7 @@ class GameAlerts():
 
     def __init__(self, bot):
         self.bot = bot
-    
-    API_KEY = os.environ.get('API_KEY')
+        self.API_KEY = os.environ.get('API_KEY')
 
     @commands.command(pass_context=True, no_pm=True)
     async def alert(self, ctx, minlevel : int, maxlevel : int):
