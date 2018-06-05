@@ -2,6 +2,7 @@ import discord
 import aiohttp
 import json
 import util_functions
+import os
 from discord.ext import commands
 
 class GameAlerts():
