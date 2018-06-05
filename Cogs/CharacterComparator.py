@@ -15,7 +15,7 @@ class Comparator():
         totalChars = 0
         for users, characters in UserData.items():
             totalChars += 1
-            if characters['armor'] < AC['lowAC']:
+            if int(characters['armor']) < AC['lowAC']:
                 AC['lowAC'] = characters['armor']
                 AC['lowName'] = characters['stat_cvars']['name']
             elif characters['armor'] > AC['highAC']:
