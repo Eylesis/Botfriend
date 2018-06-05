@@ -20,9 +20,7 @@ class GameAlerts():
             if role.name == "Dungeon Master" or role.name == "Trial DM":
                 allowed = True
         if allowed:
-            
-            #with open('DB/UserData.json', encoding="utf8") as loadfile:
-            #    UserData = json.load(loadfile)
+
             UserData = self.bot.db.from_json(self.bot.db.get_val('UserData'))
 
             data = {}
@@ -45,10 +43,11 @@ class GameAlerts():
                         try:
                             await self.bot.send_message(ctx.message.server.get_member(userID), 
                             "Greetings! {} has announced a game for levels {} through {}! This is a courtesy notification that your currently active character is eligible to sign up!".format(ctx.message.author.display_name, minlevel, maxlevel))      
-                        except (discord.errors.InvalidArgument, discord.Forbidden):
+                        except (discord.Forbidden):
                             del UserData[userID]
-                            #util_functions.saveFile(UserData, 'DB/UserData.json')
                             self.bot.db.set_val('UserData', self.bot.db.to_json(UserData))
+                        except (discord.errors.InvalidArgument):
+                            pass
         else:
             return await self.bot.say("Apologies, {}, but you do not have the necessary title to request a game alert! If you would like to start the process of becoming a Dungeon Master, please contact a Helper!".format(ctx.message.author.mention))
         await self.bot.say("I have dispatched my messengers, {}. In total, {} notifications have been sent out. I bid you good luck on your session!".format(ctx.message.author.mention, messageTotal))
@@ -60,8 +59,6 @@ class GameAlerts():
     @commands.command(pass_context=True)
     async def register(self, ctx):
         """Saves your currently active character level alerted for DM quests."""
-        #with open('DB/UserData.json', encoding="utf8") as loadfile:
-        #    UserData = json.load(loadfile)
         UserData = self.bot.db.from_json(self.bot.db.get_val('UserData'))
         USERID = ctx.message.author.id
         
@@ -70,10 +67,17 @@ class GameAlerts():
                 UserData[USERID] = await resp.json()
 
                 self.bot.db.set_val('UserData', self.bot.db.to_json(UserData))
-
-        #util_functions.saveFile(UserData, 'DB/UserData.json')
-        #self.bot.db.set_val('UserData', UserData)
         return await self.bot.say("Certainly, {}. I have updated my records with your currently active character's identity!".format(ctx.message.author.mention))
+
+    @commands.command(pass_context=True)
+    async def unregister(self, ctx):
+        """Removes your character, so you are no longer alerted for DM quests."""
+        UserData = self.bot.db.from_json(self.bot.db.get_val('UserData'))
+        
+        del UserData[ctx.message.author.id]
+        self.bot.db.set_val('UserData', self.bot.db.to_json(UserData))
+
+        return await self.bot.say("Certainly, {}. I have removed you from my records. I am sad to no longer be corresponding with you!".format(ctx.message.author.mention))
 
 
 def setup(bot):
