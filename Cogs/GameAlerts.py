@@ -55,16 +55,20 @@ class GameAlerts():
     
     @commands.command(pass_context=True)
     async def test(self, ctx):
-        UserData = self.bot.db.get_val('UserData')
+        framework = {}
+        framework['227168575469780992'] = 'WCBx8CNRwJZ8aTb6Q'
+        framework['206904892059549698'] = 'dicecloud-uaE9FHXobempEbEWq'
+
+        self.bot.db.set_val('UserData', redisInterface.to_json(framework))
         
-        print(UserData)
+        print(self.bot.db.get_val('UserData'))
 
     @commands.command(pass_context=True)
     async def register(self, ctx):
         """Saves your currently active character level alerted for DM quests."""
         #with open('DB/UserData.json', encoding="utf8") as loadfile:
         #    UserData = json.load(loadfile)
-        # UserData = self.bot.db.get_val('UserData')
+        UserData = self.bot.db.get_val('UserData')
         USERID = ctx.message.author.id
         
         async with aiohttp.ClientSession() as session:
