@@ -23,7 +23,7 @@ class GameAlerts():
             
             #with open('DB/UserData.json', encoding="utf8") as loadfile:
             #    UserData = json.load(loadfile)
-            UserData = self.bot.db.get_val('UserData')
+            UserData = self.bot.db.from_json(self.bot.db.get_val('UserData'))
 
             data = {}
             data['users'] = list(UserData.keys())
@@ -48,7 +48,7 @@ class GameAlerts():
                         except (ValueError, discord.Forbidden):
                             del UserData[userID]
                             #util_functions.saveFile(UserData, 'DB/UserData.json')
-                            self.bot.db.set_val('UserData', UserData)
+                            self.bot.db.set_val('UserData', self.bot.db.to_json(UserData))
         else:
             return await self.bot.say("Apologies, {}, but you do not have the necessary title to request a game alert! If you would like to start the process of becoming a Dungeon Master, please contact a Helper!".format(ctx.message.author.mention))
         await self.bot.say("I have dispatched my messengers, {}. In total, {} notifications have been sent out. I bid you good luck on your session!".format(ctx.message.author.mention, messageTotal))
