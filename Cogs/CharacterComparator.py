@@ -4,22 +4,29 @@ from discord.ext import commands
 class Comparator():
     def __init__(self, bot):
         self.bot = bot
+        self.API_KEY = os.environ.get('API_KEY')
     
     @commands.command(pass_context=True)
     async def stats(self, ctx):
         UserData = self.bot.db.from_json(self.bot.db.get_val('UserData'))
+
+        data = {}
+        data['users'] = list(UserData.keys())
+        data['ids'] = list(UserData.values())
 
         AC = {'lowName': '', 'lowAC' : 0, 'highName': '', 'highAC' : 0}
         HP = {'lowName': '', 'lowHp' : 0, 'highName': '', 'highHP' : 0}
         lowStats = {'strName' : '', 'strScore' : 0, 'dexName' : '', 'dexScore' : 0, 'conName': '', 'conScore'  : 0, 'intName': '', 'intScore'  : 0, 'wisName': '', 'wisScore'  : 0, 'chaName': '', 'chaScore'  : 0}
         totalChars = 0
 
-        
+        async with aiohttp.ClientSession() as session:
+            async with session.post('https://avrae.io/api/bulkcharacter', 
+                data=json.dumps(data), 
+                headers={"Authorization": self.API_KEY, "Content-Type": "application/json"}) as resp:
+                    respData = await resp.json()
 
-        for users, characters in UserData.items():
+        for users, characters in respData.items():
             totalChars += 1
-            print(characters)
-            print(AC['lowAC'])
             if characters['armor'] < AC['lowAC']:
                 AC['lowAC'] = characters['armor']
                 AC['lowName'] = characters['stat_cvars']['name']
