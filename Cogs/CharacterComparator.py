@@ -26,11 +26,12 @@ class Comparator():
                 data=json.dumps(data), 
                 headers={"Authorization": self.API_KEY, "Content-Type": "application/json"}) as resp:
                     respData = await resp.json()
-
-        rando = list(respData.values()[0])
-        AC = {'lowName': rando['stat_cvars']['name'], 'lowAC' : rando['armor'], 'highName': rando['stat_cvars']['name'], 'highAC' : rando['armor']}
-        HP = {'lowName': rando['stat_cvars']['name'], 'lowHP' : rando['stats_cvar']['hp'], 'highName': rando['stat_cvars']['name'], 'highHP' : rando['stats_cvar']['hp']}
-        lowStats = {'strName' : rando['stat_cvars']['name'], 'strScore' : rando['stats_cvar']['strength'], 'dexName' : rando['stat_cvars']['name'], 'dexScore' : rando['stats_cvar']['dexterity'], 'conName': rando['stat_cvars']['name'], 'conScore'  : rando['stats_cvar']['constitution'], 'intName': rando['stat_cvars']['name'], 'intScore'  : rando['stats_cvar']['intelligence'], 'wisName': rando['stat_cvars']['name'], 'wisScore'  : rando['stats_cvar']['wisdom'], 'chaName': rando['stat_cvars']['name'], 'chaScore'  : rando['stats_cvar']['charisma']}
+    
+        for users, rando in respData.items():
+            AC = {'lowName': rando['stat_cvars']['name'], 'lowAC' : rando['armor'], 'highName': rando['stat_cvars']['name'], 'highAC' : rando['armor']}
+            HP = {'lowName': rando['stat_cvars']['name'], 'lowHP' : rando['stats_cvar']['hp'], 'highName': rando['stat_cvars']['name'], 'highHP' : rando['stats_cvar']['hp']}
+            lowStats = {'strName' : rando['stat_cvars']['name'], 'strScore' : rando['stats_cvar']['strength'], 'dexName' : rando['stat_cvars']['name'], 'dexScore' : rando['stats_cvar']['dexterity'], 'conName': rando['stat_cvars']['name'], 'conScore'  : rando['stats_cvar']['constitution'], 'intName': rando['stat_cvars']['name'], 'intScore'  : rando['stats_cvar']['intelligence'], 'wisName': rando['stat_cvars']['name'], 'wisScore'  : rando['stats_cvar']['wisdom'], 'chaName': rando['stat_cvars']['name'], 'chaScore'  : rando['stats_cvar']['charisma']}
+            break
         totalChars = 0
 
         for users, characters in respData.items():
