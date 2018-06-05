@@ -3,6 +3,7 @@ import aiohttp
 import json
 import util_functions
 import os
+import redisInterface
 from discord.ext import commands
 
 class GameAlerts():
@@ -20,9 +21,10 @@ class GameAlerts():
                 allowed = True
         if allowed:
             
-            with open('DB/UserData.json', encoding="utf8") as loadfile:
-                UserData = json.load(loadfile)
-            
+            #with open('DB/UserData.json', encoding="utf8") as loadfile:
+            #    UserData = json.load(loadfile)
+            UserData = self.bot.db.get_val('UserData')
+
             data = {}
             data['users'] = list(UserData.keys())
             data['ids'] = list(UserData.values())
@@ -45,7 +47,8 @@ class GameAlerts():
                             "Greetings! {} has announced a game for levels {} through {}! This is a courtesy notification that your currently active character is eligible to sign up!".format(ctx.message.author.display_name, minlevel, maxlevel))      
                         except (ValueError, discord.Forbidden):
                             del UserData[userID]
-                            util_functions.saveFile(UserData, 'DB/UserData.json')
+                            #util_functions.saveFile(UserData, 'DB/UserData.json')
+                            self.bot.db.set_val('UserData', UserData)
         else:
             return await self.bot.say("Apologies, {}, but you do not have the necessary title to request a game alert! If you would like to start the process of becoming a Dungeon Master, please contact a Helper!".format(ctx.message.author.mention))
         await self.bot.say("I have dispatched my messengers, {}. In total, {} notifications have been sent out. I bid you good luck on your session!".format(ctx.message.author.mention, messageTotal))
@@ -53,16 +56,17 @@ class GameAlerts():
     @commands.command(pass_context=True)
     async def register(self, ctx):
         """Saves your currently active character level alerted for DM quests."""
-        with open('DB/UserData.json', encoding="utf8") as loadfile:
-            UserData = json.load(loadfile)
+        #with open('DB/UserData.json', encoding="utf8") as loadfile:
+        #    UserData = json.load(loadfile)
+        UserData = self.bot.db.get_val('UserData')
         USERID = ctx.message.author.id
         
         async with aiohttp.ClientSession() as session:
             async with session.get('https://avrae.io/api/activecharacter', params={"user": USERID}, headers={"Authorization": self.API_KEY}) as resp:
                 UserData[USERID] = await resp.json()
 
-        util_functions.saveFile(UserData, 'DB/UserData.json')
-
+        #util_functions.saveFile(UserData, 'DB/UserData.json')
+        self.bot.db.set_val('UserData', UserData)
         return await self.bot.say("Certainly, {}. I have updated my records with your currently active character's identity!".format(ctx.message.author.mention))
 
 
