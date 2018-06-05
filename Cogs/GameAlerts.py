@@ -45,7 +45,7 @@ class GameAlerts():
                         try:
                             await self.bot.send_message(ctx.message.server.get_member(userID), 
                             "Greetings! {} has announced a game for levels {} through {}! This is a courtesy notification that your currently active character is eligible to sign up!".format(ctx.message.author.display_name, minlevel, maxlevel))      
-                        except (ValueError, discord.Forbidden):
+                        except (discord.errors.InvalidArgument, discord.Forbidden):
                             del UserData[userID]
                             #util_functions.saveFile(UserData, 'DB/UserData.json')
                             self.bot.db.set_val('UserData', self.bot.db.to_json(UserData))
