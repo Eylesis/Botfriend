@@ -59,7 +59,7 @@ class GameAlerts():
         framework['227168575469780992'] = 'WCBx8CNRwJZ8aTb6Q'
         framework['206904892059549698'] = 'dicecloud-uaE9FHXobempEbEWq'
 
-        self.bot.db.set_val('UserData', redisInterface.to_json(framework))
+        self.bot.db.set_val('UserData', self.bot.db.to_json(framework))
         
         print(self.bot.db.get_val('UserData'))
 
