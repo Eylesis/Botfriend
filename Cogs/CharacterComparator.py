@@ -70,7 +70,7 @@ class Comparator():
         embed.add_field(name="Lowest | Highest", value="Base AC: {0[lowName]}: {0[lowAC]} | {0[highName]}: {0[highAC]} \nHP: {1[lowName]}: {1[lowHP]} | {1[highName]}: {1[highHP]}".format(AC, HP))
         embed.add_field(name="Lowest Ability Scores", value="Strength: {0[strName]}: {0[strScore]} \nDexterity: {0[dexName]}: {0[dexScore]} \nConstitution: {0[conName]}: {0[conScore]} \nIntelligence: {0[intName]}: {0[intScore]} \nWisdom: {0[wisName]}: {0[wisScore]} \nCharisma: {0[chaName]}: {0[chaScore]}".format(lowStats))
 
-        await bot.say(embed=embed)
+        await self.bot.say(embed=embed)
 
 def setup(bot):
     bot.add_cog(Comparator(bot))
