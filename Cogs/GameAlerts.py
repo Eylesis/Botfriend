@@ -56,6 +56,7 @@ class GameAlerts():
     @commands.command(pass_context=True)
     async def test(self, ctx):
         UserData = self.bot.db.get_val('UserData')
+        
         print(UserData)
 
     @commands.command(pass_context=True)
@@ -63,12 +64,13 @@ class GameAlerts():
         """Saves your currently active character level alerted for DM quests."""
         #with open('DB/UserData.json', encoding="utf8") as loadfile:
         #    UserData = json.load(loadfile)
-        UserData = self.bot.db.get_val('UserData')
+        # UserData = self.bot.db.get_val('UserData')
         USERID = ctx.message.author.id
         
         async with aiohttp.ClientSession() as session:
             async with session.get('https://avrae.io/api/activecharacter', params={"user": USERID}, headers={"Authorization": self.API_KEY}) as resp:
-                UserData[USERID] = await resp.json()
+                datain = await resp.json()
+                self.bot.db.set_val(USERID, datain)
 
         #util_functions.saveFile(UserData, 'DB/UserData.json')
         self.bot.db.set_val('UserData', UserData)
