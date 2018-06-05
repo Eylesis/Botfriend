@@ -13,7 +13,7 @@ class Comparator():
         HP = {'lowName': '', 'lowHp' : 0, 'highName': '', 'highHP' : 0}
         lowStats = {'strName' : '', 'strScore' : 0, 'dexName' : '', 'dexScore' : 0, 'conName': '', 'conScore'  : 0, 'intName': '', 'intScore'  : 0, 'wisName': '', 'wisScore'  : 0, 'chaName': '', 'chaScore'  : 0}
         totalChars = 0
-        for users, characters in UserData:
+        for users, characters in UserData.items():
             totalChars += 1
             if characters['armor'] < AC['lowAC']:
                 AC['lowAC'] = characters['armor']
