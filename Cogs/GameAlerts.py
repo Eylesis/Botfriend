@@ -54,6 +54,11 @@ class GameAlerts():
         await self.bot.say("I have dispatched my messengers, {}. In total, {} notifications have been sent out. I bid you good luck on your session!".format(ctx.message.author.mention, messageTotal))
     
     @commands.command(pass_context=True)
+    async def test(self, ctx):
+        UserData = self.bot.db.get_val('UserData')
+        print(UserData)
+
+    @commands.command(pass_context=True)
     async def register(self, ctx):
         """Saves your currently active character level alerted for DM quests."""
         #with open('DB/UserData.json', encoding="utf8") as loadfile:
