@@ -35,13 +35,13 @@ class Comparator():
             if characters['armor'] < AC['lowAC']:
                 AC['lowAC'] = characters['armor']
                 AC['lowName'] = characters['stat_cvars']['name']
-            elif characters['armor'] > AC['highAC']:
+            if characters['armor'] > AC['highAC']:
                 AC['highAC'] = characters['armor']
                 AC['highName'] = characters['stat_cvars']['name']
             if characters['stat_cvars']['hp'] < HP['lowHP']:
                 HP['lowHP'] = characters['stat_cvars']['hp']
                 HP['lowName'] = characters['stat_cvars']['name']
-            elif characters['stat_cvars']['hp'] > HP['highHP']:
+            if characters['stat_cvars']['hp'] > HP['highHP']:
                 HP['highHP'] = characters['stat_cvars']['hp']
                 HP['highName'] = characters['stat_cvars']['name']
             if characters['stat_cvars']['strength'] < lowStats['strScore']:
