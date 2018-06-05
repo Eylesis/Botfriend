@@ -20,7 +20,7 @@ class Comparator():
         data['ids'] = list(UserData.values())
 
         AC = {'lowName': '', 'lowAC' : 0, 'highName': '', 'highAC' : 0}
-        HP = {'lowName': '', 'lowHp' : 0, 'highName': '', 'highHP' : 0}
+        HP = {'lowName': '', 'lowHP' : 0, 'highName': '', 'highHP' : 0}
         lowStats = {'strName' : '', 'strScore' : 0, 'dexName' : '', 'dexScore' : 0, 'conName': '', 'conScore'  : 0, 'intName': '', 'intScore'  : 0, 'wisName': '', 'wisScore'  : 0, 'chaName': '', 'chaScore'  : 0}
         totalChars = 0
 
