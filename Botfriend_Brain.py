@@ -45,6 +45,7 @@ async def prefix(ctx, new_prefix : str):
 @bot.command(pass_context = True, no_pm=True, hidden=True)
 async def load(ctx, extension_name : str):
     """Loads an extension."""
+    allowed = False
     for role in ctx.message.author.roles:
         if role.name == "Moderator":
             allowed = True
