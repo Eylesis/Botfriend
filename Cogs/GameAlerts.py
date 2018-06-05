@@ -52,7 +52,7 @@ class GameAlerts():
             return await self.bot.say("Apologies, {}, but you do not have the necessary title to request a game alert! If you would like to start the process of becoming a Dungeon Master, please contact a Helper!".format(ctx.message.author.mention))
         await self.bot.say("I have dispatched my messengers, {}. In total, {} notifications have been sent out. I bid you good luck on your session!".format(ctx.message.author.mention, messageTotal))
     
-    @commands.command(pass_context=True)
+    @commands.command(pass_context=True, hidden=True)
     async def getUsers(self, ctx):
         print(self.bot.db.get_val('UserData'))
 
