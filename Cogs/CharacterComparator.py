@@ -14,11 +14,12 @@ class Comparator():
         lowStats = {'strName' : '', 'strScore' : 0, 'dexName' : '', 'dexScore' : 0, 'conName': '', 'conScore'  : 0, 'intName': '', 'intScore'  : 0, 'wisName': '', 'wisScore'  : 0, 'chaName': '', 'chaScore'  : 0}
         totalChars = 0
 
-        print(characters['armor'])
-        print(AC['lowAC'])
+        
 
         for users, characters in UserData.items():
             totalChars += 1
+            print(characters['armor'])
+            print(AC['lowAC'])
             if characters['armor'] < AC['lowAC']:
                 AC['lowAC'] = characters['armor']
                 AC['lowName'] = characters['stat_cvars']['name']
