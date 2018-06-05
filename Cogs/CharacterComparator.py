@@ -19,9 +19,9 @@ class Comparator():
         data['users'] = list(UserData.keys())
         data['ids'] = list(UserData.values())
 
-        AC = {'lowName': '', 'lowAC' : 0, 'highName': '', 'highAC' : 0}
-        HP = {'lowName': '', 'lowHP' : 0, 'highName': '', 'highHP' : 0}
-        lowStats = {'strName' : '', 'strScore' : 0, 'dexName' : '', 'dexScore' : 0, 'conName': '', 'conScore'  : 0, 'intName': '', 'intScore'  : 0, 'wisName': '', 'wisScore'  : 0, 'chaName': '', 'chaScore'  : 0}
+        AC = {'lowName': '', 'lowAC' : 5, 'highName': '', 'highAC' : 0}
+        HP = {'lowName': '', 'lowHP' : 1, 'highName': '', 'highHP' : 0}
+        lowStats = {'strName' : '', 'strScore' : 3, 'dexName' : '', 'dexScore' : 3, 'conName': '', 'conScore'  : 3, 'intName': '', 'intScore'  : 3, 'wisName': '', 'wisScore'  : 3, 'chaName': '', 'chaScore'  : 3}
         totalChars = 0
 
         async with aiohttp.ClientSession() as session:
