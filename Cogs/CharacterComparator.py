@@ -29,8 +29,8 @@ class Comparator():
     
         for users, rando in respData.items():
             AC = {'lowName': rando['stat_cvars']['name'], 'lowAC' : rando['armor'], 'highName': rando['stat_cvars']['name'], 'highAC' : rando['armor']}
-            HP = {'lowName': rando['stat_cvars']['name'], 'lowHP' : rando['stat_cvar']['hp'], 'highName': rando['stat_cvars']['name'], 'highHP' : rando['stat_cvar']['hp']}
-            lowStats = {'strName' : rando['stat_cvars']['name'], 'strScore' : rando['stat_cvar']['strength'], 'dexName' : rando['stat_cvars']['name'], 'dexScore' : rando['stat_cvar']['dexterity'], 'conName': rando['stat_cvars']['name'], 'conScore'  : rando['stat_cvar']['constitution'], 'intName': rando['stat_cvars']['name'], 'intScore'  : rando['stat_cvar']['intelligence'], 'wisName': rando['stat_cvars']['name'], 'wisScore'  : rando['stat_cvar']['wisdom'], 'chaName': rando['stat_cvars']['name'], 'chaScore'  : rando['stat_cvar']['charisma']}
+            HP = {'lowName': rando['stat_cvars']['name'], 'lowHP' : rando['stat_cvars']['hp'], 'highName': rando['stat_cvars']['name'], 'highHP' : rando['stat_cvars']['hp']}
+            lowStats = {'strName' : rando['stat_cvars']['name'], 'strScore' : rando['stat_cvars']['strength'], 'dexName' : rando['stat_cvars']['name'], 'dexScore' : rando['stat_cvars']['dexterity'], 'conName': rando['stat_cvars']['name'], 'conScore'  : rando['stat_cvars']['constitution'], 'intName': rando['stat_cvars']['name'], 'intScore'  : rando['stat_cvars']['intelligence'], 'wisName': rando['stat_cvars']['name'], 'wisScore'  : rando['stat_cvars']['wisdom'], 'chaName': rando['stat_cvars']['name'], 'chaScore'  : rando['stat_cvars']['charisma']}
             break
         totalChars = 0
 
