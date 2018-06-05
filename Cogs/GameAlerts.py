@@ -54,13 +54,7 @@ class GameAlerts():
         await self.bot.say("I have dispatched my messengers, {}. In total, {} notifications have been sent out. I bid you good luck on your session!".format(ctx.message.author.mention, messageTotal))
     
     @commands.command(pass_context=True)
-    async def test(self, ctx):
-        framework = {}
-        framework['227168575469780992'] = 'WCBx8CNRwJZ8aTb6Q'
-        framework['206904892059549698'] = 'dicecloud-uaE9FHXobempEbEWq'
-
-        self.bot.db.set_val('UserData', self.bot.db.to_json(framework))
-        
+    async def getUsers(self, ctx):
         print(self.bot.db.get_val('UserData'))
 
     @commands.command(pass_context=True)
