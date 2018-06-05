@@ -33,7 +33,7 @@ class Comparator():
         for users, characters in respData.items():
             totalChars += 1
             print(characters['stat_cvars']['name'] + " : " + characters['armor']) 
-            print(characters['stat_cvars']['strength'] "," + characters['stat_cvars']['dexterity'] "," + characters['stat_cvars']['constitution'] "," + characters['stat_cvars']['intelligence'] "," + characters['stat_cvars']['wisdom'] "," + characters['stat_cvars']['charisma'])
+            print(characters['stat_cvars']['strength'] + "," + characters['stat_cvars']['dexterity'] + "," + characters['stat_cvars']['constitution'] + "," + characters['stat_cvars']['intelligence'] + "," + characters['stat_cvars']['wisdom'] + "," + characters['stat_cvars']['charisma'])
             if characters['armor'] < AC['lowAC']:
                 AC['lowAC'] = characters['armor']
                 AC['lowName'] = characters['stat_cvars']['name']
