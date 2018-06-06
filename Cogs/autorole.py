@@ -44,7 +44,9 @@ class AutoRole():
                 if new_name in [r.name for r in to_remove]:
                     return  # you already have this role, go away
                 if new_role:
-                    await self.bot.remove_roles(message.author, *to_remove)
+                    if to_remove:
+                        await self.bot.remove_roles(message.author, *to_remove)
+                        await asyncio.sleep(2)  # allow websocket to update
                     await self.bot.add_roles(message.author, new_role)
                     await self.bot.send_message(message.channel,
                                                 "I see you have changed, {}! As such, I have assigned you the much more fitting role of {}.".format(message.author.mention, new_role.name))
