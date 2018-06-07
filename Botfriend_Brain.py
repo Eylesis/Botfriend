@@ -11,10 +11,8 @@ botToken = os.environ.get('botToken')
 
 description = '''Botfriend Configuration: Conversational ^_^'''
 
-startup_extensions = ["Cogs.GameAlerts", "Cogs.help",
-                      "Cogs.CharacterComparator", "Cogs.Misc",
-                      "Cogs.autorole"]
-
+startup_extensions = ["Cogs.help", "Cogs.autorole"]
+# "Cogs.GameAlerts", "Cogs.CharacterComparator", "Cogs.Misc"
 bot = commands.Bot(command_prefix='*', description=description)
 bot.remove_command('help')
 bot.db = redisInterface.Database()
