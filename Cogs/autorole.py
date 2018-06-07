@@ -15,7 +15,7 @@ class AutoRole():
 
     async def on_message(self, message):
         if message.content.startswith('!update'):
-            await asyncio.sleep(10)  # give avrae some time to update
+            await asyncio.sleep(12)  # give avrae some time to update
             async with aiohttp.ClientSession() as session:
                 async with session.get('https://avrae.io/api/activecharacter',
                                        params={"user": message.author.id},
