@@ -11,7 +11,7 @@ botToken = os.environ.get('botToken')
 
 description = '''Botfriend Configuration: Chained and Restricted ;-;'''
 
-startup_extensions = ["Cogs.help", "Cogs.autorole", "Cogs.PingAlerts"]
+startup_extensions = ["Cogs.help", "Cogs.autorole", "Cogs.PingAlerts", "Cogs.Misc"]
 # "Cogs.GameAlerts", "Cogs.CharacterComparator", "Cogs.Misc"
 bot = commands.Bot(command_prefix='*', description=description)
 bot.remove_command('help')
