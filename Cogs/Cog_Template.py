@@ -7,7 +7,7 @@ class DEFAULT():
     
     @commands.command(pass_context=True)
     async def DEFAULT(self, ctx):
-        await bot.say('eep')
+        await self.bot.say('eep')
 
 def setup(bot):
     bot.add_cog(DEFAULT(bot))
