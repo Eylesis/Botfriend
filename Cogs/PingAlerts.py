@@ -9,7 +9,7 @@ class PingAlerts():
     async def PingAlerts(self, ctx, minlevel : int, maxlevel : int):
         output = ''
         for x in range(minlevel, maxlevel+1):
-            new_name = "Lvl {}".format(level)
+            new_name = "Lvl {}".format(x)
             new_role = discord.utils.get(message.server.roles, name=new_name)
             mentionString = new_role.mention
             output += '{} '.format(mentionString)           
