@@ -6,7 +6,7 @@ class PingAlerts():
         self.bot = bot
     
     @commands.command(pass_context=True)
-    async def PingAlerts(self, ctx, minlevel : int, maxlevel : int):
+    async def alert(self, ctx, minlevel : int, maxlevel : int):
         output = ''
         for x in range(minlevel, maxlevel+1):
             new_name = "Lvl {}".format(x)
