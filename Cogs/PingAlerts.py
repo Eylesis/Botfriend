@@ -7,6 +7,19 @@ class PingAlerts():
     
     @commands.command(pass_context=True)
     async def alert(self, ctx, minlevel : int, maxlevel : int):
+        
+        if minlevel > maxlevel:
+            medlevel = maxlevel
+            maxlevel = minlevel
+            minlevel = medlevel
+        if minlevel < 3:
+            minlevel = 3
+        if minlevel > 20:
+            minlevel = 20
+        if maxlevel < 3:
+            maxlevel = 3
+        if maxlevel > 20:
+            maxlevel = 20
         output = ''
         for x in range(minlevel, maxlevel+1):
             new_name = "Lvl {}".format(x)
