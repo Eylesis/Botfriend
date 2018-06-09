@@ -9,7 +9,7 @@ import os
 
 botToken = os.environ.get('botToken')
 
-description = '''Botfriend Configuration: Chained and Restricted ;-;'''
+description = '''Botfriend Configuration: Conversational ^-^'''
 
 startup_extensions = ["Cogs.help", "Cogs.autorole", "Cogs.PingAlerts", "Cogs.Misc"]
 # "Cogs.GameAlerts", "Cogs.CharacterComparator", "Cogs.Misc"
