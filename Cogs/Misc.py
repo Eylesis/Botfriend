@@ -11,7 +11,7 @@ class Misc():
 
     @commands.command(pass_context=True, hidden=True)
     async def chanSay(self, ctx, channel: str, *, message: str):
-        if ctx.message.author.id = '227168575469780992':
+        if ctx.message.author.id == '227168575469780992':
             await self.bot.send_message(self.bot.get_channel(channel), message)
 
 def setup(bot):
