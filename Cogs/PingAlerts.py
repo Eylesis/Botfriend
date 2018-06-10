@@ -5,6 +5,12 @@ class PingAlerts():
     def __init__(self, bot):
         self.bot = bot
     
+    async def on_message(self, message):
+        searchStrings = ["(l.?v.?ls?.*?\s?)(\d{1,2}).{1,3}?(\d{1,2})"]
+
+
+
+
     @commands.command(pass_context=True)
     async def alert(self, ctx, minlevel : int, maxlevel : int):
         
