@@ -19,7 +19,7 @@ class PingAlerts():
                     foundString = m
 
             minlevel = foundString.group(1)
-            minlevel = foundString.group(2)
+            maxlevel = foundString.group(2)
             
             output = ''
             for x in range(minlevel, maxlevel+1):
