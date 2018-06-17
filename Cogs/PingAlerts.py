@@ -28,7 +28,7 @@ class PingAlerts():
                 mentionString = new_role.mention
                 output += '{} '.format(mentionString)
 
-            await self.bot.say(':arrow_up:  Quest Alert :arrow_up:\n{}'
+            await self.bot.send_message(message.channel,':arrow_up:  Quest Alert :arrow_up:\n{}'
                 .format(output))
         
 
