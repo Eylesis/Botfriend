@@ -11,12 +11,12 @@ class PingAlerts():
         if message.channel.id == '404050367454773251' or message.channel.id == '404050326128164884':
             formedMessage = message.content.lower()
             m = re.search(searchStrings[0], formedMessage)
-            if m.group(0) != None:
+            if m != None:
                 minlevel = int(m.group(2))
                 maxlevel = int(m.group(3))
             else:
                 m = re.search(searchStrings[1], formedMessage)
-                if m.group(0) != None:
+                if m != None:
                     minlevel = int(m.group(2))
                     maxlevel = 20
                 else:
