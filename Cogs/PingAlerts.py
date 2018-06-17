@@ -18,8 +18,8 @@ class PingAlerts():
                 if m.group(0) != None:
                     foundString = m
 
-            minlevel = foundString.group(1)
-            maxlevel = foundString.group(2)
+            minlevel = int(foundString.group(1))
+            maxlevel = int(foundString.group(2))
             
             output = ''
             for x in range(minlevel, maxlevel+1):
