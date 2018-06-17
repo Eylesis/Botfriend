@@ -21,8 +21,15 @@ class PingAlerts():
             minlevel = foundString.group(1)
             minlevel = foundString.group(2)
             
+            output = ''
+        for x in range(minlevel, maxlevel+1):
+            new_name = "Lvl {}".format(x)
+            new_role = discord.utils.get(ctx.message.server.roles, name=new_name)
+            mentionString = new_role.mention
+            output += '{} '.format(mentionString)
+
             await self.bot.say(':arrow_up:  Quest Alert :arrow_up:\n{}'
-                .format(roleStringGenerator(ctx, minlevel, maxlevel)))
+                .format(output))
         
 
 
