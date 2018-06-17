@@ -33,7 +33,7 @@ class PingAlerts():
 
 def roleStringGenerator(_minlevel : int, _maxlevel : int):
     output = ''
-    for x in range(minlevel, maxlevel+1):
+    for x in range(_minlevel, _maxlevel+1):
         new_name = "Lvl {}".format(x)
         new_role = discord.utils.get(ctx.message.server.roles, name=new_name)
         mentionString = new_role.mention
