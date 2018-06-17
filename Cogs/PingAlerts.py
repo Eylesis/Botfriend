@@ -10,11 +10,11 @@ class PingAlerts():
         searchStrings = ["(l.?v.?ls?.*?\s?)(\d{1,2}).{1,3}?(\d{1,2})", "(l.?v.?ls?:.*?\s?)(\d{1,2})."]
         if message.channel.id == '404050367454773251' or message.channel.id == '404050326128164884':
             
-            m = re.search(searchString[0], message.content)
+            m = re.search(searchStrings[0], message.content)
             if m.group(0) != None:
                 foundString = m
             else:
-                m = re.search(searchString[1], message.content)
+                m = re.search(searchStrings[1], message.content)
                 if m.group(0) != None:
                     foundString = m
 
