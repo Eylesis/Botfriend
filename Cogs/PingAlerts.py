@@ -9,17 +9,33 @@ class PingAlerts():
     async def on_message(self, message):
         searchStrings = ["(l.?v.?ls?.*?\s?)(\d{1,2}).{1,3}?(\d{1,2})", "(l.?v.?ls?:.*?\s?)(\d{1,2})."]
         if message.channel.id == '404050367454773251' or message.channel.id == '404050326128164884':
-            
-            m = re.search(searchStrings[0], message.content)
+            formedMessage = message.content.lower()
+            m = re.search(searchStrings[0], formedMessage)
             if m.group(0) != None:
-                foundString = m
+                minlevel = int(m.group(2))
+                maxlevel = int(m.group(3))
             else:
-                m = re.search(searchStrings[1], message.content)
+                m = re.search(searchStrings[1], formedMessage)
                 if m.group(0) != None:
-                    foundString = m
+                    minlevel = int(m.group(2))
+                    maxlevel = 20
+                else:
+                    return await bot.send_message(message.author, 
+                'Apologies, {}. I was unable to discern your desired level range for the posted quest. Please feel free to utilize the manual command for now. The syntax is `*alert minLevel maxLevel`'
+                .format(message.author.name)) 
 
-            minlevel = int(foundString.group(2))
-            maxlevel = int(foundString.group(3))
+            if minlevel > maxlevel:
+                medlevel = maxlevel
+                maxlevel = minlevel
+                minlevel = medlevel
+            if minlevel < 3:
+                minlevel = 3
+            if minlevel > 20:
+                minlevel = 20
+            if maxlevel < 3:
+                maxlevel = 3
+            if maxlevel > 20:
+                maxlevel = 20
             
             output = ''
             for x in range(minlevel, maxlevel+1):
@@ -28,7 +44,7 @@ class PingAlerts():
                 mentionString = new_role.mention
                 output += '{} '.format(mentionString)
 
-            await self.bot.send_message(message.channel,':arrow_up:  Quest Alert :arrow_up:\n{}'
+            await self.bot.send_message(message.channel,':arrow_up: Adventurers Wanted :arrow_up:\n{}'
                 .format(output))
         
 
