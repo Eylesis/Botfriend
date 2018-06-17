@@ -26,14 +26,19 @@ class PingAlerts():
             maxlevel = 3
         if maxlevel > 20:
             maxlevel = 20
-        output = ''
-        for x in range(minlevel, maxlevel+1):
-            new_name = "Lvl {}".format(x)
-            new_role = discord.utils.get(ctx.message.server.roles, name=new_name)
-            mentionString = new_role.mention
-            output += '{} '.format(mentionString)           
+        
+                   
         await self.bot.say('{} has requested a notification be sent out to all players possessing the following roles for a posted quest!: {}'
-        .format(ctx.message.author.mention, output))
+        .format(ctx.message.author.mention, roleStringGenerator(minlevel, maxlevel)))
+
+def roleStringGenerator(_minlevel : int, _maxlevel : int)
+    output = ''
+    for x in range(minlevel, maxlevel+1):
+        new_name = "Lvl {}".format(x)
+        new_role = discord.utils.get(ctx.message.server.roles, name=new_name)
+        mentionString = new_role.mention
+        output += '{} '.format(mentionString)
+    return output
 
 def setup(bot):
     bot.add_cog(PingAlerts(bot))
