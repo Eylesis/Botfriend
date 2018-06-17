@@ -1,19 +1,33 @@
 import discord
+import re
 from discord.ext import commands
 
 class PingAlerts():
     def __init__(self, bot):
         self.bot = bot
     
-    async def on_message(self, message):
-        searchStrings = ["(l.?v.?ls?.*?\s?)(\d{1,2}).{1,3}?(\d{1,2})"]
+    async def on_message(self, ctx, message):
+        searchStrings = ["(l.?v.?ls?.*?\s?)(\d{1,2}).{1,3}?(\d{1,2})", "(l.?v.?ls?:.*?\s?)(\d{1,2})."]
+        if message.channel.id == '404050367454773251' or message.channel.id == '404050326128164884':
+            
+            m = re.search(searchString[0], message.content)
+            if m.group(0) != None:
+                foundString = m
+            else:
+                m = re.search(searchString[1], message.content)
+                if m.group(0) != None:
+                    foundString = m
 
-
+            minlevel = foundString.group(1)
+            minlevel = foundString.group(2)
+            
+            await self.bot.say(':arrow_up:  Quest Alert :arrow_up:\n{}'
+                .format(roleStringGenerator(ctx, minlevel, maxlevel)))
+        
 
 
     @commands.command(pass_context=True)
     async def alert(self, ctx, minlevel : int, maxlevel : int):
-        
         if minlevel > maxlevel:
             medlevel = maxlevel
             maxlevel = minlevel
@@ -26,8 +40,7 @@ class PingAlerts():
             maxlevel = 3
         if maxlevel > 20:
             maxlevel = 20
-        
-                   
+                           
         await self.bot.say('{} has requested a notification be sent out to all players possessing the following roles for a posted quest!: {}'
         .format(ctx.message.author.mention, roleStringGenerator(ctx, minlevel, maxlevel)))
 
