@@ -7,7 +7,7 @@ class PingAlerts():
         self.bot = bot
     
     async def on_message(self, message):
-        searchStrings = ["(l.?v.?ls?.*?\s?)(\d{1,2}).{1,3}?(\d{1,2})", "(l.?v.?ls?:.*?\s?)(\d{1,2})."]
+        searchStrings = ["(l.?v.?ls?.*?\s?)(\d{1,2}).{1,3}?(\d{1,2})", "(l.?v.?ls?:.*?\s?)(\d{1,2}).?"]
         if message.channel.id == '404050367454773251' or message.channel.id == '404050326128164884':
             formedMessage = message.content.lower()
             m = re.search(searchStrings[0], formedMessage)
