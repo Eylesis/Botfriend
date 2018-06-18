@@ -18,7 +18,7 @@ class PingAlerts():
                 m = re.search(searchStrings[1], formedMessage)
                 if m != None:
                     minlevel = int(m.group(2))
-                    maxlevel = 20
+                    maxlevel = 21
                 else:
                     return await self.bot.send_message(message.author, 
                 'Apologies, {}. I was unable to discern your desired level range for the posted quest. Please feel free to utilize the manual command for now. The syntax is `*alert minLevel maxLevel`'
