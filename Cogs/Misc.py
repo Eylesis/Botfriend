@@ -8,13 +8,13 @@ class Misc():
     
     @commands.command(pass_context=True)
     async def banana(self, ctx):
-        bananaStash = self.bot.db.get_val('bananaStash')
-        if bananaStash == '':
+        bananaStash = int(self.bot.db.get_val('bananaStash'))
+        if bananaStash == 0:
             await self.bot.say('Why thank you {}! This banana is the first in my latest stash! I shall store it carefully.'.format(ctx.message.author.mention))
-            self.bot.db.set_val('bananaStash', 1)
+            self.bot.db.set_val('bananaStash', '1')
         else:
             bananaStash += 1
-            self.bot.db.set_val('bananaStash', bananaStash)
+            self.bot.db.set_val('bananaStash', str(bananaStash))
             await self.bot.say('Why thank you {}! I do so enjoy bananas, however I am not hungry at the moment, so I shall save this for later! My stash has {} bananas in it, can you believe it?'
             .format(ctx.message.author.mention, bananaStash))
         return await self.bot.delete_message(ctx.message)
