@@ -9,7 +9,7 @@ class Misc():
     @commands.command(pass_context=True)
     async def banana(self, ctx):
         bananaStash = self.bot.db.get_val('bananaStash')
-        if bananaStash = '':
+        if bananaStash == '':
             await self.bot.say('Why thank you {}! This banana is the first in my latest stash! I shall store it carefully.'.format(ctx.message.author.mention))
             self.bot.db.set_val('bananaStash', 1)
         else:
