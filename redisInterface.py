@@ -15,7 +15,7 @@ class Database:
         if self.r.get(key) is not None:
             return self.r.get(key).decode('utf-8')
         else:
-            return ''
+            return 0
     
     def set_val(self, key, value):
         return self.r.set(key, value.encode('utf-8'))
