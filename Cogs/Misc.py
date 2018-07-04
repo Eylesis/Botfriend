@@ -17,6 +17,7 @@ class Misc():
             self.bot.db.set_val('bananaStash', bananaStash)
             await self.bot.say('Why thank you {}! I do so enjoy bananas, however I am not hungry at the moment, so I shall save this for later! My stash has {} bananas in it, can you believe it?'
             .format(ctx.message.author.mention, bananaStash))
+        return await self.bot.delete_message(ctx.message)
 
     @commands.command(pass_context=True, hidden=True)
     async def chanSay(self, ctx, channel: str, *, message: str):
