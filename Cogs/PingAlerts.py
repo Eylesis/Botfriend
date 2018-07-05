@@ -50,7 +50,7 @@ class PingAlerts():
 
 
     @commands.command(pass_context=True)
-    async def alert(self, ctx, minlevel : int, maxlevel : int, *, customMsg=None : str):
+    async def alert(self, ctx, minlevel : int, maxlevel : int, *, customMsg=''):
         await self.bot.delete_message(ctx.message)
         if minlevel > maxlevel:
             medlevel = maxlevel
