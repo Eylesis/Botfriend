@@ -12,7 +12,8 @@ class Misc():
         
         if bananaStash == 68:
             bananaStash = 0
-            
+            await self.bot.say('!69')
+                
         if bananaStash == 0:
             await self.bot.say('Why thank you {}! This banana is the first in my latest stash! I shall store it carefully.'.format(ctx.message.author.mention))
             self.bot.db.set_val('bananaStash', '1')
