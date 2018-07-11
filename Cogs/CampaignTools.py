@@ -11,8 +11,17 @@ class CampaignTools():
             everyone = discord.PermissionOverwrite(read_messages=False)
             mine = discord.PermissionOverwrite(read_messages=True)
             
-            await self.bot.create_channel(member.server, "{}'s IC".format(member.mention), (member.server.default_role, everyone), (member, mine), (member.server.me, mine))
-            await self.bot.create_channel(member.server, "{}'s OOC".format(member.mention), (member.server.default_role, everyone), (member, mine), (member.server.me, mine))
+            await self.bot.create_channel(member.server, "{}- IC".format(member.name), (member.server.default_role, everyone), (member, mine), (member.server.me, mine))
+            await self.bot.create_channel(member.server, "{}- OOC".format(member.name), (member.server.default_role, everyone), (member, mine), (member.server.me, mine))
+
+
+            await self.bot.send_message(self.bot.get_channel('466679011511369731'), 
+            "Ha! A moment for me is much faster than a moment for you! Your rooms have been prepared. Now then, let me take some time to assign you your honorary title.")
+            
+            role = discord.utils.get(member.server.roles, name='Player')
+            await self.bot.add_roles(member, role)
+            await self.bot.send_message(self.bot.get_channel('466679011511369731'), 
+            "Marvelous! You are now officially a Player. I bet you're still trying to figure out what your rooms are? I shall leave you awestruck, and wish you an enjoyable stay.") 
 
 def setup(bot):
     bot.add_cog(CampaignTools(bot))
