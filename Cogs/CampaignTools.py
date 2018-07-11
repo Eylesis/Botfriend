@@ -11,8 +11,8 @@ class CampaignTools():
             everyone = discord.PermissionOverwrite(read_messages=False)
             mine = discord.PermissionOverwrite(read_messages=True)
             
-            await client.create_channel(member.server, "{}'s IC".format, (member.server.default_role, everyone), (member, mine), (member.server.me, mine))
-            await client.create_channel(member.server, "{}'s OOC".format, (member.server.default_role, everyone), (member, mine), (member.server.me, mine))
+            await self.bot.create_channel(member.server, "{}'s IC".format, (member.server.default_role, everyone), (member, mine), (member.server.me, mine))
+            await self.bot.create_channel(member.server, "{}'s OOC".format, (member.server.default_role, everyone), (member, mine), (member.server.me, mine))
 
 def setup(bot):
     bot.add_cog(CampaignTools(bot))
