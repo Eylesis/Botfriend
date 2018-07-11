@@ -6,7 +6,7 @@ class CampaignTools():
         self.bot = bot
     
     async def on_member_join(self, member):
-        if member.server.id = '466679011511369728':
+        if member.server.id == '466679011511369728':
             await self.bot.send_message(member.server.default_channel, 'Greetings {}! You are on the guest list, so allow me prepare your rooms for you! I will be with you in a moment!'.format(member.mention))
             everyone = discord.PermissionOverwrite(read_messages=False)
             mine = discord.PermissionOverwrite(read_messages=True)
