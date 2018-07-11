@@ -7,21 +7,8 @@ from Cogs.GameTime import get_gametime
 from Cogs.GameTime import get_rawtime
 
 class Weather():
-    justPosted = False
-    previousWeather = {"wind" : 1, "temp" : 1, "precipitation" : 1}
     def __init__(self, bot):
         self.bot = bot
-        self.bot.loop.create_task(self.autoUpdate())
-
-    async def autoUpdate(self):
-        while True:
-            await asyncio.sleep(60)
-            curTime = get_rawtime()
-            if (curTime.hour % 4 == 0 and not self.justPosted):
-                await self.bot.send_message(self.bot.get_channel('311585583979823106'), embed=get_weather())
-                self.justPosted = True
-            if (curTime.hour % 4 != 0):
-                self.justPoted = False
 
     @commands.command(pass_context=True)
     async def weather(self, ctx, location=""):
