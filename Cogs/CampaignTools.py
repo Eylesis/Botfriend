@@ -1,7 +1,7 @@
 import discord
 from discord.ext import commands
 
-class DEFAULT():
+class CampaignTools():
     def __init__(self, bot):
         self.bot = bot
     
@@ -12,12 +12,7 @@ class DEFAULT():
             mine = discord.PermissionOverwrite(read_messages=True)
             
             await client.create_channel(member.server, "{}'s IC".format, (member.server.default_role, everyone), (member, mine), (member.server.me, mine))
-            await client.create_channel(member.server, "{}'s OOC".format, (member.server.default_role, everyone), (member, mine), (member.server.me, mine))
-
-
-    @commands.command(pass_context=True)
-    async def DEFAULT(self, ctx):
-        await self.bot.say('eep')
-
+            await client.create_channel(member.server, "{}'s OOC".format, (member.server.default_role, everyone), (member, mine), (member.server.me, mine)
+                                        
 def setup(bot):
-    bot.add_cog(DEFAULT(bot))
+    bot.add_cog(CampaignTools(bot))
