@@ -32,9 +32,11 @@ def run_app(app, *, host='0.0.0.0', port=None, shutdown_timeout=60.0, ssl_contex
 async def tba_handler(request):
     data = await request.post()
     print("Accepted request:\n{}".format(data))
-
-    return await bot.send_message(
-        bot.get_channel('404368678683934731'), 
+    
+    channelids = {'470455397912674305', '404368678683934731'}
+    for each channelid in channelids:
+        await bot.send_message(
+        bot.get_channel(channelid), 
         'test post recieved!')
             
 
