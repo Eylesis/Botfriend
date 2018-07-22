@@ -37,7 +37,7 @@ async def tba_handler(request):
         'post recieved!')
             
 
-bot = commands.Bot(command_prefix='*', description=description)
+bot = commands.Bot(command_prefix='*')
 loop = bot.loop
 app = web.Application(loop=loop)
 app.router.add_post('/endpoint', self.tba_handler)
