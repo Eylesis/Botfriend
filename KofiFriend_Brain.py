@@ -9,9 +9,7 @@ import aiohttp
 
 botToken = os.environ.get('botToken')
 
-def run_app(self, app, *, host='0.0.0.0', port=None,
-            shutdown_timeout=60.0, ssl_context=None,
-            print=print, backlog=128):
+def run_app(self, app, *, host='0.0.0.0', port=None, shutdown_timeout=60.0, ssl_context=None, print=print, backlog=128):
     """Run an app"""
     if port is None:
         if not ssl_context:
@@ -22,11 +20,8 @@ def run_app(self, app, *, host='0.0.0.0', port=None,
     loop = app.loop
 
     handler = app.make_handler()
-    server = loop.create_server(handler, host, port, ssl=ssl_context,
-                                backlog=backlog)
-    srv, startup_res = loop.run_until_complete(asyncio.gather(server,
-                                                                app.startup(),
-                                                                loop=loop))
+    server = loop.create_server(handler, host, port, ssl=ssl_context, backlog=backlog)
+    srv, startup_res = loop.run_until_complete(asyncio.gather(server, app.startup(), loop=loop))
 
     scheme = 'https' if ssl_context else 'http'
     print("======== Running on {scheme}://{host}:{port}/ ========\n"
@@ -38,7 +33,7 @@ async def tba_handler(request):
     print("Accepted request:\n{}".format(data))
 
     return await self.bot.send_message(
-        self.bot.get_channel('466695135967707138'), 
+        self.bot.get_channel('404368678683934731'), 
         'post recieved!')
             
 
