@@ -39,8 +39,8 @@ async def tba_handler(request):
 
 bot = commands.Bot(command_prefix='*', description=description)
 app = web.Application(loop=loop)
-    app.router.add_post('/endpoint', self.tba_handler)
-    run_app(app, host=os.environ.get('HOST'), port=os.environ.get('PORT'))
+app.router.add_post('/endpoint', self.tba_handler)
+run_app(app, host=os.environ.get('HOST'), port=os.environ.get('PORT'))
 
 
 
