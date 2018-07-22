@@ -34,7 +34,7 @@ async def tba_handler(request):
     print("Accepted request:\n{}".format(data))
     
     channelids = {'470455397912674305', '404368678683934731'}
-    for each channelid in channelids:
+    for channelid in channelids:
         await bot.send_message(
         bot.get_channel(channelid), 
         'test post recieved!')
