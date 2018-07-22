@@ -5,6 +5,7 @@ from discord.ext import commands
 import sys
 import re
 import os
+import asyncio
 from aiohttp import web
 
 botToken = os.environ.get('botToken')
