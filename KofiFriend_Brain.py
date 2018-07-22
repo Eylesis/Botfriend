@@ -39,7 +39,7 @@ async def tba_handler(request):
     embed = discord.Embed(
         title="Crooq's Computer Quest Updated!", 
         url="https://ko-fi.com/eylesis", 
-        description="{} has given ${} to the cause! The donation is appreciated!".format(data['from_name'], data['amount'])
+        description="{} has given ${} to the cause! The donation is appreciated!".format(data['from_name'], data['amount']))
     embed.set_footer(text="Ko-Fi Notification")
     embed.add_field(name="__Message__", value=data['message'])
 
