@@ -34,7 +34,7 @@ def run_app(app, *, host='0.0.0.0', port=None, shutdown_timeout=60.0, ssl_contex
 async def tba_handler(request):
     data = await request.post()
     print("Accepted request:\n{}".format(data))
-    
+    print("{}".format(data))
     embed = discord.Embed(
         title="Crooq's Computer Quest Updated!", 
         url="https://ko-fi.com/eylesis", 
