@@ -33,8 +33,8 @@ async def tba_handler(request):
     data = await request.post()
     print("Accepted request:\n{}".format(data))
 
-    return await self.bot.send_message(
-        self.bot.get_channel('404368678683934731'), 
+    return await bot.send_message(
+        bot.get_channel('404368678683934731'), 
         'test post recieved!')
             
 
