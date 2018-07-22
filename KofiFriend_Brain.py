@@ -33,15 +33,16 @@ def run_app(app, *, host='0.0.0.0', port=None, shutdown_timeout=60.0, ssl_contex
 
 async def tba_handler(request):
     data = await request.post()
+    data = json.loads(data['data'])
     print("Accepted request:\n{}".format(data))
     print("{}".format(data))
     embed = discord.Embed(
         title="Crooq's Computer Quest Updated!", 
         url="https://ko-fi.com/eylesis", 
-        description="{} has given ${} to the cause! The donation is appreciated!".format(data['data']['from_name'], data['data']['amount']),
-        timestamp=datetime.datetime.fromisoformat(data['data']['timestamp']))
+        description="{} has given ${} to the cause! The donation is appreciated!".format(data['from_name'], data['amount']),
+        timestamp=datetime.datetime.fromisoformat(data['timestamp']))
     embed.set_footer(text="Ko-Fi")
-    embed.add_field(name="__Message__", value=data['data']['message'])
+    embed.add_field(name="__Message__", value=data['message'])
 
     channelids = {'470455397912674305'} #, '404368678683934731'
     for channelid in channelids:
