@@ -38,6 +38,7 @@ async def tba_handler(request):
         await bot.send_message(
         bot.get_channel(channelid), 
         'test post recieved!')
+    return web.Response()
             
 
 bot = commands.Bot(command_prefix='*')
