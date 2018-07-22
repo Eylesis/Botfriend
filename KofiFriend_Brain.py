@@ -40,7 +40,7 @@ async def tba_handler(request):
         title="Crooq's Computer Quest Updated!", 
         url="https://ko-fi.com/eylesis", 
         description="{} has given ${} to the cause! The donation is appreciated!".format(data['from_name'], data['amount']),
-        timestamp=datetime.datetime.fromisoformat(data['timestamp']))
+        timestamp=datetime.datetime.strptime(data['timestamp'], "%Y %m %d %H:%M:%S"))
     embed.set_footer(text="Ko-Fi")
     embed.add_field(name="__Message__", value=data['message'])
 
