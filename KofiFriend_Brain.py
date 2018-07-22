@@ -38,8 +38,7 @@ async def tba_handler(request):
     embed = discord.Embed(
         title="Crooq's Computer Quest Updated!", 
         url="https://ko-fi.com/eylesis", 
-        description="{} has given ${} to the cause! The donation is appreciated!".format(data['data']['from_name'], data['data']]'amount']),
-        timestamp=datetime.datetime.fromisoformat(data['data']['timestamp']))
+        description="{} has given ${} to the cause! The donation is appreciated!".format(data['data']['from_name'], data['data']]'amount']), timestamp=datetime.datetime.fromisoformat(data['data']['timestamp']))
     embed.set_footer(text="Ko-Fi")
     embed.add_field(name="__Message__", value=data['data']['message'])
 
