@@ -38,12 +38,13 @@ async def tba_handler(request):
             
 
 bot = commands.Bot(command_prefix='*', description=description)
+loop = bot.loop
 app = web.Application(loop=loop)
 app.router.add_post('/endpoint', self.tba_handler)
-run_app(app, host=os.environ.get('HOST'), port=os.environ.get('PORT'))
+
 
 
 
 if __name__ == "__main__":
-    loop = bot.loop
+    run_app(app, host=os.environ.get('HOST'), port=os.environ.get('PORT'))
     bot.run(botToken)
