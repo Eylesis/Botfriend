@@ -40,7 +40,7 @@ async def tba_handler(request):
 bot = commands.Bot(command_prefix='*')
 loop = bot.loop
 app = web.Application(loop=loop)
-app.router.add_post('/endpoint', self.tba_handler)
+app.router.add_post('/endpoint', tba_handler)
 
 
 
