@@ -43,7 +43,7 @@ async def tba_handler(request):
     embed.set_footer(text="Ko-Fi Notification")
     embed.add_field(name="__Message__", value=data['message'])
 
-    channelids = {'470455397912674305'} #, '404368678683934731'
+    channelids = {'470455397912674305', '391157967493267457'}
     for channelid in channelids:
         await bot.send_message(bot.get_channel(channelid), embed=embed)
     return web.Response()
