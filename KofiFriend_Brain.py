@@ -5,7 +5,7 @@ from discord.ext import commands
 import sys
 import re
 import os
-import aiohttp
+from aiohttp import web
 
 botToken = os.environ.get('botToken')
 
@@ -39,7 +39,7 @@ async def tba_handler(request):
 
 bot = commands.Bot(command_prefix='*')
 loop = bot.loop
-app = aiohttp.web.Application(loop=loop)
+app = web.Application(loop=loop)
 app.router.add_post('/endpoint', self.tba_handler)
 
 
