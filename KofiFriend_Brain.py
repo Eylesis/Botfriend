@@ -30,12 +30,12 @@ def run_app(app, *, host='0.0.0.0', port=None, shutdown_timeout=60.0, ssl_contex
         scheme=scheme, host=host, port=port))
 
 async def tba_handler(request):
-    data = await request.json()
+    data = await request.post()
     print("Accepted request:\n{}".format(data))
 
     return await self.bot.send_message(
         self.bot.get_channel('404368678683934731'), 
-        'post recieved!')
+        'test post recieved!')
             
 
 bot = commands.Bot(command_prefix='*')
