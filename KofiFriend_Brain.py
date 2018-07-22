@@ -9,7 +9,7 @@ from aiohttp import web
 
 botToken = os.environ.get('botToken')
 
-def run_app(self, app, *, host='0.0.0.0', port=None, shutdown_timeout=60.0, ssl_context=None, print=print, backlog=128):
+def run_app(app, *, host='0.0.0.0', port=None, shutdown_timeout=60.0, ssl_context=None, print=print, backlog=128):
     """Run an app"""
     if port is None:
         if not ssl_context:
