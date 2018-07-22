@@ -39,7 +39,7 @@ async def tba_handler(request):
 
 bot = commands.Bot(command_prefix='*')
 loop = bot.loop
-app = Application(loop=loop)
+app = aiohttp.web.Application(loop=loop)
 app.router.add_post('/endpoint', self.tba_handler)
 
 
