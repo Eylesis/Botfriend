@@ -37,16 +37,16 @@ async def tba_handler(request):
     print("Accepted request:\n{}".format(data))
     print("{}".format(data))
     embed = discord.Embed(
-        title="Crooq's Computer Quest Updated!", 
+        title="Ko-Fi Received!", 
         url="https://ko-fi.com/eylesis", 
-        description="{} has given ${} to the cause! The donation is appreciated!".format(data['from_name'], data['amount']))
+        description="{} has sent ${}.".format(data['from_name'], data['amount']))
     embed.set_footer(text="Ko-Fi Notification")
     
     if data['message'] == "":
         data['message'] == "No Message."
     embed.add_field(name="__Message__", value=data['message'])
 
-    channelids = {'470455397912674305', '391157967493267457'}
+    channelids = {'470455397912674305'}
     for channelid in channelids:
         await bot.send_message(bot.get_channel(channelid), embed=embed)
     return web.Response()
