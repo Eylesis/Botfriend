@@ -12,4 +12,5 @@ websockets==3.3
 redis==2.10.6
 pytz==2017.3
 pygsheets
+oauth2client
 markovify==0.7.0
