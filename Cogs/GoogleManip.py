@@ -12,8 +12,8 @@ class GoogleManip():
     def __init__(self, bot):
         self.bot = bot
         self.API_KEY = os.environ.get('API_KEY')
-        PRIVATE_KEY_ID = os.environ.get('PRIVATE_KEY_ID')
-        PRIVATE_KEY = os.environ.get('PRIVATE_KEY')
+        PRIVATE_KEY_ID = str(os.environ.get('PRIVATE_KEY_ID'))
+        PRIVATE_KEY = str(os.environ.get('PRIVATE_KEY'))
         CLIENT_EMAIL = os.environ.get('CLIENT_EMAIL')
         CLIENT_ID = os.environ.get('CLIENT_ID')
 
