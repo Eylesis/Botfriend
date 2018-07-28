@@ -5,11 +5,16 @@ import asyncio
 import redisInterface
 import pygsheets
 from discord.ext import commands
+from oauth2client import crypt
+from oauth2client.service_account import ServiceAccountCredentials
 
 class GoogleManip():
     def __init__(self, bot):
         self.bot = bot
         self.API_KEY = os.environ.get('API_KEY')
+        signer = crypt.Signer.from_string(PRIVATE_KEY)
+        cred = ServiceAccountCredentials(CLIENT_EMAIL, signer, private_key_id=PRIVATE_KEY_ID, client_id=CLIENT_ID)
+        self.gc = pygsheets.authorize(credentials=cred)
     
     @commands.command(pass_context=True)
     async def ungold(self, ctx):
@@ -26,9 +31,9 @@ class GoogleManip():
         else:
             userGoldData = {}
         if not ctx.message.author.id in userGoldData:
-            gc = pygsheets.authorize(service_file='Botfriend-1965f14a95e9.json')
+            
             try:
-               sh = gc.open_by_url(sheetUrl)
+               sh = self.gc.open_by_url(sheetUrl)
             except:
                 return await self.bot.say('I have run into an error attempting to access this sheet. Have you shared it to me?')
             wks = sh.sheet1
@@ -68,9 +73,8 @@ class GoogleManip():
             if not message.author.id in userGoldData:
                 return
             else:
-                gc = pygsheets.authorize(service_file='Botfriend-1965f14a95e9.json')
                 try:
-                    sh = gc.open_by_url(sheetUrl)
+                    sh = self.gc.open_by_url(sheetUrl)
                 except:    
                     return await self.bot.send_message(message.channel,'It appears you are opted into the Gold Tracking Initiative, however I was unable to access your tracking sheet. Please ensure you still have the sheet shared to me so I may collect your data!')
                 wks = sh.sheet1
