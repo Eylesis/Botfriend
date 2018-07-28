@@ -16,6 +16,9 @@ class GoogleManip():
         PRIVATE_KEY = os.environ.get('PRIVATE_KEY')
         CLIENT_EMAIL = os.environ.get('CLIENT_EMAIL')
         CLIENT_ID = os.environ.get('CLIENT_ID')
+
+        print(PRIVATE_KEY)
+        print(PRIVATE_KEY_ID)
         signer = crypt.Signer.from_string(PRIVATE_KEY)
         cred = ServiceAccountCredentials(CLIENT_EMAIL, signer, private_key_id=PRIVATE_KEY_ID, client_id=CLIENT_ID)
         self.gc = pygsheets.authorize(credentials=cred)
