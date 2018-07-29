@@ -16,18 +16,16 @@ class GoogleManip():
     
     @commands.command(pass_context=True)
     async def ungold(self, ctx):
-        userGoldData = self.bot.db.from_json(self.bot.db.get_val('UserGoldData'))
+        userGoldData = self.bot.db.get_val('UserGoldData')
         userGoldData.pop(ctx.message.author.id, None)
-        self.bot.db.set_val('UserGoldData', self.bot.db.to_json(userGoldData))
+        self.bot.db.set_val('UserGoldData', userGoldData)
         await self.bot.say('done.')
 
     @commands.command(pass_context=True)
     async def gold(self, ctx, sheetUrl : str):
         
-        if self.bot.db.get_val('UserGoldData') != 0:
-            userGoldData = self.bot.db.from_json(self.bot.db.get_val('UserGoldData'))
-        else:
-            userGoldData = {}
+        userGoldData = self.bot.db.get_val('UserGoldData', {})
+
         if not ctx.message.author.id in userGoldData:
             
             try:
@@ -39,7 +37,7 @@ class GoogleManip():
             startBal = wks.cell('L9')
 
             userGoldData[ctx.message.author.id] = {'CharName' : charName.value, "StartBal" : startBal.value, "sheetUrl" : sheetUrl}
-            self.bot.db.set_val('UserGoldData', self.bot.db.to_json(userGoldData))
+            self.bot.db.set_val('UserGoldData', userGoldData)
             return await self.bot.say('{}, it is really appreciated that you have opted to join this data collection initiative! I have gone ahead and added {} to our listings!'.format(ctx.message.author.mention, charName.value))
         else:
             return await self.bot.say("{}, it would appear I already have one of your characters registered! Submitting your data is now automated. Simply keep your Gold Tracking Sheet up to date before running Avrae's `!update` command!".format(ctx.message.author.mention))
@@ -65,7 +63,7 @@ class GoogleManip():
                 return
             level = character['levels']['level']
 
-            userGoldData = self.bot.db.from_json(self.bot.db.get_val('UserGoldData'))
+            userGoldData = self.bot.db.get_val('UserGoldData')
             sheetUrl = str(userGoldData[message.author.id]['sheetUrl'])
             print('url: {}'.format(sheetUrl))
             if not message.author.id in userGoldData:
@@ -84,7 +82,7 @@ class GoogleManip():
                     Decrease = wks.cell('I14')
 
                     userGoldData[message.author.id][character['levels']['level']] = { "CurBal" : CurBal.value, "Expenses" : Expenses.value, "Income" : Income.value, "Spent" : Spent.value, "Decrease" : Decrease.value }
-                    self.bot.db.set_val('UserGoldData', self.bot.db.to_json(userGoldData))
+                    self.bot.db.set_val('UserGoldData', userGoldData)
                 else:
                     return await self.bot.send_message(message.channel,'Sorry to bother you, {}. I have you on my listing for the Gold Tracking Initiative, but you have updated a different character. If this is not a mistake, then please ignore me! Otherwise, be sure to set the correct character active before running the `!update` command again!'.format(message.author.mention))
                 await self.bot.send_message(message.channel, '{}, I have gone ahead and marked down the data on your tracker sheet for this level.'.format(message.author.mention))
