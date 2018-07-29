@@ -12,13 +12,13 @@ class Database:
         ensure_path_exists(path)
     
     def get_val(self, key, default=None):
-    path = f"{self.path}{key}.json"
-    if not os.path.exists(path):
-        return default
-    else:
-        with open(path) as f:
-            data = json.load(f)
-        return data
+        path = f"{self.path}{key}.json"
+        if not os.path.exists(path):
+            return default
+        else:
+            with open(path) as f:
+                data = json.load(f)
+            return data
 
     def set_val(self, key, value):
         path = f"{self.path}{key}.json"
