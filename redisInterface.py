@@ -6,6 +6,10 @@ import discord
 from discord.ext import commands
 
 class Database:
+   
+    def __init__(self, path='data/'):
+        self.path = path
+        ensure_path_exists(path)
 
     def get_val(self, key, default=None):
         path = f"{self.path}{key}.json"
@@ -21,10 +25,7 @@ class Database:
         with open(path, 'w') as f:
             json.dump(value, f)
 
-    def ensure_path_exists(path):
-        if not os.path.exists(path):
-            os.makedirs(path)
-            
-    def __init__(self, path='data/'):
-        self.path = path
-        ensure_path_exists(path)
+def ensure_path_exists(path):
+    if not os.path.exists(path):
+        os.makedirs(path)
+
