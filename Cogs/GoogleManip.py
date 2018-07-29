@@ -12,17 +12,7 @@ class GoogleManip():
     def __init__(self, bot):
         self.bot = bot
         self.API_KEY = os.environ.get('API_KEY')
-        PRIVATE_KEY_ID = str(os.environ.get('PRIVATE_KEY_ID'))
-        PRIVATE_KEY = str(os.environ.get('PRIVATE_KEY'))
-        CLIENT_EMAIL = os.environ.get('CLIENT_EMAIL')
-        CLIENT_ID = os.environ.get('CLIENT_ID')
-
-        print(PRIVATE_KEY)
-        print(PRIVATE_KEY_ID)
-        signer = crypt.Signer.from_string(PRIVATE_KEY)
-        print('signer')
-        cred = ServiceAccountCredentials(CLIENT_EMAIL, signer, private_key_id=PRIVATE_KEY_ID, client_id=CLIENT_ID)
-        self.gc = pygsheets.authorize(credentials=cred)
+        self.gc = pygsheets.authorize(outh_file='Botfriend-creds.json')
     
     @commands.command(pass_context=True)
     async def ungold(self, ctx):

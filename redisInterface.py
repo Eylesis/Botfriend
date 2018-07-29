@@ -7,24 +7,24 @@ from discord.ext import commands
 
 class Database:
 
-    def __init__(self):
-        url = urllib.parse.urlparse(os.environ.get('REDISCLOUD_URL'))
-        self.r = redis.Redis(host=url.hostname, port=url.port, password=url.password)
+    def __init__(self, path='data/'):
+        self.path = path
+        ensure_path_exists(path)
     
-    def get_val(self, key):
-        if self.r.get(key) is not None:
-            return self.r.get(key).decode('utf-8')
-        else:
-            return 0
-    
+    def get_val(self, key, default=None):
+    path = f"{self.path}{key}.json"
+    if not os.path.exists(path):
+        return default
+    else:
+        with open(path) as f:
+            data = json.load(f)
+        return data
+
     def set_val(self, key, value):
-        return self.r.set(key, value.encode('utf-8'))
+        path = f"{self.path}{key}.json"
+        with open(path, 'w') as f:
+            json.dump(value, f)
 
-    def delete(self, key):
-        return self.r.delete(key)
-
-    def to_json(self, value):
-        return json.dumps(value)
-
-    def from_json(self, json_string : str):
-        return json.loads(json_string)
+    def ensure_path_exists(path):
+        if not os.path.exists(path):
+            os.makedirs(path)
