@@ -12,7 +12,7 @@ class GoogleManip():
     def __init__(self, bot):
         self.bot = bot
         self.API_KEY = os.environ.get('API_KEY')
-        self.gc = pygsheets.authorize(outh_file='Botfriend-creds.json')
+        self.gc = pygsheets.authorize(service_file='Botfriend-creds.json')
     
     @commands.command(pass_context=True)
     async def ungold(self, ctx):
