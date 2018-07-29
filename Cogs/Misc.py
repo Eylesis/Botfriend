@@ -8,7 +8,7 @@ class Misc():
     
     @commands.command(pass_context=True)
     async def banana(self, ctx):
-        bananaStash = int(self.bot.db.get_val('bananaStash'))
+        bananaStash = int(self.bot.db.get_val('bananaStash', 0))
         
         if bananaStash == 68:
             bananaStash = 0

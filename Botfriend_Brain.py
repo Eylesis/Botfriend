@@ -23,6 +23,9 @@ bot.db = redisInterface.Database()
 with open('Settings/settings.json', encoding="utf8") as settings_data:
     Settings = json.load(settings_data)
 
+@bot.event
+async def on_message(message):
+    await bot.process_commands(message)
 
 @bot.event
 async def on_ready():
