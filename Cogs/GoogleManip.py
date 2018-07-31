@@ -16,7 +16,7 @@ class GoogleManip():
     
     @commands.command(pass_context=True)
     async def ungold(self, ctx, userID):
-        if ctx.messaage.author.id == '227168575469780992':
+        if ctx.message.author.id == '227168575469780992':
             userGoldData = self.bot.db.get_val('UserGoldData')
             userGoldData.pop(userID, None)
             self.bot.db.set_val('UserGoldData', userGoldData)
@@ -47,7 +47,7 @@ class GoogleManip():
                 charName = wks.cell('L8')
                 startBal = wks.cell('L9')
 
-                userGoldData[ctx.message.author.id] = {'CharName' : charName.value, "StartBal" : startBal.value, "sheetUrl" : sheetUrl}
+                userGoldData[ctx.message.author.id] = {'CharName' : charName.value, "StartBal" : startBal.value, "sheetUrl" : sheetUrl, "entries" : 0}
                 self.bot.db.set_val('UserGoldData', userGoldData)
                 return await self.bot.say('{}, it is really appreciated that you have opted to join this data collection initiative! I have gone ahead and added {} to our listings!'.format(ctx.message.author.mention, charName.value))
             else:
@@ -92,7 +92,14 @@ class GoogleManip():
                     Spent = wks.cell('I16')
                     Decrease = wks.cell('I14')
 
-                    userGoldData[message.author.id][character['levels']['level']] = { "CurBal" : CurBal.value, "Expenses" : Expenses.value, "Income" : Income.value, "Spent" : Spent.value, "Decrease" : Decrease.value }
+                    
+                    newKey = str(character['levels']['level']) + str(userGoldData[message.author.id]['entries'])
+                    print(newKey)
+                    newEntry = userGoldData[message.author.id]['entries'] + 1
+                    print(newEntry)
+                    
+                    userGoldData[message.author.id]['entries'] = newEntry
+                    userGoldData[str(newKey)] = { "CurBal" : CurBal.value, "Expenses" : Expenses.value, "Income" : Income.value, "Spent" : Spent.value, "Decrease" : Decrease.value }
                     self.bot.db.set_val('UserGoldData', userGoldData)
                 else:
                     return await self.bot.send_message(message.channel,'Sorry to bother you, {}. I have you on my listing for the Gold Tracking Initiative, but you have updated a different character. If this is not a mistake, then please ignore me! Otherwise, be sure to set the correct character active before running the `!update` command again!'.format(message.author.mention))
