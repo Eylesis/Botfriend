@@ -39,8 +39,8 @@ class RulesLookup():
             rulesDB[ruleName] = ruleText
             self.bot.db.set_val('RulesDB', rulesDB)
             if ruleExists:
-                return await self.bot.say('It would seem `{}` was outdated? Well, I have updated my records for the future!')
-            return await self.bot.say('Oh my, a new rule? I have recorded `{}` for future use!') 
+                return await self.bot.say('It would seem `{}` was outdated? Well, I have updated my records for the future!'.format(ruleName))
+            return await self.bot.say('Oh my, a new rule? I have recorded `{}` for future use!'.format(ruleName)) 
         return await self.bot.say('Terribly sorry {0.author.mention}, but I do not recognize you as a person of authority here!'.format(ctx.message))
         
     @commands.command(pass_context=True)
