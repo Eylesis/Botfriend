@@ -33,7 +33,7 @@ class RulesLookup():
             rulesDB = self.bot.db.get_val('RulesDB', {})
             ruleExists = False
             
-            if ruleName in rulesDB[ruleName]:
+            if ruleName in rulesDB:
                 ruleExists = True
             
             rulesDB[ruleName] = ruleText
