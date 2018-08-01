@@ -13,7 +13,7 @@ class RulesLookup():
         rulesDB = self.bot.db.get_val('RulesDB', {})
         ruleMatch = ""
         for key in rulesDB:
-        match = re.search(name, key, re.IGNORECASE)
+            match = re.search(name, key, re.IGNORECASE)
 
         if match:
             ruleMatch = match.group(0)
