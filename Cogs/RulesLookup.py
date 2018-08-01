@@ -44,7 +44,7 @@ class RulesLookup():
             return await self.bot.say('Oh my, a new rule? I have recorded `{}` for future use!') 
         return await self.bot.say('Terribly sorry {0.author.mention}, but I do not recognize you as a person of authority here!'.format(ctx.message))
         
-     @commands.command(pass_context=True)
+    @commands.command(pass_context=True)
     async def removeRule(self, ctx, ruleName : str):
         allowed = False
         for role in ctx.message.author.roles:
