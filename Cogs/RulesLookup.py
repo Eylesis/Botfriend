@@ -1,6 +1,5 @@
 import discord
 import redisInterface
-import fuzzy
 import re
 from discord.ext import commands
 
