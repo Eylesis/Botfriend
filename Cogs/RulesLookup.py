@@ -15,9 +15,9 @@ class RulesLookup():
         for key in rulesDB:
             match = re.search(name, key, re.IGNORECASE)
 
-        if match:
-            ruleMatch = match.group(0)
-            break
+            if match:
+                ruleMatch = match.group(0)
+                break
 
         embed = discord.Embed(
             title="**{}**".format(ruleMatch), 
