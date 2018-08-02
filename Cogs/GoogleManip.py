@@ -99,7 +99,7 @@ class GoogleManip():
                     print(newEntry)
                     
                     userGoldData[message.author.id]['entries'] = newEntry
-                    userGoldData[str(newKey)] = { "CurBal" : CurBal.value, "Expenses" : Expenses.value, "Income" : Income.value, "Spent" : Spent.value, "Decrease" : Decrease.value }
+                    userGoldData[message.author.id][str(newKey)] = { "CurBal" : CurBal.value, "Expenses" : Expenses.value, "Income" : Income.value, "Spent" : Spent.value, "Decrease" : Decrease.value }
                     self.bot.db.set_val('UserGoldData', userGoldData)
                 else:
                     return await self.bot.send_message(message.channel,'Sorry to bother you, {}. I have you on my listing for the Gold Tracking Initiative, but you have updated a different character. If this is not a mistake, then please ignore me! Otherwise, be sure to set the correct character active before running the `!update` command again!'.format(message.author.mention))
