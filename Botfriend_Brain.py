@@ -13,7 +13,7 @@ botToken = os.environ.get('botToken')
 description = '''Botfriend Configuration: Conversational ^-^'''
 
 #startup_extensions = []
-startup_extensions = ["Cogs.help", "Cogs.autorole", "Cogs.PingAlerts", "Cogs.Misc", "Cogs.Weather", "Cogs.CampaignTools", "Cogs.GoogleManip", "Cogs.DataBaseTools"]
+startup_extensions = ["Cogs.help", "Cogs.autorole", "Cogs.PingAlerts", "Cogs.Misc", "Cogs.Weather", "Cogs.CampaignTools", "Cogs.GoogleManip", "Cogs.DataBaseTools", "Cogs.RulesLookup"]
 # "Cogs.GameAlerts", "Cogs.CharacterComparator", "Cogs.Misc"
 bot = commands.Bot(command_prefix='*', description=description)
 bot.remove_command('help')
@@ -40,7 +40,7 @@ async def prefix(ctx, new_prefix: str):
     """Changes the prefix."""
     allowed = False
     for role in ctx.message.author.roles:
-        if role.name == "Moderator":
+        if role.name == "Moderators":
             allowed = True
     if allowed or ctx.message.author.id == '227168575469780992':
             if new_prefix != " ":
@@ -49,7 +49,7 @@ async def prefix(ctx, new_prefix: str):
                     Settings["prefix"])
                 util_functions.saveFile(Settings, 'Settings/settings.json')
             return await bot.say('Why certainly, {0.author.mention}. I have changed the prefix to `{1}`.'.format(ctx.message, Settings["prefix"]))
-    return await bot.say('Terribly sorry, but I do not recognize you as a person of authority here!')
+    return await bot.say('Terribly sorry {0.author.mention}, but I do not recognize you as a person of authority here!'.format(ctx.message))
 
 
 @bot.command(pass_context=True, no_pm=True, hidden=True)
