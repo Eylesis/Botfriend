@@ -27,11 +27,11 @@ class DMGold():
         for character in lvlList:
             if character <= 4:
                 prof = 2
-            else if character <= 8:
+            elif character <= 8:
                 prof = 3
-            else if character <= 12:
+            elif character <= 12:
                 prof = 4
-            else if character <= 16:
+            elif character <= 16:
                 prof = 5
             else:
                 prof = 6
