@@ -17,6 +17,7 @@ class DMGold():
         # -If can't make list, return error
         try:
             lvlList = charLevels.split(',')
+            lvlList = list(map(int, lvlList))
         except:
             return self.bot.say("Apologies {}, but I was unable to decide what the character levels were. Please format the character levels with commas between each number, like so: `4,10,16,20`".format(ctx.message.author.mention))
         print(lvlList)
