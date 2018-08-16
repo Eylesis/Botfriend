@@ -35,7 +35,7 @@ class DMGold():
                 prof = 5
             else:
                 prof = 6
-            goldTotals.append(round((multiplier * exp(0.44 * character) / (prof+1))[,2]))
+            goldTotals.append(round(multiplier * exp(0.44 * float(character)) / (prof+1),2))
         print(goldTotals)
 
         # average gold into total
