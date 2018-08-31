@@ -1,6 +1,7 @@
 import discord
 import aiohttp
 import os
+
 import asyncio
 import redisInterface
 import pygsheets
@@ -23,6 +24,26 @@ class GoogleManip():
             return await self.bot.say('I have removed this ID from the Gold Tracking Project.')
         else:
             return await self.bot.say('Terribly sorry {0.author.mention}, but I do not recognize you as a person of authority here!'.format(ctx.message))
+
+    @commands.command(pass_context=True)
+    async def summary(self, ctx, userID=None):
+        for role in ctx.message.author.roles:
+            if ctx.message.author.id == userID:
+                if role.name == "Moderators" or role.name == "Helper":
+                    allowed = True
+                if allowed or ctx.message.author.id == '227168575469780992':
+                    userGoldData = self.bot.db.get_val('UserGoldData')
+                    if userID and userGoldData[userID]:
+                        singleGoldData = userGoldData[userID]
+                        return await self.bot.say(embed=makeSummary(singleGoldData))
+                    else if userID and not userGoldData[userID]:
+                        return await self.bot.say('It appears that ID is not in my records, {0.author.mention}! Can you confirm it was entered correctly?'.format(ctx.message))
+                else:
+                    return await self.bot.say('Terribly sorry {0.author.mention}, but I do not recognize you as a person of authority here!'.format(ctx.message))
+            else:
+                return await self.bot.say('Apologies {0.author.mention}, but this is not your ID and you are not permitted to view other summaries that are not your own!'.format(ctx.message))
+
+
 
     @commands.command(pass_context=True)
     async def gold(self, ctx, sheetUrl=None):
@@ -105,5 +126,11 @@ class GoogleManip():
                     return await self.bot.send_message(message.channel,'Sorry to bother you, {}. I have you on my listing for the Gold Tracking Initiative, but you have updated a different character. If this is not a mistake, then please ignore me! Otherwise, be sure to set the correct character active before running the `!update` command again!'.format(message.author.mention))
                 await self.bot.send_message(message.channel, '{}, I have gone ahead and marked down the data on your tracker sheet for this level.'.format(message.author.mention))
                 print(userGoldData)
+
+    def makeSummary(singleGoldData : dict):
+
+
+
+
 def setup(bot):
     bot.add_cog(GoogleManip(bot))

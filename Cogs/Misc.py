@@ -1,5 +1,7 @@
 import discord
 import redisInterface
+import datetime
+import re
 from discord.ext import commands
 
 class Misc():
@@ -28,6 +30,14 @@ class Misc():
     async def chanSay(self, ctx, channel: str, *, message: str):
         if ctx.message.author.id == '227168575469780992':
             await self.bot.send_message(self.bot.get_channel(channel), message)
+
+    @commands.command(pass_context=True)
+    async def ustime(self, ctx, datestring : str, timestring : str):
+        date_data = re.match('(\d{1,2})\D(\d{1,2})\D.*', datestring)        
+        if date_data == None:
+            return await self.bot.say("I couldn't make sense of your requested date, {}. I am terribly sorry but could you try to format it as such: '1/01'.".format(ctx.message.author.mention))
+        
+        return await self.bot.say(date_data[1])
 
 def setup(bot):
     bot.add_cog(Misc(bot))
