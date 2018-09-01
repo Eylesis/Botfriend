@@ -110,19 +110,22 @@ class Markov():
     @commands.command(pass_context=True)
     async def servMarkov(self, ctx, num: int = 1):
         loading = await self.bot.say("Generating, this might take a while...")
-        text = ''
-        for m in self.bot.training_data:
-            if m.server is not None:
-                if m.server.id == ctx.message.server.id:
-                    text += m.content + '\n'
-        markov = markovify.NewlineText(text, state_size=self.bot.STATE_SIZE)
-        out = ''
-        for i in range(num):
-            try:
-                out += markov.make_sentence(tries=1000) + '\n\n'
-            except:
-                pass
-        out = util_functions.fix_mentions(self.bot, out)
+        def _():
+            text = ''
+            for m in self.bot.training_data:
+                if m.server is not None:
+                    if m.server.id == ctx.message.server.id:
+                        text += m.content + '\n'
+            markov = markovify.NewlineText(text, state_size=self.bot.STATE_SIZE)
+            out = ''
+            for i in range(num):
+                try:
+                    out += markov.make_sentence(tries=1000) + '\n\n'
+                except:
+                    pass
+            out = util_functions.fix_mentions(self.bot, out)
+            return out
+        out = await asyncio.get_event_loop().run_in_executor(None, _)
         await self.bot.edit_message(loading, out)  # @UndefinedVariable
 
     @commands.command(pass_context=True)
