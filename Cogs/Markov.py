@@ -11,6 +11,7 @@ class Markov():
 
     @commands.command(pass_context=True)
     async def load_chan(self, ctx, chan: discord.Channel):
+        if not ctx.message.author.id == "227168575469780992": return
         existing_data = [m.id for m in self.bot.training_data]
         print("Loading ALL data for channel " + str(chan))
         if chan.type is discord.ChannelType.text:
@@ -38,6 +39,7 @@ class Markov():
 
     @commands.command(pass_context=True)
     async def load_server(self, ctx):
+        if not ctx.message.author.id == "227168575469780992": return
         existing_data = [m.id for m in self.bot.training_data]
         print("Loading ALL data for server " + str(ctx.message.server))
         all_loaded = 0
