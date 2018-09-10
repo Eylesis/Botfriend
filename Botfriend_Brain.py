@@ -13,7 +13,7 @@ botToken = os.environ.get('botToken')
 description = '''Botfriend Configuration: Conversational ^-^'''
 
 #startup_extensions = []
-startup_extensions = ["Cogs.help", "Cogs.autorole", "Cogs.PingAlerts", "Cogs.Misc", "Cogs.Weather", "Cogs.CampaignTools", "Cogs.DataBaseTools", "Cogs.RulesLookup", "Cogs.DmGold", "Cogs.Markov"]
+startup_extensions = ["Cogs.help", "Cogs.Misc", "Cogs.Weather", "Cogs.DataBaseTools", "Cogs.Markov", "Cogs.GameTime"]
 # "Cogs.GameAlerts", "Cogs.CharacterComparator", "Cogs.Misc"
 bot = commands.Bot(command_prefix='*', description=description)
 bot.remove_command('help')
@@ -94,5 +94,4 @@ if __name__ == "__main__":
         except Exception as e:
             exc = '{} : {}'. format(type(e).__name__, e)
             print('Failed to load extension {}\n{}'.format(extension, exc))
-    print('eeeeeeeeeeeeeeeeeeeeeeeeeep')
     bot.run(botToken)
