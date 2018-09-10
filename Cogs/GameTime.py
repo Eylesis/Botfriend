@@ -12,7 +12,7 @@ class GameTime():
     async def time(self, ctx):
         """Displays current game time."""
         locationName = self.bot.db.get_val("ServerInfo", "")
-        print(locationName)
+        print(type(locationName))
         print(locationName['CityName'])
         embed = discord.Embed(title="Current time in {}".format(locationName['CityName']),description=get_gametime())
         await self.bot.say(embed=embed)
