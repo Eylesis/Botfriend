@@ -11,7 +11,8 @@ class GameTime():
     @commands.command(pass_context=True)
     async def time(self, ctx):
         """Displays current game time."""
-        embed = discord.Embed(title="Current time in Neverwinter",description=get_gametime())
+        locationName = self.bot.db.get_val("ServerInfo")
+        embed = discord.Embed(title="Current time in {}".format(locationName['CityName']),description=get_gametime())
         await self.bot.say(embed=embed)
         await self.bot.delete_message(ctx.message)   
     
