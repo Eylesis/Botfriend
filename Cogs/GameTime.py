@@ -19,7 +19,7 @@ def suffix(d):
         return 'th' if 11<=d<=13 else {1:'st',2:'nd',3:'rd'}.get(d%10, 'th')
 
 def get_rawtime():
-        return datetime.datetime.now(pytz.timezone('US/Pacific'))
+        return datetime.datetime.now(pytz.timezone('UTC'))
 
 def get_gametime():
     months = [
@@ -35,7 +35,7 @@ def get_gametime():
         "Marpenoth",
         "Uktar",
         "Nightal"]
-    gametime = datetime.datetime.now(pytz.timezone('US/Pacific'))
+    gametime = datetime.datetime.now(pytz.timezone('UTC'))
 
     if gametime.hour == 0:
         gametime_hour = 12
