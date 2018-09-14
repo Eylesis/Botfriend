@@ -77,7 +77,7 @@ def add_character(playerID: str, charName: str):
         DowntimeData = self.bot.db.get_value("DowntimeData")
         DowntimeData[playerID][charName] = {
                                     "Datestamp" : datetime.datetime.utcnow().date(), 
-                                    "Downtime" : 0,
+                                    "AwardedDowntime" : 0,
                                     "Log" : []
                                 }
         self.bot.db.set_value("DowntimeData", DowntimeData)
@@ -95,7 +95,7 @@ def add_log(playerID: str, charName: str, value: int, reason: str):
 def change_downtime(playerID: str, charName: str, value: int):
     if is_character(playerID, charName):
         DowntimeData = self.bot.db.get_value("DowntimeData")
-        DowntimeData[playerID][charName]["Downtime"] += value
+        DowntimeData[playerID][charName]["AwardedDowntime"] += value
         self.bot.db.set_value("DowntimeData", DowntimeData)
         return True
     else:
@@ -121,7 +121,8 @@ def get_active_character():
 def get_downtime(playerID: str, charName: str):
     if is_character(playerID, charName):
         DowntimeData = self.bot.db.get_value("DowntimeData")
-        return DowntimeData[player.id][charName]["Downtime"]
+        DailyDowntime = datetime.datetime.utcnow().date() - DowntimeData[player.id][charName]["Datestamp"]
+        return DowntimeData[player.id][charName]["AwardedDowntime"] + DailyDowntime
     else:
         return -1
 
