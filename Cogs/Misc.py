@@ -53,7 +53,7 @@ class Misc():
                 out_im.paste(image, (x_offset,0))
                 x_offset += image.size[0]
             out_im.save('images/out.png')
-            self.bot.send_file(message.channel, 'images/out.png')
+            self.bot.send_file(message.channel, r'images/out.png', filename="cat.png")
 
 def setup(bot):
     bot.add_cog(Misc(bot))
