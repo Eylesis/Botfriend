@@ -46,7 +46,7 @@ class Misc():
             total_width = sum(widths)
             max_height = max(height)
 
-            out_im = Image.new('RGB', (total_width, max_height))
+            out_im = Image.new('RGBA', (total_width, max_height))
 
             x_offset = 0
             for image in images:
