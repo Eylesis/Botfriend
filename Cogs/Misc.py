@@ -41,9 +41,9 @@ class Misc():
             for x in range(0,segments+1):
                 images.append(Image.open('images/body.png'))
             images.append(Image.open('images/head.png'))
-            widths,heights = zip(*(i.size for i in images))
+            widths,height = zip(*(i.size for i in images))
 
-            total_widths = sum(widths)
+            total_width = sum(widths)
             max_height = max(height)
 
             out_im = Image.new('RGB', (total_width, max_height))
