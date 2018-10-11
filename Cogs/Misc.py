@@ -33,8 +33,9 @@ class Misc():
             await self.bot.send_message(self.bot.get_channel(channel), message)
     
     async def on_message(self, message):
-        match = re.search('\sc(a+)t', message.content.lower())
+        match = re.search('\s*c(a+)t', message.content.lower())
         if match:
+            
             segments = len(match.group(1))
             images = []
             images.append(Image.open('images/tail.png'))
