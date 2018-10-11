@@ -14,4 +14,4 @@ pytz==2017.3
 pygsheets
 oauth2client
 markovify==0.7.0
-pillow
+pillow==5.3.0
