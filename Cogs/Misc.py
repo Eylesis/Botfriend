@@ -3,6 +3,7 @@ import redisInterface
 import datetime
 import re
 from discord.ext import commands
+from PIL import Image
 
 class Misc():
     def __init__(self, bot):
@@ -30,14 +31,29 @@ class Misc():
     async def chanSay(self, ctx, channel: str, *, message: str):
         if ctx.message.author.id == '227168575469780992':
             await self.bot.send_message(self.bot.get_channel(channel), message)
+    
+    async def on_message(self, message):
+        match = re.fullmatch('c(a+)t', message.content.lower())
+        if match:
+            segments = len(match.group(1))
+            images = []
+            images.append(Image.open('images/tail.jpg'))
+            for x in range(0,segments+1):
+                images.append(Image.open('images/body.jpg'))
+            images.append(Image.open('images/head.jpg'))
+            widths,heights = zip(*(i.size for i in images))
 
-    @commands.command(pass_context=True)
-    async def ustime(self, ctx, datestring : str, timestring : str):
-        date_data = re.match('(\d{1,2})\D(\d{1,2})\D.*', datestring)        
-        if date_data == None:
-            return await self.bot.say("I couldn't make sense of your requested date, {}. I am terribly sorry but could you try to format it as such: '1/01'.".format(ctx.message.author.mention))
-        
-        return await self.bot.say(date_data[1])
+            total_widths = sum(widths)
+            max_height = max(height)
+
+            out_im = Image.new('RGB', (total_width, max_height))
+
+            x_offset = 0
+            for image in images:
+                out_im.paste(image, (x_offset,0))
+                x_offset += image.size[0]
+            out_image.save('images/out.jpg')
+            self.bot.send_file(message.channel, 'images/out.jpg')
 
 def setup(bot):
     bot.add_cog(Misc(bot))
