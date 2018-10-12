@@ -12,7 +12,7 @@ class Misc():
     
     @commands.command(pass_context=True)
     async def minecraft(self, ctx):
-        server = MinecraftServer("142.44.191.72:28176")
+        server = MinecraftServer("142.44.191.72", 28176)
         status = server.status()
         server.port = 25565
         query = server.query()
