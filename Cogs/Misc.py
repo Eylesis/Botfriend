@@ -4,11 +4,32 @@ import datetime
 import re
 from discord.ext import commands
 from PIL import Image
+from mcstatus import MinecraftServer
 
 class Misc():
     def __init__(self, bot):
         self.bot = bot
     
+    @commands.command(pass_context=True)
+    async def minecraft(self, ctx):
+        server = MinecraftServer("142.44.191.72:28176")
+        status = server.status()
+        server.port = 25565
+        query = server.query()
+        embed = discord.Embed(title="Ey's Server",description="Minecraft server information and status.")
+        
+        embed.add_field(name="IP Address", value="142.44.191.72:28176")
+        embed.add_field(name="Modpack", value="Enigmatica 2")
+        playerList = ""
+        for player in query.players.names:
+            playerList += "{}\n".format(player)
+
+        embed.add_field(name="Players: {} / {}".format(query.players.online, query.players.max), 
+                        value=playerList)
+    
+        
+        self.bot.say(embed=embed)
+
     @commands.command(pass_context=True)
     async def banana(self, ctx):
         bananaStash = int(self.bot.db.get_val('bananaStash', 0))
@@ -33,28 +54,27 @@ class Misc():
             await self.bot.send_message(self.bot.get_channel(channel), message)
     
     async def on_message(self, message):
-        match = re.search('(\s|^)c(a+)t(\s|$)', message.content.lower())
+        match = re.fullmatch('c(a+)t', message.content.lower())
         if match:
-            
-            segments = len(match.group(2))
+            segments = len(match.group(1))
             images = []
-            images.append(Image.open('images/tail.png'))
+            images.append(Image.open('images/tail.jpg'))
             for x in range(0,segments+1):
-                images.append(Image.open('images/body.png'))
-            images.append(Image.open('images/head.png'))
-            widths,height = zip(*(i.size for i in images))
+                images.append(Image.open('images/body.jpg'))
+            images.append(Image.open('images/head.jpg'))
+            widths,heights = zip(*(i.size for i in images))
 
-            total_width = sum(widths)
+            total_widths = sum(widths)
             max_height = max(height)
 
-            out_im = Image.new('RGBA', (total_width, max_height))
+            out_im = Image.new('RGB', (total_width, max_height))
 
             x_offset = 0
             for image in images:
                 out_im.paste(image, (x_offset,0))
                 x_offset += image.size[0]
-            out_im.save('images/out.png')
-            await self.bot.send_file(message.channel, r'images/out.png', filename="cat.png")
+            out_image.save('images/out.jpg')
+            self.bot.send_file(message.channel, 'images/out.jpg')
 
 def setup(bot):
     bot.add_cog(Misc(bot))
