@@ -28,7 +28,7 @@ class Misc():
                         value=playerList)
     
         
-        self.bot.say(embed=embed)
+        await self.bot.say(embed=embed)
 
     @commands.command(pass_context=True)
     async def banana(self, ctx):
