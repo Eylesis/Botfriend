@@ -24,7 +24,7 @@ class Misc():
         for player in query.players.names:
             playerList += "{}\n".format(player)
         
-        if playerList = "":
+        if playerList == "":
             playerList = "No Players Online"
             
         embed.add_field(name="Players: {} / {}".format(query.players.online, query.players.max), 
