@@ -57,9 +57,9 @@ class Misc():
             await self.bot.send_message(self.bot.get_channel(channel), message)
     
     async def on_message(self, message):
-        match = re.fullmatch('c(a+)t', message.content.lower())
+        match = re.search('(\s|^)c(a+)t(\s|$)', message.content.lower())
         if match:
-            segments = len(match.group(1))
+            segments = len(match.group(2))
             images = []
             images.append(Image.open('images/tail.png'))
             for x in range(0,segments+1):
@@ -70,14 +70,14 @@ class Misc():
             total_widths = sum(widths)
             max_height = max(height)
 
-            out_im = Image.new('RGB', (total_widths, max_height))
+            out_im = Image.new('RGBA', (total_widths, max_height))
 
             x_offset = 0
             for image in images:
                 out_im.paste(image, (x_offset,0))
                 x_offset += image.size[0]
             out_im.save('images/out.jpg')
-            self.bot.send_file(message.channel, 'images/out.jpg')
+            await self.bot.send_file(message.channel, r'images/out.png', filename="cat.png")
 
 def setup(bot):
     bot.add_cog(Misc(bot))
