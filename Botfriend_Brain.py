@@ -13,7 +13,7 @@ botToken = os.environ.get('botToken')
 description = '''Botfriend Configuration: Conversational ^-^'''
 
 #startup_extensions = []
-startup_extensions = ["Cogs.help", "Cogs.Misc", "Cogs.Weather", "Cogs.DataBaseTools", "Cogs.Markov", "Cogs.GameTime"]
+startup_extensions = ["Cogs.help", "Cogs.Misc", "Cogs.Weather", "Cogs.DataBaseTools", "Cogs.Markov", "Cogs.GameTime", "Cogs.AutoDowntime"]
 # "Cogs.GameAlerts", "Cogs.CharacterComparator", "Cogs.Misc"
 bot = commands.Bot(command_prefix='*', description=description)
 bot.remove_command('help')
