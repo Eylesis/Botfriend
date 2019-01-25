@@ -5,32 +5,20 @@ import re
 from discord.ext import commands
 from PIL import Image
 from mcstatus import MinecraftServer
+import requests
+from http.client import responses 
 
 class Misc():
     def __init__(self, bot):
         self.bot = bot
     
     @commands.command(pass_context=True)
-    async def minecraft(self, ctx):
-        server = MinecraftServer("142.44.191.72", 28176)
-        status = server.status()
-        server.port = 25565
-        query = server.query()
-        embed = discord.Embed(title="Ey's Server",description="Minecraft server information and status.")
-        
-        embed.add_field(name="IP Address", value="142.44.191.72:28176")
-        embed.add_field(name="Modpack", value="Enigmatica 2")
-        playerList = ""
-        for player in query.players.names:
-            playerList += "{}\n".format(player)
-        
-        if playerList == "":
-            playerList = "No Players Online"
-            
-        embed.add_field(name="Players: {} / {}".format(query.players.online, query.players.max), 
-                        value=playerList)
-    
-        
+    async def dicecloud_status(self, ctx):
+        response = requests.get('https://dicecloud.com')
+
+        embed = discord.Embed(title="Dicecloud Status Ping",
+                            description="Botfriend's P.I. has infiltrated the Dicecloud servers and come back with this information.")
+        embed.add_field(name="Server Status Code: {}".format(str(int(response.status_code))), value=responses[int(response.status_code)])
         await self.bot.say(embed=embed)
 
     @commands.command(pass_context=True)
