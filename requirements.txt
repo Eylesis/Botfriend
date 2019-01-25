@@ -17,3 +17,4 @@ markovify==0.7.0
 Pillow
 mcstatus
 requests
+websocket-client
