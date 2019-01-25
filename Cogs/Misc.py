@@ -47,11 +47,9 @@ class Misc():
             success = False
         output = []
         if success:
-            output[0] = "Connected"
-            output[1] = "The websocket returned a pong. We have no idea if this means it's functioning, but it's definitely not all the way dead."
+            output = ["Connected", "The websocket returned a pong. We have no idea if this means it's functioning, but it's definitely not all the way dead."]
         else:
-            output[0] = "Disconnected"
-            output[1] = "The websocket couldn't give us a pong. We have no idea if this means it's dead, but it's definitely not all the way working."
+            output = ["Disconnected", "The websocket couldn't give us a pong. We have no idea if this means it's dead, but it's definitely not all the way working."]
         ws.close()
         
         embed.add_field(name="Socket Status: {}".format(output[0]), value=output[1])
