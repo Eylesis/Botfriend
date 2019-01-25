@@ -16,7 +16,11 @@ class Misc():
     
     @commands.command(pass_context=True)
     async def dicecloud_status(self, ctx):
-        
+        info = ["[1xx] Informational : This should not show up. Run the status again in a moment and notify Eylesis.",
+                "[2xx] Success : Everything is working fine. ",
+                "[3xx] Redirection :  This should not show up. Run the status again in a moment and notify Eylesis.",
+                "[4xx] Client Error : Dicecloud is down, but like kinda working. Don't update right now and don't refresh your dicecloud tab.",
+                "[5xx] Server Error : Dicecloud is down. Entirely down. It is broke. Don't update right now and don't refresh your dicecloud tab."]
         queries = [
             {
                 'url':'https://dicecloud.com',
@@ -43,12 +47,15 @@ class Misc():
             success = False
         output = []
         if success:
-            output = ["Connected", "The websocket returned a pong. We have no idea if this means it's functioning, but it's definitely not all the way dead."]
+            output[0] = "Connected"
+            output[1] = "The websocket returned a pong. We have no idea if this means it's functioning, but it's definitely not all the way dead."
         else:
-            output = ["Disconnected", "The websocket couldn't give us a pong. We have no idea if this means it's dead, but it's definitely not all the way working."]
+            output[0] = "Disconnected"
+            output[1] = "The websocket couldn't give us a pong. We have no idea if this means it's dead, but it's definitely not all the way working."
         ws.close()
         
         embed.add_field(name="Socket Status: {}".format(output[0]), value=output[1])
+        embed.add_field(name="HTTP Status Code Information", value=info[(int(response.status_code) / 100 ) -1])
         await self.bot.say(embed=embed)
 
     @commands.command(pass_context=True)
