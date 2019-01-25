@@ -53,7 +53,7 @@ class Misc():
         ws.close()
         
         embed.add_field(name="Socket Status: {}".format(output[0]), value=output[1])
-        embed.add_field(name="HTTP Status Code Information", value=info[(int(response.status_code) / 100 ) -1])
+        embed.add_field(name="HTTP Status Code Information", value=info[int((int(response.status_code) / 100 ) -1)])
         await self.bot.say(embed=embed)
 
     @commands.command(pass_context=True)
