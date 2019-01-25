@@ -6,6 +6,8 @@ from discord.ext import commands
 from PIL import Image
 from mcstatus import MinecraftServer
 import requests
+from websocket import create_connection
+import json
 from http.client import responses 
 
 class Misc():
@@ -14,11 +16,41 @@ class Misc():
     
     @commands.command(pass_context=True)
     async def dicecloud_status(self, ctx):
-        response = requests.get('https://dicecloud.com')
+        
+        queries = [
+            {
+                'url':'https://dicecloud.com',
+                'name' : 'Webpage Status Code'
+            }]
 
         embed = discord.Embed(title="Dicecloud Status Ping",
                             description="Botfriend's P.I. has infiltrated the Dicecloud servers and come back with this information.")
-        embed.add_field(name="Server Status Code: {}".format(str(int(response.status_code))), value=responses[int(response.status_code)])
+        
+        for query in queries:
+            response = requests.get(query['url'])
+            embed.add_field(name="{}: {}".format(query['name'], str(int(response.status_code))), value=responses[int(response.status_code)])
+        
+        ws = create_connection("wss://dicecloud.com/websocket", timeout=10000)
+        result = ws.recv()
+        ws.send(json.dumps({"msg" : "connect", "version": "1", "support" : ["1", "pre2", "pre1"]}))
+        result = json.loads(ws.recv())
+        success = True
+        if result["msg"] != "connected":
+            success = False
+        ws.send(json.dumps({"msg" : "ping"}))
+        result = json.loads(ws.recv())
+        if result["msg"] != "pong":
+            success = False
+        output = []
+        if success:
+            output[0] = "Connected"
+            output[1] = "The websocket returned a pong. We have no idea if this means it's functioning, but it's definitely not all the way dead."
+        else:
+            output[0] = "Disconnected"
+            output[1] = "The websocket couldn't give us a pong. We have no idea if this means it's dead, but it's definitely not all the way working."
+        ws.close()
+        
+        embed.add_field(name="Socket Status: {}".format(output[0]), value=output[1])
         await self.bot.say(embed=embed)
 
     @commands.command(pass_context=True)
