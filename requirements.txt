@@ -16,3 +16,4 @@ oauth2client
 markovify==0.7.0
 Pillow
 mcstatus
+requests
