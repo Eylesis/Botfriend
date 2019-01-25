@@ -1,97 +1,71 @@
-import traceback
-import json
-import util_functions
-from discord.ext import commands
+import discord
 import redisInterface
-import sys
+import datetime
 import re
-import os
-import pygsheets
+from discord.ext import commands
+from PIL import Image
+from mcstatus import MinecraftServer
+import requests
+from http.client import responses 
 
-botToken = os.environ.get('botToken')
+class Misc():
+    def __init__(self, bot):
+        self.bot = bot
+    
+    @commands.command(pass_context=True)
+    async def dicecloud_status(self, ctx):
+        response = requests.get('https://dicecloud.com')
 
-description = '''Botfriend Configuration: Conversational ^-^'''
+        embed = discord.Embed(title="Dicecloud Status Ping",
+                            description="Botfriend's P.I. has infiltrated the Dicecloud servers and come back with this information.")
+        embed.add_field(name="Server Status Code: {}".format(str(int(response.status_code))), value=responses[int(response.status_code)])
+        await self.bot.say(embed=embed)
 
-#startup_extensions = []
-startup_extensions = ["Cogs.help", "Cogs.Misc", "Cogs.Weather", "Cogs.DataBaseTools", "Cogs.Markov", "Cogs.GameTime", "Cogs.AutoDowntime"]
-# "Cogs.GameAlerts", "Cogs.CharacterComparator", "Cogs.Misc"
-bot = commands.Bot(command_prefix='*', description=description)
-bot.remove_command('help')
-bot.db = redisInterface.Database()
-bot.training_data = []
-bot.STATE_SIZE = 2
+    @commands.command(pass_context=True)
+    async def banana(self, ctx):
+        bananaStash = int(self.bot.db.get_val('bananaStash', 0))
+        
+        if bananaStash == 68:
+            bananaStash = 0
+            await self.bot.say('!69')
+                
+        if bananaStash == 0:
+            await self.bot.say('Why thank you {}! This banana is the first in my latest stash! I shall store it carefully.'.format(ctx.message.author.mention))
+            self.bot.db.set_val('bananaStash', '1')
+        else:
+            bananaStash += 1
+            self.bot.db.set_val('bananaStash', str(bananaStash))
+            await self.bot.say('Why thank you {}! I do so enjoy bananas, however I am not hungry at the moment, so I shall save this for later! My stash has {} bananas in it, can you believe it?'
+            .format(ctx.message.author.mention, bananaStash))
+        return await self.bot.delete_message(ctx.message)
 
-with open('Settings/settings.json', encoding="utf8") as settings_data:
-    Settings = json.load(settings_data)
+    @commands.command(pass_context=True, hidden=True)
+    async def chanSay(self, ctx, channel: str, *, message: str):
+        if ctx.message.author.id == '227168575469780992':
+            await self.bot.send_message(self.bot.get_channel(channel), message)
+    
+    async def on_message(self, message):
+        match = re.search('(\s|^)c(a+)t(\s|$)', message.content.lower())
+        if match:
+            segments = len(match.group(2))
+            images = []
+            images.append(Image.open('images/tail.png'))
+            for x in range(0,segments+1):
+                images.append(Image.open('images/body.png'))
+            images.append(Image.open('images/head.png'))
+            widths,height = zip(*(i.size for i in images))
 
-@bot.event
-async def on_message(message):
-    await bot.process_commands(message)
+            total_widths = sum(widths)
+            max_height = max(height)
 
-@bot.event
-async def on_ready():
-    print('Logged in as {}:{}'.format(bot.user.name, bot.user.id))
-    print('----------')
-    if "prefix" in Settings:
-        bot.command_prefix = commands.when_mentioned_or(Settings["prefix"])
+            out_im = Image.new('RGBA', (total_widths, max_height))
 
+            x_offset = 0
+            for image in images:
+                out_im.paste(image, (x_offset,0))
+                x_offset += image.size[0]
+            out_im.save('images/out.png')
+            await self.bot.send_file(message.channel, r'images/out.png', filename="cat.png")
 
-@bot.command(pass_context=True, no_pm=True, hidden=True)
-async def prefix(ctx, new_prefix: str):
-    """Changes the prefix."""
-    allowed = False
-    for role in ctx.message.author.roles:
-        if role.name == "Moderators":
-            allowed = True
-    if allowed or ctx.message.author.id == '227168575469780992':
-            if new_prefix != " ":
-                Settings["prefix"] = new_prefix
-                bot.command_prefix = commands.when_mentioned_or(
-                    Settings["prefix"])
-                util_functions.saveFile(Settings, 'Settings/settings.json')
-            return await bot.say('Why certainly, {0.author.mention}. I have changed the prefix to `{1}`.'.format(ctx.message, Settings["prefix"]))
-    return await bot.say('Terribly sorry {0.author.mention}, but I do not recognize you as a person of authority here!'.format(ctx.message))
-
-
-@bot.command(pass_context=True, no_pm=True, hidden=True)
-async def load(ctx, extension_name: str):
-    """Loads an extension."""
-    allowed = False
-    for role in ctx.message.author.roles:
-        if role.name == "Moderator":
-            allowed = True
-    if allowed or ctx.message.author.id == '227168575469780992':
-        try:
-            bot.load_extension(extension_name)
-        except (AttributeError, ImportError) as e:
-            await bot.say("Oh dear. It would appear engineering has sent up the following correspondance.```py\n{}:```".format(type(e).__name__, str(e)))
-            return
-        return await bot.say("Excellent choice, {0.author.mention}! `{1}` has been loaded and is ready to be ultilized.".format(ctx.message, extension_name))
-    return await bot.say('Terribly sorry {0.author.mention}, but I do not recognize you as a person of authority here!'.format(ctx.message))
-
-
-@bot.command(pass_context=True, no_pm=True, hidden=True)
-async def unload(ctx, extension_name: str):
-    """Unloads an extension."""
-    for role in ctx.message.author.roles:
-        if role.name == "Moderator":
-            allowed = True
-    if allowed or ctx.message.author.id == '227168575469780992':
-        bot.unload_extension(extension_name)
-        return await bot.say("Excellent choice, {0.author.mention}! `{1}` has been unloaded and stored for future use.".format(ctx.message, extension_name))
-    return await bot.say('Terribly sorry {0.author.mention}, but I do not recognize you as a person of authority here!'.format(ctx.message))
-
-
-@bot.event
-async def on_command_error(error, ctx):
-    traceback.print_exception(
-        type(error), error, error.__traceback__, file=sys.stderr)
-
-if __name__ == "__main__":
-    for extension in startup_extensions:
-        try:
-            bot.load_extension(extension)
-        except Exception as e:
-            exc = '{} : {}'. format(type(e).__name__, e)
-            print('Failed to load extension {}\n{}'.format(extension, exc))
-    bot.run(botToken)
+def setup(bot):
+    bot.add_cog(Misc(bot))
