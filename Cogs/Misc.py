@@ -34,25 +34,25 @@ class Misc():
             response = requests.get(query['url'])
             embed.add_field(name="{}: {}".format(query['name'], str(int(response.status_code))), value=responses[int(response.status_code)])
         
-        ws = create_connection("wss://dicecloud.com/websocket", timeout=10000)
-        result = ws.recv()
-        ws.send(json.dumps({"msg" : "connect", "version": "1", "support" : ["1", "pre2", "pre1"]}))
-        result = json.loads(ws.recv())
-        success = True
-        if result["msg"] != "connected":
-            success = False
-        ws.send(json.dumps({"msg" : "ping"}))
-        result = json.loads(ws.recv())
-        if result["msg"] != "pong":
-            success = False
-        output = []
-        if success:
-            output = ["Connected", "The websocket returned a pong. We have no idea if this means it's functioning, but it's definitely not all the way dead."]
-        else:
-            output = ["Disconnected", "The websocket couldn't give us a pong. We have no idea if this means it's dead, but it's definitely not all the way working."]
-        ws.close()
+        # ws = create_connection("wss://dicecloud.com/websocket", timeout=10000)
+        # result = ws.recv()
+        # ws.send(json.dumps({"msg" : "connect", "version": "1", "support" : ["1", "pre2", "pre1"]}))
+        # result = json.loads(ws.recv())
+        # success = True
+        #  if result["msg"] != "connected":
+            # success = False
+        # ws.send(json.dumps({"msg" : "ping"}))
+        # result = json.loads(ws.recv())
+        # if result["msg"] != "pong":
+            # success = False
+        # output = []
+        # if success:
+            # output = ["Connected", "The websocket returned a pong. We have no idea if this means it's functioning, but it's definitely not all the way dead."]
+        # else:
+            # output = ["Disconnected", "The websocket couldn't give us a pong. We have no idea if this means it's dead, but it's definitely not all the way working."]
+        # ws.close()
         
-        embed.add_field(name="Socket Status: {}".format(output[0]), value=output[1])
+        # embed.add_field(name="Socket Status: {}".format(output[0]), value=output[1])
         embed.add_field(name="HTTP Status Code Information", value=info[int((int(response.status_code) / 100 ) -1)])
         await self.bot.say(embed=embed)
 
