@@ -8,7 +8,15 @@ from mcstatus import MinecraftServer
 import requests
 from websocket import create_connection
 import json
-from http.client import responses 
+from http.client import responses
+
+import io
+import textwrap
+import traceback
+from contextlib import redirect_stdout
+
+import discord
+from discord.ext import commands
 
 class Misc():
     def __init__(self, bot):
@@ -78,6 +86,53 @@ class Misc():
     async def chanSay(self, ctx, channel: str, *, message: str):
         if ctx.message.author.id == '227168575469780992':
             await self.bot.send_message(self.bot.get_channel(channel), message)
+            
+    @commands.command(pass_context=True, hidden=True, name='eval')
+    async def _eval(self, ctx, *, body: str):
+        """Evaluates some code"""
+
+        env = {
+            'bot': self.bot,
+            'ctx': ctx,
+            'channel': ctx.message.channel,
+            'author': ctx.message.author,
+            'server': ctx.message.server,
+            'message': ctx.message,
+            '_': self._last_result
+        }
+
+        env.update(globals())
+
+        body = self.cleanup_code(body)
+        stdout = io.StringIO()
+
+        to_compile = 'async def func():\n{}'.format(textwrap.indent(body, "  "))
+
+        try:
+            exec(to_compile, env)
+        except Exception as e:
+            return await self.bot.say('```py\n{}: {}\n```'.format(e.__class__.__name__, e))
+
+        func = env['func']
+        try:
+            with redirect_stdout(stdout):
+                ret = await func()
+        except Exception as e:
+            value = stdout.getvalue()
+            await self.bot.say('```py\n{}{}\n```'.format(value, traceback.format_exc()))
+        else:
+            value = stdout.getvalue()
+            try:
+                await self.bot.add_reaction(ctx.message, '\u2705')
+            except:
+                pass
+
+            if ret is None:
+                if value:
+                    await self.bot.say('```py\n{}\n```'.format(value))
+            else:
+                self._last_result = ret
+                await self.bot.say('```py\n{}{}\n```'.format(value, ret))
     
     async def on_message(self, message):
         match = re.search('(\s|^)c(a+)t(\s|$)', message.content.lower())
