@@ -98,8 +98,7 @@ class Misc():
             'channel': ctx.message.channel,
             'author': ctx.message.author,
             'server': ctx.message.server,
-            'message': ctx.message,
-            '_': self._last_result
+            'message': ctx.message
         }
 
         env.update(globals())
@@ -132,8 +131,17 @@ class Misc():
                 if value:
                     await self.bot.say('```py\n{}\n```'.format(value))
             else:
-                self._last_result = ret
                 await self.bot.say('```py\n{}{}\n```'.format(value, ret))
+                
+    def cleanup_code(self, content):
+        """Automatically removes code blocks from the code."""
+        # remove ```py\n```
+        if content.startswith('```') and content.endswith('```'):
+            return '\n'.join(content.split('\n')[1:-1])
+
+        # remove `foo`
+        return content.strip('` \n')
+
     
     async def on_message(self, message):
         match = re.search('(\s|^)c(a+)t(\s|$)', message.content.lower())
