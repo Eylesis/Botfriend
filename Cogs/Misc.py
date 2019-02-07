@@ -90,7 +90,8 @@ class Misc():
     @commands.command(pass_context=True, hidden=True, name='eval')
     async def _eval(self, ctx, *, body: str):
         """Evaluates some code"""
-
+        if ctx.message.author.id not in ('227168575469780992', '187421759484592128'):
+            return
         env = {
             'bot': self.bot,
             'ctx': ctx,
