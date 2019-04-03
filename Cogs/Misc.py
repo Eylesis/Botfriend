@@ -42,7 +42,8 @@ class Misc():
             for channel in ReturnList[server]:
                 output += "     - {}\n".format(channel)
             await self.bot.say(output)
-            
+        return await self.bot.delete_message(ctx.message)
+    
     @commands.command(pass_context=True)
     async def dicecloud_status(self, ctx):
         info = ["[1xx] Informational : This should not show up. Run the status again in a moment and notify Eylesis.",
