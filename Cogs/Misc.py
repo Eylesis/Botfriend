@@ -38,10 +38,9 @@ class Misc():
                     ReturnList[server].append(channel.name)
         
         for server in ReturnList.items():
-            output = "**{}**:\n".format(server)
+            await self.bot.say("**{}**:\n".format(server))
             for channel in ReturnList[server]:
-                output += "     - {}\n".format(channel)
-            await self.bot.say(output)
+                await self.bot.say("     - {}\n".format(channel))
         return await self.bot.delete_message(ctx.message)
     
     @commands.command(pass_context=True)
