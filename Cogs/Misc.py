@@ -25,7 +25,7 @@ class Misc():
     @commands.command(pass_context=True)
     async def chanlist(self, ctx):
         BotServerList = self.bot.servers
-        TargetUser = ctx.message.author
+        TargetUser = ctx.message.author.id
         print(BotServerList)
         ReturnList = {}
         
