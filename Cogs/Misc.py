@@ -39,7 +39,7 @@ class Misc():
         for server, channelList in ReturnList.items():
             output += "**{}**\n".format(server)
             for channel in channelList:
-                output += "     \n{}".format(channel)
+                output += "     {}\n".format(channel)
         
         print(output)
         await self.bot.say(output)
