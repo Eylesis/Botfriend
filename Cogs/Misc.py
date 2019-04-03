@@ -33,7 +33,7 @@ class Misc():
             if server.get_member(TargetUser.id):
                 ReturnList[server.name] = []
                 for channel in server.channels:
-                    if channel.type = discord.ChannelType.text and channel.permissions_for(TargetUser).send_messages and channel.permissions_for(TargetUser).read_messages:
+                    if channel.type == discord.ChannelType.text and channel.permissions_for(TargetUser).send_messages and channel.permissions_for(TargetUser).read_messages:
                         ReturnList[server.name].append(channel.name)
         output = ""
         for server, channelList in ReturnList.items():
