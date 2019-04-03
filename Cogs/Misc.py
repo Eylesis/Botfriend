@@ -21,7 +21,27 @@ from discord.ext import commands
 class Misc():
     def __init__(self, bot):
         self.bot = bot
-    
+        
+    @commands.command(pass_context=True)
+    async def chanlist(self, ctx):
+        BotServerList = self.bot.servers
+        TargetUser = ctx.message.author
+        ReturnList = {}
+
+        for server in BotServerList:
+            if server.get_member(TargetUser):
+                ReturnList[server.name] = []
+        for server in ReturnList:
+            for channel in server.channels:
+                if channel.permissions_for(TargetUser).send_messages and channel.permissions_for(TargetUser).read_messages:
+                    ReturnList[server].append(channel.name)
+        
+        for server in BotServerList:
+            output = "**{}**:\n".format(server)
+            for channel in BotServerList[server]:
+                output += "     - {}\n".format(channel)
+            await self.bot.say(output)
+            
     @commands.command(pass_context=True)
     async def dicecloud_status(self, ctx):
         info = ["[1xx] Informational : This should not show up. Run the status again in a moment and notify Eylesis.",
