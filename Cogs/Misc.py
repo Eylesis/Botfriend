@@ -27,22 +27,25 @@ class Misc():
         BotServerList = self.bot.servers
         TargetUser = ctx.message.author
         ReturnList = {}
-
+        
         for server in BotServerList:
             if server.get_member(TargetUser):
                 ReturnList[server.name] = []
+        print(ReturnList)
         
         for server in ReturnList.items():
             for channel in server.channels:
                 if channel.permissions_for(TargetUser).send_messages and channel.permissions_for(TargetUser).read_messages:
                     ReturnList[server].append(channel.name)
+        print(ReturnList)
         
         for server in ReturnList.items():
             output = "**{}**:\n".format(server)
             for channel in ReturnList[server]:
                 output += "     - {}\n".format(channel)
             print(output)
-            print(ReturnList)
+        print(ReturnList)
+        
         return await self.bot.delete_message(ctx.message)
     
     @commands.command(pass_context=True)
