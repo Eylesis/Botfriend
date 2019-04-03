@@ -33,9 +33,15 @@ class Misc():
             if server.get_member(TargetUser.id):
                 ReturnList[server.name] = []
                 for channel in server.channels:
-                    if channel.permissions_for(TargetUser).send_messages and channel.permissions_for(TargetUser).read_messages:
+                    if channel.type = discord.ChannelType.text and channel.permissions_for(TargetUser).send_messages and channel.permissions_for(TargetUser).read_messages:
                         ReturnList[server.name].append(channel.name)
-        await self.bot.say(ReturnList)
+        output = ""
+        for server, channelList in ReturnList.items():
+            output += "**{}**\n".format(server)
+            for channel in channelList:
+                output += "     \n{}".format(channel)
+        
+        await self.bot.say(output)
         return await self.bot.delete_message(ctx.message)
     
     @commands.command(pass_context=True)
