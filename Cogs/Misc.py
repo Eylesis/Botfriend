@@ -41,6 +41,7 @@ class Misc():
             for channel in channelList:
                 output += "     \n{}".format(channel)
         
+        print(output)
         await self.bot.say(output)
         return await self.bot.delete_message(ctx.message)
     
