@@ -42,6 +42,7 @@ class Misc():
             for channel in ReturnList[server]:
                 output += "     - {}\n".format(channel)
             print(output)
+            print(ReturnList)
         return await self.bot.delete_message(ctx.message)
     
     @commands.command(pass_context=True)
