@@ -25,12 +25,12 @@ class Misc():
     @commands.command(pass_context=True)
     async def chanlist(self, ctx):
         BotServerList = self.bot.servers
-        TargetUser = ctx.message.author.id
+        TargetUser = ctx.message.author
         print(BotServerList)
         ReturnList = {}
         
         for server in BotServerList:
-            if server.get_member(TargetUser):
+            if server.get_member(TargetUser.id):
                 ReturnList[server.name] = []
                 for channel in server.channels:
                     if channel.permissions_for(TargetUser).send_messages and channel.permissions_for(TargetUser).read_messages:
