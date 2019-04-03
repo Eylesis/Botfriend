@@ -26,6 +26,7 @@ class Misc():
     async def chanlist(self, ctx):
         BotServerList = self.bot.servers
         TargetUser = ctx.message.author
+        print(BotServerList)
         ReturnList = {}
         
         for server in BotServerList:
