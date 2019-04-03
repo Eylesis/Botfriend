@@ -34,7 +34,7 @@ class Misc():
                 ReturnList[server.name] = []
                 for channel in server.channels:
                     if channel.permissions_for(TargetUser).send_messages and channel.permissions_for(TargetUser).read_messages:
-                        ReturnList[server].append(channel.name)
+                        ReturnList[server.name].append(channel.name)
                         
         for server in ReturnList.items():
             output = "**{}**:\n".format(server)
