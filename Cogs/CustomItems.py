@@ -9,8 +9,8 @@ class CustomItems():
     
     @commands.group(pass_context=True)
     async def item(self, ctx):
-       if ctx.invoked_subcommand is None:
-        await bot.say('Invalid item command passed...')
+        if ctx.invoked_subcommand is None:
+            await bot.say('Invalid item command passed...')
     
     @item.command(pass_context=True)
     async def add(self,ctx, item_info : str):
