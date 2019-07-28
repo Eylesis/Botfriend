@@ -54,5 +54,48 @@ class VotingBooth(commands.Cog):
     async def candidates(self, ctx):
         return await ctx.send('Greetings {0.mention}! You wish to view the candidates list? Right away, here is the list!\n\n```css\n[Candidates]\n\n#1) Vanagandr\n#2) UberAffe\n#3) Eylesis\n#4) LightningNevan\n#5) TheEmeraldOtter\n#6) Etheldread\n#7) vareek\n#8) Whiteherrin1584```'.format(ctx.author))
 
+    @commands.command(pass_context=True)
+    async def ballotcount(self, ctx):
+        if ctx.author.id == 227168575469780992:
+            votingDB = self.bot.db.get_val('votingDB', {})
+            total = 0
+            for userID in votingDB:
+                if userID != 'tallies':
+                    total += 1 
+            percentage = (total / 148) * 100
+            return await ctx.send('There have been `{}` ballots cast for this vote. `{}%` of the server has voted so far.'.format(total, round(percentage)))
+        else:
+            return await ctx.send('Apologies {0.mention}, but you are not permitted to run data display commands at this time! If you feel this is an error, please speak with Eylesis#0001 at your earliest convenience!'.format(ctx.author))
+    
+    @commands.command(pass_context=True)
+    async def tally(self, ctx):
+        if ctx.author.id == 227168575469780992:
+            votingDB = self.bot.db.get_val('votingDB', {})
+            payload = '```css\n[Votes Per Candidate]\n\n'
+            candidateNames = []
+            candidateTallies = []
+            #candidateList = list(votingDB['tallies'].items())
+            candidateList = []
+
+            for candidate,value in votingDB['tallies'].items():
+                candidateList.append((candidate,len(value)))
+
+            for mx in range(len(candidateList)-1, -1, -1):
+                swapped = False
+                for i in range(mx):
+                    if candidateList[i][1] < candidateList[i+1][1]:
+                        candidateList[i], candidateList[i+1] = candidateList[i+1], candidateList[i]
+                        swapped = True
+                if not swapped:
+                    break
+            counter = 1
+            for candidate in candidateList:
+                payload += '#{}) {}: {}\n'.format(counter, candidate[0], candidate[1])
+                counter += 1
+            payload+= '```'
+            await ctx.send(payload)
+        else:
+            return await ctx.send('Apologies {0.mention}, but you are not permitted to run data display commands at this time! If you feel this is an error, please speak with Eylesis#0001 at your earliest convenience!'.format(ctx.author))
+    
 def setup(bot):
     bot.add_cog(VotingBooth(bot))
