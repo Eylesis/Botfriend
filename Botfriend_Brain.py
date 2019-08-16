@@ -10,10 +10,12 @@ import os
 import pygsheets
 
 botToken = os.environ.get('botToken')
+print(botToken)
+botToken = 'MzA5MDE0MDY5MTMyNjU2NjQx.XVXcgw.I6fnkSJYeySEB4kJ8EIoPPH_QaQ'
 description = '''Botfriend Configuration: Conversational ^-^'''
 
 #startup_extensions = []
-startup_extensions = ["Cogs.Misc"]
+startup_extensions = ["Cogs.Misc", "Cogs.ServerCopy"]
 # "Cogs.GameAlerts", "Cogs.CharacterComparator", "Cogs.Misc"
 bot = commands.Bot(command_prefix='*', description=description)
 bot.remove_command('help')
