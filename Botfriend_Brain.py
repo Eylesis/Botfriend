@@ -10,8 +10,6 @@ import os
 import pygsheets
 
 botToken = os.environ.get('botToken')
-print(botToken)
-botToken = 'MzA5MDE0MDY5MTMyNjU2NjQx.XVXcgw.I6fnkSJYeySEB4kJ8EIoPPH_QaQ'
 description = '''Botfriend Configuration: Conversational ^-^'''
 
 #startup_extensions = []
