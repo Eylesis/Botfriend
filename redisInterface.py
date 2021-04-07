@@ -1,9 +1,5 @@
 import os
-import urllib.parse
 import json
-import redis
-import discord
-from discord.ext import commands
 
 class Database:
    
