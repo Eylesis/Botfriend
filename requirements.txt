@@ -19,3 +19,4 @@ markovify
 Pillow
 requests
 websocket-client
+pytz
