@@ -6,7 +6,7 @@ import json
 from Cogs.GameTime import get_gametime
 from Cogs.GameTime import get_rawtime
 
-class Weather():
+class Weather(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
@@ -15,7 +15,7 @@ class Weather():
         """Prints the town's weather."""
         await self.ctx.send(embed=get_weather(location))
         await self.ctx.message.delete()
-        
+
 def get_raw_weather_data(location=""):
     with open('Settings/weather_settings.json', encoding="utf8") as weather_settings_data:
         weather_settings = json.load(weather_settings_data)   
