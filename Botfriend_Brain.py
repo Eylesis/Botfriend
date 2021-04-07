@@ -7,7 +7,6 @@ import redisInterface
 import sys
 import re
 import os
-import pygsheets
 
 botToken = os.environ.get('botToken')
 description = '''Botfriend Configuration: Conversational ^-^'''
