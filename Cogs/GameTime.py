@@ -4,7 +4,7 @@ import time
 import datetime
 import pytz
 
-class GameTime():
+class GameTime(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
     
