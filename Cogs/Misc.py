@@ -1,19 +1,17 @@
-import discord
 import redisInterface
-import datetime
+# import datetime
 import re
-from discord.ext import commands
 # from PIL import Image
 # from mcstatus import MinecraftServer
-import requests
-from websocket import create_connection
+# import requests
+# from websocket import create_connection
 import json
-from http.client import responses
+# from http.client import responses
 
-import io
-import textwrap
-import traceback
-from contextlib import redirect_stdout
+# import io
+# import textwrap
+# import traceback
+# from contextlib import redirect_stdout
 
 import discord
 from discord.ext import commands
