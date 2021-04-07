@@ -10,12 +10,12 @@ class Weather():
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command(pass_context=True)
+    @commands.command()
     async def weather(self, ctx, location=""):
         """Prints the town's weather."""
-        await self.bot.say(embed=get_weather(location))
-        await self.bot.delete_message(ctx.message)
-
+        await self.ctx.send(embed=get_weather(location))
+        await self.ctx.message.delete()
+        
 def get_raw_weather_data(location=""):
     with open('Settings/weather_settings.json', encoding="utf8") as weather_settings_data:
         weather_settings = json.load(weather_settings_data)   
