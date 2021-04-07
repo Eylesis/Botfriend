@@ -3,8 +3,8 @@ import redisInterface
 import datetime
 import re
 from discord.ext import commands
-from PIL import Image
-from mcstatus import MinecraftServer
+# from PIL import Image
+# from mcstatus import MinecraftServer
 import requests
 from websocket import create_connection
 import json
