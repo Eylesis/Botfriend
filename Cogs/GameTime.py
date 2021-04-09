@@ -15,8 +15,8 @@ class GameTime(commands.Cog):
         print(type(locationName))
         print(locationName['CityName'])
         embed = discord.Embed(title="Current time in {}".format(locationName['CityName']),description=get_gametime())
-        await self.bot.say(embed=embed)
-        await self.bot.delete_message(ctx.message)   
+        await ctx.send(embed=embed)
+        await ctx.message.delete_message()   
     
 def suffix(d):
         return 'th' if 11<=d<=13 else {1:'st',2:'nd',3:'rd'}.get(d%10, 'th')
@@ -38,7 +38,12 @@ def get_gametime():
         "Marpenoth",
         "Uktar",
         "Nightal"]
-    gametime = datetime.datetime.now(pytz.timezone('UTC'))
+
+    aDate = datetime(2020, 10, 18, tzinfo=pytz.timezone('UTC'))
+    bDate = datetime.now(pytz.timezone('UTC'))
+    delta = bDate - aDate
+
+    gametime = datetime(2020, 10, 18, bDate.hour, bDate.minute, bDate.second) + timedelta(days=delta.days*3) + (timedelta(days=(bDate.hour//8-2)))
 
     if gametime.hour == 0:
         gametime_hour = 12
@@ -46,9 +51,10 @@ def get_gametime():
     else:
         gametime_hour = gametime.hour-12 if gametime.hour > 12 else gametime.hour
         time_decor = "PM" if gametime.hour > 12 else "AM"
+    
     gametime_minute = "0{}".format(gametime.minute) if gametime.minute < 10 else gametime.minute
 
-    return "{}:{} {} on the {}{} of {}, {} DR".format(gametime_hour, gametime_minute, time_decor, gametime.day, suffix(gametime.day),months[gametime.month-1], gametime.year - 527)
+    return "{}:{} {} UTC | {}{} of {}".format(gametime_hour, gametime_minute, time_decor, gametime.day, suffix(gametime.day), months[gametime.month-1])
 
 
 def setup(bot):

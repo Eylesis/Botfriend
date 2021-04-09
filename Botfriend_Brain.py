@@ -40,14 +40,16 @@ async def chanSay(ctx, channel, *, message: str):
         foundChannel = await bot.fetch_channel(channel)
         return await foundChannel.send(message)
 
+def check_perm(ctx):
+    if "Weavekeepers" in ctx.author.roles:
+        return True
+    return False
+
+
 @bot.command(no_pm=True, hidden=True)
 async def prefix(ctx, new_prefix: str):
     """Changes the prefix."""
-    allowed = False
-    for role in ctx.author.roles:
-        if role.name == "Moderators":
-            allowed = True
-    if allowed or ctx.author.id == 227168575469780992:
+    if check_perm(ctx) or ctx.author.id == 227168575469780992:
             if new_prefix != " ":
                 Settings["prefix"] = new_prefix
                 bot.command_prefix = commands.when_mentioned_or(
@@ -55,6 +57,13 @@ async def prefix(ctx, new_prefix: str):
                 util_functions.saveFile(Settings, 'Settings/settings.json')
             return await bot.say('Why certainly, {0.mention}. I have changed the prefix to `{1}`.'.format(ctx.author, Settings["prefix"]))
     return await bot.say('Terribly sorry {0.mention}, but I do not recognize you as a person of authority here!'.format(ctx.author))
+
+@bot.command(no_pm=True, hidden=True)
+async def gametime(ctx):
+    """Sets the GameTime Default Channel."""
+    if check_perm(ctx) or ctx.author.id == 227168575469780992:
+        Settings["gametime_channel"] = ctx.channel.id
+        util_functions.saveFile(Settings, 'Settings/settings.json')
 
 @bot.event
 async def on_command_error(ctx, error):
